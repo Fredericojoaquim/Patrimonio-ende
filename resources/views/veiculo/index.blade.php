@@ -1,0 +1,431 @@
+@extends('layout.template')
+@section('title', 'Veículos')
+
+
+@section('content')
+
+                 <div class="card">
+                                    <h3 class="card-header">Registar Veículo</h3>
+
+                                    <div class="card-body">
+
+                                        @if (@isset($sms))
+
+                                        <div class="alert alert-success" role="alert">
+                                            <p>{{$sms}}</p>
+                                        </div>
+ 
+                                        @endif
+                                        <div class="alert alert-danger" id="erro-registar" hidden>
+
+                                        </div>
+
+                                        <form  action="{{url('veiculo/registar')}}" method="POST" id="form-registar">
+                                                 @csrf
+
+                                            <div class="row">
+
+                                                <div class="form-group col-lg-6 margin-input">
+
+                                                        <label for="input-select">Tipo de Veículo</label>
+                                                        <select id="tipoveiculo" class="form-control" name="tipoveiculo" id="input-select">
+                                                            <option value="Selecione">Selecione</option>
+                                                            <option value="Motociclo">Motociclo</option>
+                                                            <option value="Automóvel">Automóvel</option>
+                                                        </select>
+                                                   </div>
+
+                                                <div class="form-group col-lg-6 col-md-12">
+
+                                                    <label for="inputText3" class="col-form-label">Marca</label>
+                                                    <input id="marca" name="marca" type="text" class="form-control">
+                                                </div>
+
+                                                <div class="form-group col-lg-6 col-md-12 margin-input">
+                                                    <label for="inputText4">Modelo</label>
+                                                    <input id="modelo" name="modelo" type="text" placeholder="" class="form-control">
+                                                    
+                                                </div>
+                     
+
+                                                <div class="form-group col-lg-6">
+                                                        <label for="inputText5" class="col-form-label">Matricula</label>
+                                                        <input id="matricula" name="matricula" type="text" class="form-control" placeholder="">
+                                                </div>
+
+                                                <div class="form-group col-lg-6 margin-input">
+                                                        <label for="inputText6">Nº Chassi</label>
+                                                        <input id="num_chassi" name="num_chassi" type="text" placeholder="" class="form-control">
+                                                </div>
+
+
+                                                <div class="form-group col-lg-6">
+                                                        <label for="inputText7" class="col-form-label">Nº Motor</label>
+                                                        <input id="num_motor" name="num_motor" type="text" class="form-control" placeholder="">
+                                                </div>
+
+                                                <div class="form-group col-lg-12">
+                                                        <label for="inputText7" class="col-form-label">Cor</label>
+                                                        <input id="cor" name="cor" type="text" class="form-control" placeholder="">
+                                                </div>
+
+                                                <div class="form-group col-lg-6 margin-input">
+
+                                                    <label for="input-select">Caixa de velocidade</label>
+                                                    <select id="caixa_velocidade" class="form-control" name="caixa_velocidade" id="input-select">
+                                                        <option value="Selecione">Selecione</option>
+                                                        <option value="Manual">Manual</option>
+                                                        <option value="Automático">Automático</option>
+                                                    </select>
+                                               </div>
+
+                                                <div class="form-group col-lg-6">
+                                                        <label for="inputText8" class="col-form-label">Data fabríco</label>
+                                                        <input id="data_fabrico" type="date" name="data_fabrico" class="form-control" placeholder="">
+                                                </div>
+                                                
+                                                <div class="form-group col-lg-6 margin-input">
+
+                                                        <label for="input-select">Tipo Combustível</label>
+                                                        <select id="tipocombustivel" class="form-control" name="tipocombustivel" id="input-select">
+                                                            <option value="Selecione">Selecione</option>
+                                                            <option value="Gasolina">Gasolina</option>
+                                                            <option value="Gasóleo">Gasóleo</option>
+                                                        </select>
+                                                   </div>
+
+                                                   <div class="form-group col-lg-6 margin-input">
+
+                                                        <label for="input-select">Departamento Beneficiário</label>
+                                                        <select id="departamento" class="form-control" name="departamento" id="input-select">
+                                                            <option value="Selecione">Selecione</option>
+                                                            @if(isset($dep))
+                                                           
+                                                            @foreach($dep as $d)
+                                                            <option value="{{$d->id}}">{{$d->descricao}}</option>
+                                                            @endforeach
+                                                    
+                                                         @endif
+                                                        </select>
+                                                   </div>
+
+                                                   <div class="form-group col-lg-6 col-md-12 margin-input">
+                                                        <label for="inputText4">Tipo de Aquisição</label>
+                                                       <select name="tipoaquisicao" onchange="habilitarDesabilitar()" id="tipoaquisicao" class="form-control form-control-sm">
+                                                           <option value="Selecione">Selecione</option>
+                                                           @if(isset($tipo))
+                                                           
+                                                               @foreach($tipo as $t)
+                                                               <option value="{{$t->id}}">{{$t->descricao}}</option>
+                                                               @endforeach
+                                                       
+                                                            @endif
+                                                       
+                                                       </select>
+                                                   </div>
+
+
+                                                <div class="form-group col-lg-6">
+                                                        <label for="inputText10" class="col-form-label">Custo aquisição (KZ)</label>
+                                                        <input id="Custo_aquisição_kz" onkeyup="changeValue(this)" type="text" name="Custo_aquisição_kz" class="form-control" placeholder="">
+                                                </div>
+
+                                                <div class="form-group col-lg-6 margin-input">
+                                                        <label for="inputText11">Custo aquisição (USD)</label>
+                                                        <input id="Custo_aquisição_usd" onkeyup="changeValue(this)" type="text" name="Custo_aquisição_usd" placeholder="" class="form-control">
+                                                </div>
+
+                                                <div class="form-group col-lg-6">
+                                                        <label for="inputText12" class="col-form-label">Custo aquisição (euro)</label>
+                                                        <input id="Custo_aquisição_euro" onkeyup="changeValue(this)" type="text" name="Custo_aquisição_euro"   class="form-control" placeholder="">
+                                                </div>
+                                               
+                                                <h4 class="card-header">Seguro</h3>  <br>
+
+                                                <div class="row container">
+                                                        <div class="form-group col-lg-6 margin-input">
+                                                                <label for="inputText13">Nome seguradora</label>
+                                                                <input id="nome_seguradora" type="text"  name="nome_seguradora"  placeholder="" class="form-control">
+                                                        </div>
+
+
+                                                        <div class="form-group col-lg-6">
+                                                                <label for="inputText4" class="col-form-label">Cobertura</label>
+                                                                <input id="cobertura" type="text"  name="cobertura"  class="form-control" placeholder="">
+                                                        </div>
+
+                                                        <div class="form-group col-lg-6 margin-input">
+                                                                <label for="inputPassword">Apólice</label>
+                                                                <input id="apolice" type="text"   name="apolice"  placeholder="" class="form-control">
+                                                        </div>
+
+                                                        <div class="form-group col-lg-6 margin-input">
+                                                                <label for="valor_seguro">Valor</label>
+                                                                <input id="valor_seguro" type="text"   name="valor_seguro"  placeholder="" class="form-control">
+                                                        </div>
+
+                                                        <div class="form-group col-lg-6">
+                                                                <label for="datainicio" class="col-form-label">Data início</label>
+                                                                <input id="datainicio" type="date"  name="datainicio"  class="form-control" placeholder="">
+                                                        </div>
+
+                                        
+
+                                                        <div class="form-group col-lg-6 margin-input">
+                                                                <label for="datafim">Data fim</label>
+                                                                <input id="datafim" type="date"  name="datafim" placeholder="" class="form-control">
+                                                        </div>
+                                                </div>
+                                        
+                                        </div>
+
+                                           
+                                            
+                                            <div class="text-right">
+                                                <button class="btn btn-success" id="btn-registar">Registar</button>
+                                                <button class="btn btn-danger" type="reset">Cancelar</button>
+                                            </div>
+                                            
+                                        </form>
+                                    </div>
+                     </div>
+
+<script src="{{url('assets/vendor/jquery/jquery-3.3.1.min.js')}}"></script> 
+<script>
+
+
+function changeValue(event) {
+	event.value = addCommas(event.value.replace(/\D/g, ''));
+	calculate();
+}
+
+function addCommas(value) {
+        return value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
+
+
+function habilitarDesabilitar(){
+                           
+            var Custo_aquisição_kz=document.getElementById("Custo_aquisição_kz");
+            var Custo_aquisição_usd=document.getElementById("Custo_aquisição_usd");
+            var Custo_aquisição_euro=document.getElementById("Custo_aquisição_euro");
+            var tipoaquisicao=document.getElementById("tipoaquisicao");
+                      
+            if(tipoaquisicao.value != '2' && tipoaquisicao.value != '7' && tipoaquisicao.value != '8' )
+             {                       
+                    Custo_aquisição_usd.disabled = true;
+                     Custo_aquisição_euro.disabled = true;
+                    Custo_aquisição_kz.disabled = true;
+           }else{
+                    Custo_aquisição_usd.disabled = false;
+                    Custo_aquisição_euro.disabled = false;
+                     Custo_aquisição_kz.disabled = false;
+                      
+            }
+      }
+
+
+
+$(document).ready(function(){
+
+    btn_registar=document.getElementById("btn-registar");
+    btn_registar.addEventListener('click', (event)=>{
+
+            event.preventDefault();
+
+            var formregistar=document.getElementById("form-registar");
+            var tipoveiculo=document.getElementById("tipoveiculo");
+            var marca=document.getElementById("marca");
+            var modelo=document.getElementById("modelo");
+            var matricula=document.getElementById("matricula");
+            var num_chassi=document.getElementById("num_chassi");
+            var num_motor=document.getElementById("num_motor");
+            var cor=document.getElementById("cor");
+            var caixa_velocidade=document.getElementById("caixa_velocidade");
+            var data_fabrico=document.getElementById("data_fabrico");
+            var tipocombustivel=document.getElementById("tipocombustivel");
+            var departamento=document.getElementById("departamento");
+            var tipoaquisicao=document.getElementById("tipoaquisicao");
+            var Custo_aquisição_kz=document.getElementById("Custo_aquisição_kz");
+            var Custo_aquisição_usd=document.getElementById("Custo_aquisição_usd");
+            var Custo_aquisição_euro=document.getElementById("Custo_aquisição_euro");
+            
+            var erro= document.getElementById("erro-registar");
+
+       
+
+            if(tipoveiculo.value == 'Selecione'){
+                
+                erro.innerHTML="Por favor selecione o tipo de veículo";
+                erro.removeAttribute('hidden');
+             
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+            }
+
+            if(marca.value == ''){
+                erro.innerHTML="Por favor preencha o campo marca";
+                erro.removeAttribute('hidden');
+                marca.focus();
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+            }
+
+            if(modelo.value == ''){
+                erro.innerHTML="Por favor preencha o campo modelo";
+                erro.removeAttribute('hidden');
+               modelo.focus();
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+             
+            }
+
+            if(matricula.value == ''){
+                erro.innerHTML="Por favor preencha o campo matrícula";
+                erro.removeAttribute('hidden');
+                matricula.focus();
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+             
+            }
+
+            if(num_chassi.value == ''){
+                erro.innerHTML="Por favor preencha o campo Nº de Chassi";
+                erro.removeAttribute('hidden');
+                num_chassi.focus();
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+             
+            }
+            if(num_motor.value == ''){
+                erro.innerHTML="Por favor preencha o campo Nº de Motor";
+                erro.removeAttribute('hidden');
+                num_motor.focus();
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+             
+            }
+
+            if(cor.value == ''){
+                erro.innerHTML="Por favor preencha o campo Cor";
+                erro.removeAttribute('hidden');
+                cor.focus();
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+             
+            }
+            if( caixa_velocidade.value == 'Selecione'){
+                erro.innerHTML="Por favor preencha o campo Caixa de Velocidade";
+                erro.removeAttribute('hidden');
+                caixa_velocidade.focus();
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+             
+            }
+            if( data_fabrico.value == ''){
+                erro.innerHTML="Por favor preencha o campo Data Fabríco";
+                erro.removeAttribute('hidden');
+                data_fabrico.focus();
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+             
+            }
+            if( tipocombustivel.value == 'Selecione'){
+                erro.innerHTML="Por favor preencha o campo Tipo Combustível";
+                erro.removeAttribute('hidden');
+                tipocombustivel.focus();
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+             
+            }
+            if(departamento.value == 'Selecione'){
+                erro.innerHTML="Por favor preencha o campo Departamento";
+                erro.removeAttribute('hidden');
+                departamento.focus();
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+             
+            }
+
+            if(tipoaquisicao.value == 'Selecione'){
+                erro.innerHTML="Por favor preencha o campo Tipo de Aquisição";
+                erro.removeAttribute('hidden');
+                tipoaquisicao.focus();
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+             
+            }
+           
+
+                                  
+            if(!(tipoaquisicao.value != '2' && tipoaquisicao.value != '7' && tipoaquisicao.value != '8' ))
+            {
+            if(Custo_aquisição_kz.value == ''){
+                erro.innerHTML="Por favor preencha o campo Custo de aquisição Kz";
+                erro.removeAttribute('hidden');
+                Custo_aquisição_kz.focus();
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+             
+            }
+            if(Custo_aquisição_usd .value == ''){
+                erro.innerHTML="Por favor preencha o campo Custo de aquisição USD";
+                erro.removeAttribute('hidden');
+                Custo_aquisição_usd.focus();
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+             
+            }
+            if(Custo_aquisição_euro.value == ''){
+                erro.innerHTML="Por favor preencha o campo Custo de aquisição Euro";
+                erro.removeAttribute('hidden');
+                Custo_aquisição_euro.focus();
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+                formregistar.submit();
+             
+            }
+        }else{
+            formregistar.submit();
+        }
+
+            
+                
+             
+        
+
+
+           
+
+            
+
+            
+
+            
+            
+
+            
+                
+            
+
+          //  
+    });
+
+     });
+</script>
+@endsection
