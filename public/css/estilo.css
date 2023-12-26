@@ -50,4 +50,7 @@ border: black 1px;
 
 .my_link{
     color: blue;
+    border: none;
+    background-color: white;
+    cursor: pointer;
 }

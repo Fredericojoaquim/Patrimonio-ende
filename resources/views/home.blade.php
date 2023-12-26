@@ -18,9 +18,9 @@
             </div>
         </a> 
     </div>
+    @can('gestor imovel')
    
     <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
-
         <a class="" data-target="#submenu-2" aria-controls="submenu-2" data-toggle="collapse" aria-expanded="false">
             <div class="card cor_template">
                 <div class="card-body">
@@ -29,6 +29,7 @@
             </div>
         </a> 
     </div>
+    @endcan
     
     <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
 
@@ -40,7 +41,7 @@
             </div>
         </a> 
     </div>
-   
+    @can('admin')
     <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
 
         <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-5" aria-controls="submenu-5">
@@ -51,29 +52,21 @@
             </div>
         </a> 
     </div>
+    @endcan
 
 </div>
 
 
 <div class="row">
     
-    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
-
-        <a class="" data-target="#submenu-2" aria-controls="submenu-2" data-toggle="collapse" aria-expanded="false">
-            <div class="card cor_template">
-                <div class="card-body">
-                    <h5 class="text-muted text-center texto_branco"> Imóveis</h5>
-                </div>
-            </div>
-        </a> 
-    </div>
+   
    
     <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
 
         <a class="" data-target="#submenu-2" aria-controls="submenu-2" data-toggle="collapse" aria-expanded="false">
             <div class="card cor_template">
                 <div class="card-body">
-                    <h5 class="text-muted text-center texto_branco">Móveis</h5>
+                    <h5 class="text-muted text-center texto_branco">Tecníco veículo</h5>
                 </div>
             </div>
         </a> 
@@ -84,22 +77,13 @@
         <a  data-target="#submenu-3" aria-controls="submenu-3" data-toggle="collapse" aria-expanded="false">
             <div class="card cor_template">
                 <div class="card-body">
-                    <h5 class="text-muted text-center texto_branco">Veículos</h5>
+                    <h5 class="text-muted text-center texto_branco">Tecníco Móveis</h5>
                 </div>
             </div>
         </a> 
     </div>
    
-    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
-
-        <a class="" data-target="#submenu-2" aria-controls="submenu-2" data-toggle="collapse" aria-expanded="false">
-            <div class="card cor_template">
-                <div class="card-body">
-                    <h5 class="text-muted text-center texto_branco">Configurações</h5>
-                </div>
-            </div>
-        </a> 
-    </div>
+   
 
 </div>
 

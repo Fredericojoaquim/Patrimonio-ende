@@ -82,7 +82,6 @@ Route::get('motivo-abate/editar/{id}', [MotivoAbateController::class,'edit']);
 Route::put('motivo-abate/update', [MotivoAbateController::class,'update']);
 Route::get('motivo-abate/pesquisar', [MotivoAbateController::class,'pesquisar']);
 
-
 });
 
 
