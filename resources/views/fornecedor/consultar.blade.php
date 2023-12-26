@@ -3,7 +3,7 @@
 
 
 @section('content')
-<form action="{{url('tipoaquisicao/pesquisar')}}" >
+<form action="{{url('fornecedor/pesquisar')}}" >
     @csrf
     <div class="input-group rounded">
         <input type="search" name="nome"  class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
@@ -47,7 +47,7 @@
                                                                     <td>{{$f->endereco}}</td>
                                                                     <td>
                                                                          <a href="{{url("fornecedor/editar/$f->id")}}" class="btn btn-sm active"><i class="fas fa-edit"></i></a>
-                                                                         <a href="#" class="btn btn-sm  active"><i class="m-r-10 mdi mdi-delete"></i></a>
+                                                                         
                                                                      </td>
                                                                 </tr>
                                                                 @endforeach

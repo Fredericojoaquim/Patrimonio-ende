@@ -59,7 +59,6 @@
                                                                     <td>{{$u->estado}}</td>
                                                                     <td>
                                                                          <a href="{{url("user/editar/$u->codigo")}}" class="btn btn-sm active"><i class="fas fa-edit"></i></a>
-                                                                         <a href="#" class="btn btn-sm  active"><i class="m-r-10 mdi mdi-delete"></i></a>
                                                                          @if($u->estado=='ativo')
                                                                          <a href="#" class="btn btn-sm  active" data-toggle="modal" onclick="retornaid({{$u->codigo}})" data-target="#BloquearModal">bloquear</a>
                                                                          @else

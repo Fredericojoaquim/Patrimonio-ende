@@ -194,14 +194,14 @@ Route::post('abate/residencia/registar', [AbateController::class,'AbateResidenci
 
 });
 
-Route::middleware(['TecVeiculo','auth'])->group(function () {
+//Route::middleware(['TecVeiculo','auth'])->group(function () {
 //area técnica veiculo
 Route::get('tecnica/veiculo/ocorrencia', [OcorrenciaVeiculo::class,'listarOcorrencias']);
 Route::get('tecnica/veiculo/diagnosticar/{id}', [OcorrenciaVeiculo::class,'diagnosticar']);
 Route::get('tecnica/veiculo/resolver/{id}', [OcorrenciaVeiculo::class,'resolver']);
 Route::put('tecnica/veiculo/concluir', [OcorrenciaVeiculo::class,'concluir']);
 Route::get('tecnica/veiculo/informacao/{id}', [OcorrenciaVeiculo::class,'informacao']);
-});
+//});
 
 
 Route::middleware(['CheckTecMovel','auth'])->group(function () {

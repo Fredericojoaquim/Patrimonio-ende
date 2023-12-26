@@ -55,7 +55,7 @@
                                                                     <td>{{$t->descricao}}</td>
                                                                     <td>
                                                                          <a href="{{url("tipoaquisicao/editar/$t->id")}}" class="btn btn-sm  active"><i class="fas fa-edit"></i></a>
-                                                                         <a href="#" class="btn btn-sm  active"><i class="m-r-10 mdi mdi-delete"></i></a>
+                                                                      <!--   <a href="#" class="btn btn-sm  active"><i class="m-r-10 mdi mdi-delete"></i></a> -->
                                                                      </td>
                                                                 </tr>
                                                                 @endforeach
