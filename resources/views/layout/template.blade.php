@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="{{asset('assets/vendor/fonts/flag-icon-css/flag-icon.min.css')}}">
     <link rel="SHORTCUT ICON" href="{{asset('img/logo.ico')}}">
     <title> @yield('title') </title>
-    
+
 </head>
 
 <body>
@@ -89,7 +89,20 @@
                         </li>
                      
                         <li class="nav-item dropdown nav-user">
-                            <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{{asset('img/images.jpg')}}" alt="" class="user-avatar-md rounded-circle"></a>
+                            <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                @if(empty(Auth::user()->img))
+                                <img src="{{asset('img/images.jpg')}}" alt="" class="user-avatar-md rounded-circle">
+                                @else
+
+                                    @if(isset($file))
+                                    <img src="{{asset('img/'.$file)}}" alt="" class="user-avatar-md rounded-circle">  
+                                    @else
+                                    <img src="{{asset('img/'.Auth::user()->img)}}" alt="" class="user-avatar-md rounded-circle">
+                                    @endif
+
+                                @endif 
+                               
+                            </a>
                             <div class="dropdown-menu dropdown-menu-right nav-user-dropdown" aria-labelledby="navbarDropdownMenuLink2">
                                 <div class="nav-user-info">
                                     <h5 class="mb-0 text-white nav-user-name">{{Auth::user()->name}} </h5>

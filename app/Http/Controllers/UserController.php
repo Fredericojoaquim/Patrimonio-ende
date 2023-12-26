@@ -175,7 +175,6 @@ class UserController extends Controller
         $s=['estado'=>'ativo'];
         $id=addslashes($request->user_id);
         $u=User::findOrFail($id);
-
         $u->update($s);
 
         return view('user.consultar',['user'=>$this->AllUser(),'sms'=>'utilizador desbloqueado com sucesso']);
@@ -185,5 +184,34 @@ class UserController extends Controller
 
     public function perfil (){
         return view('user.perfil');
+    }
+
+    public function alterarFoto(Request $request)
+    {
+
+        if(Auth::check())
+       {
+
+        if($request->file('imagem')->isValid()){
+
+            if($request->hasFile('imagem')!=null){
+
+                $requestarquivo = $request->imagem;
+                $extensao = $requestarquivo->extension();
+                $nomearquivo = md5($requestarquivo->getClientOriginalName().strtotime("now")).".".$extensao;
+                $request->imagem->move(public_path('img'),$nomearquivo);
+               // $p->imagem = $nomearquivo;
+
+                $s=['img'=>$nomearquivo];
+                $id=addslashes($request->user_id);
+                $u=User::findOrFail($id);
+                $u->update($s);
+                $file=User::findOrFail($id)->img;;
+
+                return view('user.perfil',['sms'=>'Foto alterada com sucesso','file'=>$file]);
+            }
+        }
+    }
+
     }
 }

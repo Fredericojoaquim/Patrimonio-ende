@@ -8,8 +8,30 @@
 
 <div class="card-body">
     <div class="user-avatar text-center d-block">
+        @php
+           
+        @endphp
+       
+        @if(empty(Auth::user()->img))
         <img src="{{asset('img/images.jpg')}}" alt="User Avatar" class="rounded-circle user-avatar-xxl"> <br>
-            <button class="my_link"  data-toggle="modal" data-target="#exampleModal">Alterar foto</button>
+        @else
+        @if(isset($file))
+        <img src="{{asset('img/'.$file)}}" alt="User Avatar" class="rounded-circle user-avatar-xxl"> <br>
+        @else
+        <img src="{{asset('img/'.Auth::user()->img)}}" alt="User Avatar" class="rounded-circle user-avatar-xxl"> <br>
+        @endif
+       
+        @endif
+        <br>
+        @if (@isset($sms))
+
+        <div class="alert alert-success" role="alert">
+            <p>{{$sms}}</p>
+        </div>
+
+        @endif
+
+        <button class="my_link"  data-toggle="modal" data-target="#exampleModal">Alterar foto</button>
     </div>
     <div class="text-center">
         <h2 class="font-24 mb-0">{{Auth::user()->name}}</h2>
@@ -47,10 +69,11 @@
             <div class="modal-body">
                 <div class="alert alert-danger" id="erro-registar" hidden>
                 </div>
-                <form action="{{url('#')}}" method="POST" id="form-registar">
+                <form action="{{url('user/perfil/alterar-foto')}}" method="POST" id="form-registar" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
-                        <input class="form-control" type="file" id="formFile">
+                        <input class="form-control" name="imagem" type="file" id="formFile">
+                        <input type="hidden" value="{{Auth::user()->id}}" name="user_id">
                     </div>
 
                 <div class="text-right">

@@ -138,6 +138,7 @@ Route::get('imoveis/edificio/comprovativo/{id}', [EdificioController::class,'com
 });
 
 Route::get('user/perfil', [UserController::class,'perfil'])->middleware('auth');
+Route::post('user/perfil/alterar-foto', [UserController::class,'alterarFoto'])->middleware('auth');
 
 //login
 Route::post('/login', [AuthenticatedSessionController::class,'store']);
