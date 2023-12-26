@@ -5,7 +5,7 @@
 @section('content')
 
 <div class="card">
-                                    <h3 class="card-header">Registar Utilizador</h3>
+                                    <h3 class="card-header">Alterar Utilizador</h3>
 
                                     <div class="card-body">
                                         @if (@isset($sms))
@@ -39,16 +39,15 @@
                                                 </div>
 
                                                 <div class="form-group col-lg-6 col-md-12">
-
                                                     <label for="inputText3" class="col-form-label">Email</label>
                                                     <input id="email" name="email" value="{{$u->email}}" type="email" class="form-control">
                                                 </div>
 
                                                
 
-                                               
+            
 
-                                                <div class="form-group col-lg-12 col-md-12 margin-input">
+                                                <div class="form-group col-lg-6 col-md-12 margin-input">
                                                     <label for="perfil">Perfil</label>
                                                    <select name="perfil" id="perfil" class="form-control form-control-sm">
                                                        <option value="Selecione">Selecione</option>
@@ -62,11 +61,16 @@
                                                    
                                                    </select>
                                                </div>
+
+                                               <div class="form-group col-lg-6 col-md-12">
+                                                <label for="telefone" class="col-form-label">Telefone</label>
+                                                <input id="telefone" value="{{$p->telefone}}" name="telefone" type="text" class="form-control">
+                                            </div>
                                  
                                             </div>     
                                             <div class="text-right">
                                                 <input id="id" name="id" value="{{$u->id}}" type="hidden" class="form-control">
-                                                <button class="btn btn-success" id="btn-registar" type="submit">Registar</button>
+                                                <button class="btn btn-success" id="btn-registar" type="submit">Alterar</button>
                                                 <button class="btn btn-danger" type="reset">Cancelar</button>
                                             </div>
                                             

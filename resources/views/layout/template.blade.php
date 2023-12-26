@@ -17,7 +17,9 @@
     <link rel="stylesheet" href="{{asset('assets/vendor/charts/c3charts/c3.css')}}">
     <link rel="stylesheet" href="{{asset('css/estilo.css')}}">
     <link rel="stylesheet" href="{{asset('assets/vendor/fonts/flag-icon-css/flag-icon.min.css')}}">
+    <link rel="SHORTCUT ICON" href="{{asset('img/logo.ico')}}">
     <title> @yield('title') </title>
+    
 </head>
 
 <body>

@@ -43,6 +43,7 @@
                                                                     <th>Nome</th>
                                                                     <th>Email</th>
                                                                     <th>Perfil</th>
+                                                                    <th>Telefone</th>
                                                                     <th>Estado</th>
                                                                     <th>Acções</th>
                                                                     
@@ -56,6 +57,7 @@
                                                                     <td>{{$u->name}}</td>
                                                                     <td>{{$u->email}}</td>
                                                                     <td>{{$u->perfil}}</td>
+                                                                    <td>{{$u->telefone}}</td>
                                                                     <td>{{$u->estado}}</td>
                                                                     <td>
                                                                          <a href="{{url("user/editar/$u->codigo")}}" class="btn btn-sm active"><i class="fas fa-edit"></i></a>

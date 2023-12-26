@@ -44,18 +44,6 @@
                                                 </div>
 
                                                 <div class="form-group col-lg-6 col-md-12 margin-input">
-                                                    <label for="inputText4">Senha</label>
-                                                    <input id="senha" name="password" type="password" placeholder="" class="form-control">
-                                                    
-                                                </div>
-
-                                                <div class="form-group col-lg-6 col-md-12 margin-input">
-                                                    <label for="inputText4">Confirmar Senha</label>
-                                                    <input id="confirmarsenha" name="password_confirmation" type="password" placeholder="" class="form-control">
-                                                    
-                                                </div>
-
-                                                <div class="form-group col-lg-12 col-md-12 margin-input">
                                                     <label for="perfil">Perfil</label>
                                                    <select name="perfil" id="perfil" class="form-control form-control-sm">
                                                        <option value="Selecione">Selecione</option>
@@ -69,6 +57,23 @@
                                                    
                                                    </select>
                                                </div>
+
+                                               <div class="form-group col-lg-6 col-md-12">
+                                                    <label for="telefone" class="col-form-label">Telefone</label>
+                                                    <input id="telefone" name="telefone" type="text" class="form-control">
+                                               </div>
+
+                                                <div class="form-group col-lg-6 col-md-12 margin-input">
+                                                    <label for="inputText4">Senha</label>
+                                                    <input id="senha" name="password" type="password" placeholder="" class="form-control"> 
+                                                </div>
+
+                                                <div class="form-group col-lg-6 col-md-12 margin-input">
+                                                    <label for="inputText4">Confirmar Senha</label>
+                                                    <input id="confirmarsenha" name="password_confirmation" type="password" placeholder="" class="form-control">
+                                                </div>
+
+                                               
                                  
                                             </div>     
                                             <div class="text-right">

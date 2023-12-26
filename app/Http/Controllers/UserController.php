@@ -23,7 +23,7 @@ class UserController extends Controller
          $users=DB::table('users')
          ->join('model_has_permissions','model_has_permissions.model_id','=','users.id')
          ->join('permissions','permissions.id','=','model_has_permissions.permission_id')
-         ->select('users.name','users.estado as estado','users.id as codigo','users.email','permissions.name as perfil')
+         ->select('users.name','users.estado as estado','users.id as codigo','users.email','users.telefone as telefone','permissions.name as perfil')
          ->get();
  
        return  $users;
@@ -66,6 +66,7 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'telefone'=>$request->telefone,
             'estado'=>'ativo'
         ])->givePermissionTo($request->perfil);
 
@@ -111,7 +112,8 @@ class UserController extends Controller
        {
         $s=[
             'name'=> addslashes($request->name),
-            'email'=>addslashes($request->email)
+            'email'=>addslashes($request->email),
+            'telefone'=> addslashes($request->telefone)
         ];
         $id=addslashes($request->id);
         $u=User::findOrFail($id);
