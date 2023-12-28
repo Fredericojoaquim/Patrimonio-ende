@@ -94,6 +94,7 @@ Route::get('veiculo/editar/{id}', [VeiculoController::class,'editar']);
 Route::put('veiculo/update', [VeiculoController::class,'update']);
 Route::get('veiculo/pesquisar', [VeiculoController::class,'pesquisar']);
 Route::get('veiculo/comprovativo/{id}', [VeiculoController::class,'comprovativo']);
+Route::put('veiculo/transferir', [VeiculoController::class,'transferir']);
 
 //ocorrencias de veiculos
 Route::post('veiculo-ocorrencia/registar', [OcorrenciaVeiculo::class,'store']);

@@ -37,9 +37,10 @@ class VeiculoController extends Controller
 
     public function index()
     {
-        
+        $dep=Departamento::all();
+
         $ve=$this->veiculos();
-        return view('veiculo.consultar',['ve'=>$ve]);
+        return view('veiculo.consultar',['ve'=>$ve,'dep'=>$dep]);
 
     }
 
@@ -444,6 +445,22 @@ class VeiculoController extends Controller
            // ->get();
            ->paginate(3);
             return $p;
+        }
+
+
+
+        public function transferir(Request $request)
+        {
+            $s=['departamento_id'=>addslashes($request->departamento)];
+            $v=Veiculo::findOrFail(addslashes($request->id_veiculo));
+            $v->update($s);
+
+            $dep=Departamento::all();
+
+            $ve=$this->veiculos();
+            return view('veiculo.consultar',['ve'=>$ve,'dep'=>$dep, 'sms'=>'Veiculo transferido com sucesso']);
+
+
         }
 
 
