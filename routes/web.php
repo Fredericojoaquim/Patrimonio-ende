@@ -109,7 +109,7 @@ Route::get('/testepdf', function () {
 
 });
 
-Route::middleware(['CheckGestImovel ','auth'])->group(function () {
+Route::middleware(['CheckGestImovel','auth'])->group(function () {
     //terreno
 Route::get('/terreno', [TerrenoController::class,'create']);
 Route::post('imoveis/terreno/registar', [TerrenoController::class,'store']);
@@ -145,7 +145,7 @@ Route::post('user/perfil/alterar-foto', [UserController::class,'alterarFoto'])->
 Route::post('/login', [AuthenticatedSessionController::class,'store']);
 
 
-Route::middleware(['CheckGestImovel ','auth'])->group(function () {
+Route::middleware(['CheckGestMovel','auth'])->group(function () {
 //Material escritório
 Route::get('material-escritorio/create', [MaterialEscritorio::class,'create']);
 Route::post('material-escritorio/registar', [MaterialEscritorio::class,'store']);

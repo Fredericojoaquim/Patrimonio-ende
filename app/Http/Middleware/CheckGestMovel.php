@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CheckGestMovel
 {
@@ -16,7 +17,7 @@ class CheckGestMovel
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->getPermissionNames()->first()=='gestor imovel') {
+        if (Auth::check() && Auth::user()->getPermissionNames()->first()=='gestor movel') {
            
             return $next($request);
         }
