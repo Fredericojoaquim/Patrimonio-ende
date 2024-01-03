@@ -40,7 +40,8 @@ class MaterialElectronicoController extends Controller
     public function index()
     {
       
-        return view('material_eletronico.consultar',['mat'=>$this->material_eletronicos()]);
+        $dep=Departamento::all();
+        return view('material_eletronico.consultar',['mat'=>$this->material_eletronicos(),'dep'=>$dep]);
         
     }
 
@@ -283,4 +284,22 @@ class MaterialElectronicoController extends Controller
      }
 
 
+
+     public function transferir(Request $request)
+     {
+         $s=['departamento_id'=>addslashes($request->departamento)];
+         $m=MaterialElectronico::findOrFail(addslashes($request->material_id));
+         $m->update($s);
+         $dep=Departamento::all();
+ 
+
+         $dep=Departamento::all();
+         
+         return view('material_eletronico.consultar',['mat'=>$this->material_eletronicos(),'dep'=>$dep,'sms'=>'Móvel transferido com sucesso']);
+     }
+
+
 }
+
+
+

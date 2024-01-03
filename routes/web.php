@@ -154,6 +154,7 @@ Route::get('material-escritorio/editar/{id}', [MaterialEscritorio::class,'edit']
 Route::put('material-escritorio/update', [MaterialEscritorio::class,'update']);
 Route::get('material-escritorio/pesquisar', [MaterialEscritorio::class,'pesquisar']);
 Route::get('material-escritorio/comprovativo/{id}', [MaterialEscritorio::class,'comprovativo']);
+Route::put('material-escritorio/transferir', [MaterialEscritorio::class,'transferir']);
 
 //material electronico
 Route::get('material-electronico/registar', [MaterialElectronicoController ::class,'create'])->name('material-eletronico.registar');
@@ -161,7 +162,7 @@ Route::post('material-electronico/salvar', [MaterialElectronicoController ::clas
 Route::get('material-electronico/consultar', [MaterialElectronicoController ::class,'index'])->name('material-eletronico.consultar');
 Route::get('material-electronico/editar/{id}', [MaterialElectronicoController ::class,'edit'])->name('material-eletronico.editar');
 Route::put('material-electronico/update', [MaterialElectronicoController ::class,'update'])->name('material-eletronico.update');
-
+Route::put('material-electronico/transferir', [MaterialElectronicoController::class,'transferir']);
 Route::post('ocorrencia-electronico/registar', [OcorrenciaEletronico ::class,'store'])->name('ocorrencia-eletronico.registar');
 Route::get('historico-ocorrencia-materia/listar/{id}', [OcorrenciaEletronico ::class,'index'])->name('ocorrencia-eletronico.listar');
 Route::get('historico-ocorrencia-materia/editar/{id}', [OcorrenciaEletronico ::class,'edit'])->name('ocorrencia-eletronico.editar');

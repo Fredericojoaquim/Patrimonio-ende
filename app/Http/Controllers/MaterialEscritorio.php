@@ -53,8 +53,9 @@ class MaterialEscritorio extends Controller
 
     public function index()
     {
+        $dep=Departamento::all();
         $material=$this->material_escritorios();
-        return view('material_escritorio.consultar',['mat'=>$material]);
+        return view('material_escritorio.consultar',['mat'=>$material,'dep'=> $dep]);
     }
 
     /**
@@ -302,6 +303,21 @@ class MaterialEscritorio extends Controller
         $abate=MotivoAbate::all();
         
         return view('abates.materialEscritorio',['mat'=>$mat,'abates'=>$abate]);
+    }
+
+    
+
+    public function transferir(Request $request)
+    {
+        dd($request->departamentoid);
+
+        $s=['departamento_id'=>addslashes($request->departamento)];
+        $m=MaterialEscritorioModel::findOrFail(addslashes($request->material_id));
+        $m->update($s);
+        $dep=Departamento::all();
+        $material=$this->material_escritorios();
+        return view('material_escritorio.consultar',['mat'=>$material,'dep'=> $dep, 'sms'=>'Móvel transferido com sucesso']);
+
     }
 
 }

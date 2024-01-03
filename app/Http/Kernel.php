@@ -67,5 +67,8 @@ class Kernel extends HttpKernel
         'CheckGestVeiculo'=>\App\Http\Middleware\CheckGestVeiculo::class,
         'CheckGestMovel'=>\App\Http\Middleware\CheckGestMovel::class,
         'CheckGestImovel'=>\App\Http\Middleware\CheckGestImovel::class,
+        'CheckTecMovel'=>\App\Http\Middleware\CheckTecMovel::class,
+        'CheckDirector'=>\App\Http\Middleware\CheckDirector::class,
+        'TecVeiculo'=>\App\Http\Middleware\TecVeiculo::class,
     ];
 }
