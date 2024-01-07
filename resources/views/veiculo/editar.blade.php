@@ -66,9 +66,14 @@
                                                         <input id="num_motor" value="{{$v->num_motor}}" name="num_motor" type="text" class="form-control" placeholder="">
                                                 </div>
 
-                                                <div class="form-group col-lg-12">
+                                                <div class="form-group col-lg-6">
                                                         <label for="inputText7" class="col-form-label">Cor</label>
                                                         <input id="cor" name="cor" value="{{$v->cor}}" type="text" class="form-control" placeholder="">
+                                                </div>
+
+                                                <div class="form-group col-lg-6">
+                                                    <label for="inputText7" class="col-form-label">Vida útil (em Ano)</label>
+                                                    <input id="vidautil" value="{{$v->vida_util}}" name="vidautil" type="text" class="form-control" placeholder="">
                                                 </div>
 
                                                 <div class="form-group col-lg-6 margin-input">
@@ -141,10 +146,17 @@
                                                         <label for="inputText12" class="col-form-label">Custo aquisição (euro)</label>
                                                         <input id="Custo_aquisição_euro" onkeyup="changeValue(this)" value="{{$v->custo_aquisicao_euro}}" type="text" name="Custo_aquisição_euro"   class="form-control" placeholder="">
                                                 </div>
-                                               
-                                                <h4 class="card-header">Seguro</h3>  <br>
 
-                                                <div class="row container">
+                                                <div class="form-group col-lg-12">
+                                                    <label for="inputText12" class="col-form-label">Data aquisição</label>
+                                                    <input id="dataAquisicao" value="{{$v->dataAquisicao}}" type="date" name="dataAquisicao"   class="form-control" placeholder="">
+                                                </div><br><br>
+                                               
+                                                <div class="form-group col-lg-12">
+                                                    <h4 class="card-header text-center">INFORMAÇÕES DO SEGURO</h3>  <br>
+                                                </div>
+
+                                              
                                                         <div class="form-group col-lg-6 margin-input">
                                                                 <label for="inputText13">Nome seguradora</label>
                                                                 <input id="nome_seguradora" value="{{$v->nome_segurador}}" type="text"  name="nome_seguradora"  placeholder="" class="form-control">
@@ -177,7 +189,7 @@
                                                                 <label for="datafim">Data fim</label>
                                                                 <input id="datafim" type="date" value="{{$v->data_fim}}"  name="datafim" placeholder="" class="form-control">
                                                         </div>
-                                                </div>
+                                               
                                                 @endif
                                         </div>
 
@@ -231,200 +243,225 @@ function addCommas(value) {
     $(document).ready(function(){
         btn_registar=document.getElementById("btn-registar");
         btn_registar.addEventListener('click', (event)=>{
-    
-                event.preventDefault();
-    
-                var formregistar=document.getElementById("form-registar");
-                var tipoveiculo=document.getElementById("tipoveiculo");
-                var marca=document.getElementById("marca");
-                var modelo=document.getElementById("modelo");
-                var matricula=document.getElementById("matricula");
-                var num_chassi=document.getElementById("num_chassi");
-                var num_motor=document.getElementById("num_motor");
-                var cor=document.getElementById("cor");
-                var caixa_velocidade=document.getElementById("caixa_velocidade");
-                var data_fabrico=document.getElementById("data_fabrico");
-                var tipocombustivel=document.getElementById("tipocombustivel");
-                var departamento=document.getElementById("departamento");
-                var tipoaquisicao=document.getElementById("tipoaquisicao");
-                var Custo_aquisição_kz=document.getElementById("Custo_aquisição_kz");
-                var Custo_aquisição_usd=document.getElementById("Custo_aquisição_usd");
-                var Custo_aquisição_euro=document.getElementById("Custo_aquisição_euro");
-                
-                var erro= document.getElementById("erro-registar");
-    
-           
-    
-                if(tipoveiculo.value == 'Selecione'){
-                    
-                    erro.innerHTML="Por favor selecione o tipo de veículo";
-                    erro.removeAttribute('hidden');
-                 
-                    return false;
-                }else{
-                    erro.setAttribute('hidden', true);
-                }
-    
-                if(marca.value == ''){
-                    erro.innerHTML="Por favor preencha o campo marca";
-                    erro.removeAttribute('hidden');
-                    marca.focus();
-                    return false;
-                }else{
-                    erro.setAttribute('hidden', true);
-                }
-    
-                if(modelo.value == ''){
-                    erro.innerHTML="Por favor preencha o campo modelo";
-                    erro.removeAttribute('hidden');
-                   modelo.focus();
-                    return false;
-                }else{
-                    erro.setAttribute('hidden', true);
-                 
-                }
-    
-                if(matricula.value == ''){
-                    erro.innerHTML="Por favor preencha o campo matrícula";
-                    erro.removeAttribute('hidden');
-                    matricula.focus();
-                    return false;
-                }else{
-                    erro.setAttribute('hidden', true);
-                 
-                }
-    
-                if(num_chassi.value == ''){
-                    erro.innerHTML="Por favor preencha o campo Nº de Chassi";
-                    erro.removeAttribute('hidden');
-                    num_chassi.focus();
-                    return false;
-                }else{
-                    erro.setAttribute('hidden', true);
-                 
-                }
-                if(num_motor.value == ''){
-                    erro.innerHTML="Por favor preencha o campo Nº de Motor";
-                    erro.removeAttribute('hidden');
-                    num_motor.focus();
-                    return false;
-                }else{
-                    erro.setAttribute('hidden', true);
-                 
-                }
-    
-                if(cor.value == ''){
-                    erro.innerHTML="Por favor preencha o campo Cor";
-                    erro.removeAttribute('hidden');
-                    cor.focus();
-                    return false;
-                }else{
-                    erro.setAttribute('hidden', true);
-                 
-                }
-                if( caixa_velocidade.value == 'Selecione'){
-                    erro.innerHTML="Por favor preencha o campo Caixa de Velocidade";
-                    erro.removeAttribute('hidden');
-                    caixa_velocidade.focus();
-                    return false;
-                }else{
-                    erro.setAttribute('hidden', true);
-                 
-                }
-                if( data_fabrico.value == ''){
-                    erro.innerHTML="Por favor preencha o campo Data Fabríco";
-                    erro.removeAttribute('hidden');
-                    data_fabrico.focus();
-                    return false;
-                }else{
-                    erro.setAttribute('hidden', true);
-                 
-                }
-                if( tipocombustivel.value == 'Selecione'){
-                    erro.innerHTML="Por favor preencha o campo Tipo Combustível";
-                    erro.removeAttribute('hidden');
-                    tipocombustivel.focus();
-                    return false;
-                }else{
-                    erro.setAttribute('hidden', true);
-                 
-                }
-                if(departamento.value == 'Selecione'){
-                    erro.innerHTML="Por favor preencha o campo Departamento";
-                    erro.removeAttribute('hidden');
-                    departamento.focus();
-                    return false;
-                }else{
-                    erro.setAttribute('hidden', true);
-                 
-                }
-    
-                if(tipoaquisicao.value == 'Selecione'){
-                    erro.innerHTML="Por favor preencha o campo Tipo de Aquisição";
-                    erro.removeAttribute('hidden');
-                    tipoaquisicao.focus();
-                    return false;
-                }else{
-                    erro.setAttribute('hidden', true);
-                 
-                }
-    
-                if(tipoaquisicao.value != '2' && tipoaquisicao.value != '7'&& tipoaquisicao.value != '8' )
-                {
-                if(Custo_aquisição_kz.value == ''){
-                    erro.innerHTML="Por favor preencha o campo Custo de aquisição Kz";
-                    erro.removeAttribute('hidden');
-                    Custo_aquisição_kz.focus();
-                    return false;
-                }else{
-                    erro.setAttribute('hidden', true);
-                 
-                }
-                if(Custo_aquisição_usd .value == ''){
-                    erro.innerHTML="Por favor preencha o campo Custo de aquisição USD";
-                    erro.removeAttribute('hidden');
-                    Custo_aquisição_usd.focus();
-                    return false;
-                }else{
-                    erro.setAttribute('hidden', true);
-                 
-                }
-                if(Custo_aquisição_euro.value == ''){
-                    erro.innerHTML="Por favor preencha o campo Custo de aquisição Euro";
-                    erro.removeAttribute('hidden');
-                    Custo_aquisição_euro.focus();
-                    return false;
-                }else{
-                    erro.setAttribute('hidden', true);
-                    formregistar.submit();
-                 
-                }
-            }else{
-                formregistar.submit();
-            }
-    
-                
-                    
-                 
+
+            event.preventDefault();
+
+            var formregistar=document.getElementById("form-registar");
+            var tipoveiculo=document.getElementById("tipoveiculo");
+            var marca=document.getElementById("marca");
+            var modelo=document.getElementById("modelo");
+            var matricula=document.getElementById("matricula");
+            var num_chassi=document.getElementById("num_chassi");
+            var num_motor=document.getElementById("num_motor");
+            var cor=document.getElementById("cor");
+            var caixa_velocidade=document.getElementById("caixa_velocidade");
+            var data_fabrico=document.getElementById("data_fabrico");
+            var tipocombustivel=document.getElementById("tipocombustivel");
+            var departamento=document.getElementById("departamento");
+            var tipoaquisicao=document.getElementById("tipoaquisicao");
+            var Custo_aquisição_kz=document.getElementById("Custo_aquisição_kz");
+            var Custo_aquisição_usd=document.getElementById("Custo_aquisição_usd");
+            var Custo_aquisição_euro=document.getElementById("Custo_aquisição_euro");
+            var vidautil=document.getElementById("vidautil");
+            var dataAquisicao=document.getElementById("dataAquisicao");
             
-    
-    
-               
-    
+            var erro= document.getElementById("erro-registar");
+
+       
+
+            if(tipoveiculo.value == 'Selecione'){
                 
-    
+                erro.innerHTML="Por favor selecione o tipo de veículo";
+                erro.removeAttribute('hidden');
+             
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+            }
+
+            if(marca.value == ''){
+                erro.innerHTML="Por favor preencha o campo marca";
+                erro.removeAttribute('hidden');
+                marca.focus();
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+            }
+
+            if(modelo.value == ''){
+                erro.innerHTML="Por favor preencha o campo modelo";
+                erro.removeAttribute('hidden');
+               modelo.focus();
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+             
+            }
+
+            if(matricula.value == ''){
+                erro.innerHTML="Por favor preencha o campo matrícula";
+                erro.removeAttribute('hidden');
+                matricula.focus();
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+             
+            }
+
+            if(num_chassi.value == ''){
+                erro.innerHTML="Por favor preencha o campo Nº de Chassi";
+                erro.removeAttribute('hidden');
+                num_chassi.focus();
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+             
+            }
+            if(num_motor.value == ''){
+                erro.innerHTML="Por favor preencha o campo Nº de Motor";
+                erro.removeAttribute('hidden');
+                num_motor.focus();
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+             
+            }
+
+            if(cor.value == ''){
+                erro.innerHTML="Por favor preencha o campo Cor";
+                erro.removeAttribute('hidden');
+                cor.focus();
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+             
+            }
+
+            if(vidautil.value == ''){
+                erro.innerHTML="Por favor preencha o campo Vida Util";
+                erro.removeAttribute('hidden');
+                vidautil.focus();
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+             
+            }
+            if( caixa_velocidade.value == 'Selecione'){
+                erro.innerHTML="Por favor preencha o campo Caixa de Velocidade";
+                erro.removeAttribute('hidden');
+                caixa_velocidade.focus();
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+             
+            }
+            if( data_fabrico.value == ''){
+                erro.innerHTML="Por favor preencha o campo Data Fabríco";
+                erro.removeAttribute('hidden');
+                data_fabrico.focus();
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+             
+            }
+            if( tipocombustivel.value == 'Selecione'){
+                erro.innerHTML="Por favor preencha o campo Tipo Combustível";
+                erro.removeAttribute('hidden');
+                tipocombustivel.focus();
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+             
+            }
+            if(departamento.value == 'Selecione'){
+                erro.innerHTML="Por favor preencha o campo Departamento";
+                erro.removeAttribute('hidden');
+                departamento.focus();
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+             
+            }
+
+            if(tipoaquisicao.value == 'Selecione'){
+                erro.innerHTML="Por favor preencha o campo Tipo de Aquisição";
+                erro.removeAttribute('hidden');
+                tipoaquisicao.focus();
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+             
+            }
+           
+
+                                  
+            if(!(tipoaquisicao.value != '2' && tipoaquisicao.value != '7' && tipoaquisicao.value != '8' ))
+            {
+            if(Custo_aquisição_kz.value == ''){
+                erro.innerHTML="Por favor preencha o campo Custo de aquisição Kz";
+                erro.removeAttribute('hidden');
+                Custo_aquisição_kz.focus();
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+             
+            }
+            if(Custo_aquisição_usd .value == ''){
+                erro.innerHTML="Por favor preencha o campo Custo de aquisição USD";
+                erro.removeAttribute('hidden');
+                Custo_aquisição_usd.focus();
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+             
+            }
+            if(Custo_aquisição_euro.value == ''){
+                erro.innerHTML="Por favor preencha o campo Custo de aquisição Euro";
+                erro.removeAttribute('hidden');
+                Custo_aquisição_euro.focus();
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+                formregistar.submit();
+             
+            }
+        }else{
+
+            if(dataAquisicao.value == ''){
+                erro.innerHTML="Por favor preencha o campo Data aquisição";
+                erro.removeAttribute('hidden');
+                dataAquisicao.focus();
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+                formregistar.submit();
+             
+            }
+          
+        }
+
+            
                 
-    
+             
+        
+
+
+           
+
+            
+
+            
+
+            
+            
+
+            
                 
-                
-    
-                
-                    
-                
-    
-              //  
-        });
-    
-         });
+            
+
+          //  
+    });
+
+     });
     </script>
 @endsection

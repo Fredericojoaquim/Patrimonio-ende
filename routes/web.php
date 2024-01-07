@@ -156,6 +156,7 @@ Route::put('material-escritorio/update', [MaterialEscritorio::class,'update']);
 Route::get('material-escritorio/pesquisar', [MaterialEscritorio::class,'pesquisar']);
 Route::get('material-escritorio/comprovativo/{id}', [MaterialEscritorio::class,'comprovativo']);
 Route::put('material-escritorio/transferir', [MaterialEscritorio::class,'transferir']);
+Route::get('material-escritorio/vida-util-vencido/{id}', [MaterialEscritorio::class,'movel_vencido']);
 
 //material electronico
 Route::get('material-electronico/registar', [MaterialElectronicoController ::class,'create'])->name('material-eletronico.registar');

@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\HelperController;
 use App\Models\MotivoAbate;
+use App\Models\NotificacaoMat_Escritorio as Notificacao;
+use DateTime;
 
 
 class MaterialEscritorio extends Controller
@@ -21,6 +23,9 @@ class MaterialEscritorio extends Controller
      * @return \Illuminate\Http\Response
      */
 
+     function __construct() {
+        $this->calcularData();
+    }
     
      public function material_escritorios(){
 
@@ -35,6 +40,9 @@ class MaterialEscritorio extends Controller
         return $p;
 
      }
+
+
+    
 
      public function material_escritoriosConsultar(){
 
@@ -51,11 +59,19 @@ class MaterialEscritorio extends Controller
      }
 
 
+    
+
+
     public function index()
     {
+        $not_mat_escritorio=$this->Notificacoes();
+        $total_notificao=$not_mat_escritorio->count();
+
+       
+
         $dep=Departamento::all();
         $material=$this->material_escritorios();
-        return view('material_escritorio.consultar',['mat'=>$material,'dep'=> $dep]);
+        return view('material_escritorio.consultar',['mat'=>$material,'dep'=> $dep, 'not_mat_escritorio'=>$not_mat_escritorio,'total_notificacao_mat_eletronico'=>$total_notificao]);
     }
 
     /**
@@ -125,6 +141,7 @@ class MaterialEscritorio extends Controller
         $m->estado='ativo';
         $m->custo_aquisicao_usd=$Custo_aquisição_usd;
         $m->custo_aquisicao_euro= $Custo_aquisição_euro;
+        $m->vida_util=addslashes($request->vidautil);
         
        
     
@@ -228,6 +245,7 @@ class MaterialEscritorio extends Controller
             'departamento_id'=>addslashes($request->departamento),
             'custo_aquisicao_usd'=>$Custo_aquisição_usd,
              'custo_aquisicao_euro'=>$Custo_aquisição_euro,
+             'vida_util'=>addslashes($request->vidautil),
     ];
     
         $m=MaterialEscritorioModel::findOrFail(addslashes($request->id));
@@ -319,5 +337,113 @@ class MaterialEscritorio extends Controller
         return view('material_escritorio.consultar',['mat'=>$material,'dep'=> $dep, 'sms'=>'Móvel transferido com sucesso']);
 
     }
+
+
+    public function movel_vencido($id)
+    {
+        $mat=$this->material_escritorio(addslashes($id));
+        $id_notificacao=$this->notificacaoByMovel($id)->id;
+        $notificacao=Notificacao::findOrFail( $id_notificacao);
+        $s=['estado'=>'visto'];
+        $notificacao->update($s);
+        return view('material_escritorio.movelExpirado',['mat'=> $mat]);
+
+    }
+
+    public function inserirNotificao($id)
+    {
+        $n=new Notificacao();
+        $n->material_escritorio_id=$id;
+        $n->descricao="O tempo de vida útil para este Móvel terminou";
+        $n->estado="não visto";
+        $n->save();
+        return true;
+    }
+
+    public function diasEmAno($anos, $dias)
+    {
+        $result=$dias/365;
+        return $result;
+
+    }
+
+
+    public function MaterialNotificado($id)
+    {
+        
+
+            $p=DB::table('notificacao_mat_escritorio')
+            ->join('materialescritorio','materialescritorio.id','=','notificacao_mat_escritorio.material_escritorio_id')
+            ->where('materialescritorio.id','=',$id)
+            ->select('notificacao_mat_escritorio.*')
+            ->get();
+
+            if( $p->count()>0)
+            {
+                return true;
+            }
+
+            return false;
+    
+         
+    }
+
+
+    public function notificacaoByMovel($id)
+    {
+        $p=DB::table('notificacao_mat_escritorio')
+        ->join('materialescritorio','materialescritorio.id','=','notificacao_mat_escritorio.material_escritorio_id')
+        ->where('materialescritorio.id','=',$id)
+        ->select('notificacao_mat_escritorio.*')
+        ->get();
+
+            return  $p->first();
+    
+         
+    }
+
+
+    public function Notificacoes()
+        {
+                $p=DB::table('notificacao_mat_escritorio')
+                ->join('materialescritorio','materialescritorio.id','=','notificacao_mat_escritorio.material_escritorio_id')
+                ->where('notificacao_mat_escritorio.estado','=','não visto')
+                ->select('notificacao_mat_escritorio.*') 
+                ->get() ;
+                return $p;
+        }
+
+
+        public function calcularData()
+        {
+            $mat=MaterialEscritorioModel::all();
+           // $v=Veiculo::findOrFail(8);
+            foreach($mat as $m)
+            {
+                $dataAquisicao = $m->dataAquisicao;
+                $hoje=new DateTime();
+                $dateaquisicao=new DateTime($m->data_aquisicao);
+                $diferenca=$hoje->diff($dateaquisicao);
+                $vida_util=$m->vida_util;
+                $dif_em_ano=$this->diasEmAno($vida_util, $diferenca->days);
+                
+                if(!$this->MaterialNotificado($m->id))
+                {
+                   
+                    if($dif_em_ano-$vida_util>=0)
+                    {
+                        $this->inserirNotificao($m->id);
+
+                    }
+
+                }
+            }   
+        }
+
+
+
+        
+
+
 
 }

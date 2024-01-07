@@ -47,11 +47,17 @@
                                                         </select>
                                                  </div>
 
-                                                <div class="form-group col-lg-12 col-md-12 margin-input">
+                                                <div class="form-group col-lg-6 col-md-12 margin-input">
                                                     <label for="descricao">Descrição</label>
                                                     <input id="descricao" name="descricao" type="text" class="form-control">
                                                     
                                                 </div>
+
+                                                <div class="form-group col-lg-6">
+                                                    <label for="inputText7" class="col-form-label">Vida útil (em Ano)</label>
+                                                    <input id="vidautil" name="vidautil" type="text" class="form-control" placeholder="">
+                                                </div>
+
 
                                                 <div class="form-group col-lg-6 col-md-12 margin-input">
                                                     <label for="tipoaquisicao">Tipo de Aquisição</label>
@@ -193,6 +199,7 @@
                                  var finalidade=document.getElementById("finalidade");
                                  var Custo_aquisição_usd=document.getElementById("Custo_aquisição_usd");
                                  var Custo_aquisição_euro=document.getElementById("Custo_aquisição_euro");
+                                 var vidautil=document.getElementById("vidautil");
                                  
                                 
                                  var erro= document.getElementById("erro-registar");
@@ -228,6 +235,16 @@
                                      erro.setAttribute('hidden', true);
                                     
                                  }
+
+                                 if(vidautil.value == ''){
+                                    erro.innerHTML="Por favor preencha o campo Vida Util";
+                                    erro.removeAttribute('hidden');
+                                    vidautil.focus();
+                                    return false;
+                                }else{
+                                    erro.setAttribute('hidden', true);
+                                
+                                }
 
                                  if(tipoaquisicao.value == 'Selecione'){
                                      erro.innerHTML="Por favor preencha o campo tipo aquisição";

@@ -47,6 +47,13 @@
                                  {{$total_notificacao}}
                                 
                                 @endif
+
+
+                                @if(isset($total_notificacao_mat_eletronico) && $total_notificacao_mat_eletronico!=0 )
+
+                                 {{$total_notificacao_mat_eletronico}}
+                                
+                                @endif
                             <span class="indicator"></span></a>
                             <ul class="dropdown-menu dropdown-menu-right notification-dropdown">
                                 <li>
@@ -68,6 +75,26 @@
                                                 @endforeach
                                                 
                                             @endif
+
+
+
+                                            @if(isset($not_mat_escritorio))
+                                            @foreach($not_mat_escritorio as $n)
+                                           
+
+                                            <a href="{{url("material-escritorio/vida-util-vencido/$n->material_escritorio_id")}}" class="list-group-item list-group-item-action active">
+                                                <div class="notification-info">
+                                                    <div class="notification-list-user-img"><img src="{{asset('assets/images/avatar-2.jpg')}}" alt="" class="user-avatar-md rounded-circle"></div>
+                                                    <div class="notification-list-user-block"><span class="notification-list-user-name">Vida útil expirado</span>{{$n->descricao}}. Clique aqui para ver detalhes
+                                                        <div class="notification-date">2 min ago</div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                                
+                                            @endforeach
+                                            
+                                        @endif
+
   
                                         </div>
                                     </div>

@@ -503,7 +503,7 @@ class VeiculoController extends Controller
                 $vida_util=$v->vida_util;
                 $dif_em_ano=$this->diasEmAno($vida_util, $diferenca->days);
                 
-                if(!$this->veiculoNotificado(8))
+                if(!$this->veiculoNotificado($v->id))
                 {
                    
                     if($dif_em_ano-$vida_util>=0)
