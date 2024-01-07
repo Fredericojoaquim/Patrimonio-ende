@@ -30,7 +30,6 @@ class VeiculoController extends Controller
         $p=DB::table('veiculos')
         ->join('departamentos','departamentos.id','=','veiculos.departamento_id')
         ->join('tipoaquisicao','tipoaquisicao.id','=','veiculos.tipo_aquisicao')
-       
          ->where('veiculos.estado','=','ativo')
         ->select('veiculos.*','tipoaquisicao.descricao as tipoaquisicao_desc','departamentos.descricao as departamentos' )
         ->get();
@@ -493,10 +492,10 @@ class VeiculoController extends Controller
 
         public function calcularData()
         {
-            //$veiculos=Veiculo::all();
-            $v=Veiculo::findOrFail(8);
-            //foreach($veiculos as $v)
-            //{
+            $veiculos=Veiculo::all();
+           // $v=Veiculo::findOrFail(8);
+            foreach($veiculos as $v)
+            {
                 $dataAquisicao = $v->dataAquisicao;
                 $hoje=new DateTime();
                 $dateaquisicao=new DateTime($v->dataAquisicao);
@@ -514,21 +513,7 @@ class VeiculoController extends Controller
                     }
 
                 }
-                
-
-           // }
-
-            
-
-            /*
-            $dataAquisicao = $v->dataAquisicao;
-            $hoje=new DateTime();
-            $dateaquisicao=new DateTime($v->dataAquisicao);
-            $diferenca=$hoje->diff( $dateaquisicao);
-
-            dd($hoje<$date2);
-
-           //2023-01-02*/
+            }   
         }
 
 
