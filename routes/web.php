@@ -95,6 +95,7 @@ Route::put('veiculo/update', [VeiculoController::class,'update']);
 Route::get('veiculo/pesquisar', [VeiculoController::class,'pesquisar']);
 Route::get('veiculo/comprovativo/{id}', [VeiculoController::class,'comprovativo']);
 Route::put('veiculo/transferir', [VeiculoController::class,'transferir']);
+Route::get('veiculo/vida-util-vencido/{id}', [VeiculoController::class,'veiculo_vencido']);
 
 //ocorrencias de veiculos
 Route::post('veiculo-ocorrencia/registar', [OcorrenciaVeiculo::class,'store']);
@@ -222,4 +223,6 @@ Route::get('tecnica/movel/informacao/{id}', [OcorrenciaEletronico::class,'inform
 
 //pdf
 Route::get('/teste/pdf', [testePdfController::class,'teste']);
+
+Route::get('/teste/data', [VeiculoController::class,'calcularData']);
 

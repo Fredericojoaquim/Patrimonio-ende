@@ -64,9 +64,14 @@
                                                         <input id="num_motor" name="num_motor" type="text" class="form-control" placeholder="">
                                                 </div>
 
-                                                <div class="form-group col-lg-12">
+                                                <div class="form-group col-lg-6">
                                                         <label for="inputText7" class="col-form-label">Cor</label>
                                                         <input id="cor" name="cor" type="text" class="form-control" placeholder="">
+                                                </div>
+
+                                                <div class="form-group col-lg-6">
+                                                    <label for="inputText7" class="col-form-label">Vida útil (em Ano)</label>
+                                                    <input id="vidautil" name="vidautil" type="text" class="form-control" placeholder="">
                                                 </div>
 
                                                 <div class="form-group col-lg-6 margin-input">
@@ -139,42 +144,53 @@
                                                         <label for="inputText12" class="col-form-label">Custo aquisição (euro)</label>
                                                         <input id="Custo_aquisição_euro" onkeyup="changeValue(this)" type="text" name="Custo_aquisição_euro"   class="form-control" placeholder="">
                                                 </div>
+
+                                                <div class="form-group col-lg-12">
+                                                    <label for="inputText12" class="col-form-label">Data aquisição</label>
+                                                    <input id="dataAquisicao" type="date" name="dataAquisicao"   class="form-control" placeholder="">
+                                                </div><br><br>
+
+                                                <div class="form-group col-lg-12 my_margin">
+                                                <h3 class="text-center">INFORMAÇÕES DO SEGURO</h3>
+                                                </div><br>
+
+                                                <div class="form-group col-lg-6">
+                                                    <label for="inputText13">Nome seguradora</label>
+                                                    <input id="nome_seguradora" type="text"  name="nome_seguradora"  placeholder="" class="form-control">
+                                                 </div>
+
+
+                                            <div class="form-group col-lg-6">
+                                                    <label for="inputText4" class="col-form-label">Cobertura</label>
+                                                    <input id="cobertura" type="text"  name="cobertura"  class="form-control" placeholder="">
+                                            </div>
+
+                                            <div class="form-group col-lg-6 margin-input">
+                                                    <label for="inputPassword">Apólice</label>
+                                                    <input id="apolice" type="text"   name="apolice"  placeholder="" class="form-control">
+                                            </div>
+
+                                            <div class="form-group col-lg-6 margin-input">
+                                                    <label for="valor_seguro">Valor</label>
+                                                    <input id="valor_seguro" type="text"   name="valor_seguro"  placeholder="" class="form-control">
+                                            </div>
+
+                                            <div class="form-group col-lg-6">
+                                                    <label for="datainicio" class="col-form-label">Data início</label>
+                                                    <input id="datainicio" type="date"  name="datainicio"  class="form-control" placeholder="">
+                                            </div>
+
+                            
+
+                                            <div class="form-group col-lg-6 margin-input">
+                                                    <label for="datafim">Data fim</label>
+                                                    <input id="datafim" type="date"  name="datafim" placeholder="" class="form-control">
+                                            </div>
                                                
-                                                <h4 class="card-header">Seguro</h3>  <br>
+                                              
 
-                                                <div class="row container">
-                                                        <div class="form-group col-lg-6 margin-input">
-                                                                <label for="inputText13">Nome seguradora</label>
-                                                                <input id="nome_seguradora" type="text"  name="nome_seguradora"  placeholder="" class="form-control">
-                                                        </div>
-
-
-                                                        <div class="form-group col-lg-6">
-                                                                <label for="inputText4" class="col-form-label">Cobertura</label>
-                                                                <input id="cobertura" type="text"  name="cobertura"  class="form-control" placeholder="">
-                                                        </div>
-
-                                                        <div class="form-group col-lg-6 margin-input">
-                                                                <label for="inputPassword">Apólice</label>
-                                                                <input id="apolice" type="text"   name="apolice"  placeholder="" class="form-control">
-                                                        </div>
-
-                                                        <div class="form-group col-lg-6 margin-input">
-                                                                <label for="valor_seguro">Valor</label>
-                                                                <input id="valor_seguro" type="text"   name="valor_seguro"  placeholder="" class="form-control">
-                                                        </div>
-
-                                                        <div class="form-group col-lg-6">
-                                                                <label for="datainicio" class="col-form-label">Data início</label>
-                                                                <input id="datainicio" type="date"  name="datainicio"  class="form-control" placeholder="">
-                                                        </div>
-
-                                        
-
-                                                        <div class="form-group col-lg-6 margin-input">
-                                                                <label for="datafim">Data fim</label>
-                                                                <input id="datafim" type="date"  name="datafim" placeholder="" class="form-control">
-                                                        </div>
+                                                <div class="row ">
+                                                       
                                                 </div>
                                         
                                         </div>
@@ -249,6 +265,8 @@ $(document).ready(function(){
             var Custo_aquisição_kz=document.getElementById("Custo_aquisição_kz");
             var Custo_aquisição_usd=document.getElementById("Custo_aquisição_usd");
             var Custo_aquisição_euro=document.getElementById("Custo_aquisição_euro");
+            var vidautil=document.getElementById("vidautil");
+            var dataAquisicao=document.getElementById("dataAquisicao");
             
             var erro= document.getElementById("erro-registar");
 
@@ -316,6 +334,16 @@ $(document).ready(function(){
                 erro.innerHTML="Por favor preencha o campo Cor";
                 erro.removeAttribute('hidden');
                 cor.focus();
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+             
+            }
+
+            if(vidautil.value == ''){
+                erro.innerHTML="Por favor preencha o campo Vida Util";
+                erro.removeAttribute('hidden');
+                vidautil.focus();
                 return false;
             }else{
                 erro.setAttribute('hidden', true);
@@ -401,7 +429,18 @@ $(document).ready(function(){
              
             }
         }else{
-            formregistar.submit();
+
+            if(dataAquisicao.value == ''){
+                erro.innerHTML="Por favor preencha o campo Data aquisição";
+                erro.removeAttribute('hidden');
+                dataAquisicao.focus();
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+                formregistar.submit();
+             
+            }
+          
         }
 
             

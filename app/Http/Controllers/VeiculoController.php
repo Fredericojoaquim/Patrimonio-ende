@@ -9,6 +9,8 @@ use App\Models\Veiculo;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\MotivoAbate;
+use App\Models\NotificacaoVeiculo as Notificao;
+use DateTime;
 
 
 class VeiculoController extends Controller
@@ -18,6 +20,10 @@ class VeiculoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    function __construct() {
+        $this->calcularData();
+    }
+
 
      public function veiculos(){
 
@@ -38,9 +44,12 @@ class VeiculoController extends Controller
     public function index()
     {
         $dep=Departamento::all();
+        $not_veiculo=$this->Notificacoes();
+       
+        $total_notificao=$not_veiculo->count();
 
         $ve=$this->veiculos();
-        return view('veiculo.consultar',['ve'=>$ve,'dep'=>$dep]);
+        return view('veiculo.consultar',['ve'=>$ve,'dep'=>$dep,'not_veiculo'=>$not_veiculo,'total_notificacao'=>$total_notificao]);
 
     }
 
@@ -53,7 +62,9 @@ class VeiculoController extends Controller
     {
         $dep=Departamento::all();
         $t= TipoAquisicaoModel::all();
-        return view('veiculo.index',['tipo'=>$t, 'dep'=>$dep]);
+        $not_veiculo=$this->Notificacoes();
+        $total_notificao=$not_veiculo->count();
+        return view('veiculo.index',['tipo'=>$t, 'dep'=>$dep,'not_veiculo'=>$not_veiculo,'total_notificacao'=>$total_notificao]);
     }
 
     /**
@@ -69,6 +80,7 @@ class VeiculoController extends Controller
         $Custo_aquisição_usd=null;
         $Custo_aquisição_euro=null;
         $h=new HelperController();
+       
 
         if(!is_null($request->Custo_aquisição_kz))
         {
@@ -133,7 +145,8 @@ class VeiculoController extends Controller
         $v->custo_aquisicao_kz=$Custo_aquisição_kz;
         $v->custo_aquisicao_usd=$Custo_aquisição_usd;
         $v->custo_aquisicao_euro=$Custo_aquisição_euro;
-      
+        $v->vida_util=addslashes($request->vidautil);
+        $v->dataAquisicao=addslashes($request->dataAquisicao);
         $v->nome_segurador= $nome_seguradora;
         $v->cobertura=$cobertura;
         $v->valor_seguro=$valor_seguro;
@@ -143,6 +156,15 @@ class VeiculoController extends Controller
         $v->departamento_id=addslashes($request->departamento);
         $v->estado='ativo';
         $v->save();
+
+        /*if($this->compararData($request->dataAquisicao))
+        {
+            $this->inserirNotificao($v->id);
+
+        }*/
+
+        
+
         $dep=Departamento::all();
         $t= TipoAquisicaoModel::all();
         return view('veiculo.index',['sms'=>'Veículo registada com sucesso', 'dep'=>$dep,'tipo'=>$t]);
@@ -264,6 +286,8 @@ class VeiculoController extends Controller
             'data_inicio'=>$datainicio,
             'data_fim'=> $request->datafim,
             'departamento_id'=>addslashes($request->departamento),
+            'vida_util'=>addslashes($request->vidautil),
+            'dataAquisicao'=>addslashes($request->dataAquisicao)
         ];
 
         $v=Veiculo::findOrFail(addslashes($request->id));
@@ -286,7 +310,7 @@ class VeiculoController extends Controller
     }
     public function editar($id)
     {
-        $p=$this->veiculo($id);
+        $p=$this->veiculo(addslashes($id));
        
         if($p->count()>0)
         {
@@ -295,6 +319,8 @@ class VeiculoController extends Controller
             return view('veiculo.editar',['v'=>$p->first(),'tipo'=>$t, 'dep'=>$dep]);
 
         }
+
+       
 
        
         
@@ -462,6 +488,136 @@ class VeiculoController extends Controller
 
 
         }
+
+
+
+        public function calcularData()
+        {
+            //$veiculos=Veiculo::all();
+            $v=Veiculo::findOrFail(8);
+            //foreach($veiculos as $v)
+            //{
+                $dataAquisicao = $v->dataAquisicao;
+                $hoje=new DateTime();
+                $dateaquisicao=new DateTime($v->dataAquisicao);
+                $diferenca=$hoje->diff($dateaquisicao);
+                $vida_util=$v->vida_util;
+                $dif_em_ano=$this->diasEmAno($vida_util, $diferenca->days);
+                
+                if(!$this->veiculoNotificado(8))
+                {
+                   
+                    if($dif_em_ano-$vida_util>=0)
+                    {
+                        $this->inserirNotificao($v->id);
+
+                    }
+
+                }
+                
+
+           // }
+
+            
+
+            /*
+            $dataAquisicao = $v->dataAquisicao;
+            $hoje=new DateTime();
+            $dateaquisicao=new DateTime($v->dataAquisicao);
+            $diferenca=$hoje->diff( $dateaquisicao);
+
+            dd($hoje<$date2);
+
+           //2023-01-02*/
+        }
+
+
+
+        public function compararData($data)
+        {
+            $hoje=new DateTime();
+            $dateaquisicao=new DateTime($v->data);
+            return $hoje>$dateaquisicao;
+        }
+
+
+        public function inserirNotificao($id)
+        {
+            $n=new Notificao();
+            $n->veiculo_id=$id;
+            $n->descricao="O tempo de vida útil para este veículo terminou";
+            $n->estado="não visto";
+            $n->save();
+            return true;
+        }
+
+
+        public function diasEmAno($anos, $dias)
+        {
+            $result=$dias/365;
+            return $result;
+
+        }
+
+
+        public function veiculoNotificado($id)
+        {
+            
+
+                $p=DB::table('notificacao_veiculo')
+                ->join('veiculos','veiculos.id','=','notificacao_veiculo.veiculo_id')
+                ->where('veiculos.id','=',$id)
+                ->select('notificacao_veiculo.*')
+                ->get();
+
+                if( $p->count()>0)
+                {
+                    return true;
+                }
+
+                return false;
+        
+             
+        }
+
+
+
+        public function notificacaoByVeiculo($id_veiculo)
+        {
+                $p=DB::table('notificacao_veiculo')
+                ->join('veiculos','veiculos.id','=','notificacao_veiculo.veiculo_id')
+                ->where('veiculos.id','=',$id_veiculo)
+                ->select('notificacao_veiculo.*')
+                ->get();
+                return  $p->first();
+        
+             
+        }
+
+
+        public function Notificacoes()
+        {
+                $p=DB::table('notificacao_veiculo')
+                ->join('veiculos','veiculos.id','=','notificacao_veiculo.veiculo_id')
+                ->where('notificacao_veiculo.estado','=','não visto')
+                ->select('notificacao_veiculo.*')
+                ->get();
+                return $p;
+        }
+
+        public function veiculo_vencido($id)
+        {
+            $ve=$this->veiculo(addslashes($id));
+            $id_notificacao=$this->notificacaoByVeiculo($id)->id;
+            $notificacao=Notificao::findOrFail( $id_notificacao);
+            $s=['estado'=>'visto'];
+            $notificacao->update($s);
+            return view('veiculo.veiculoExpirado',['ve'=> $ve]);
+
+        }
+
+
+        
 
 
     
