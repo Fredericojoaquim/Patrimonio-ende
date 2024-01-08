@@ -200,14 +200,18 @@
                                  var Custo_aquisição_usd=document.getElementById("Custo_aquisição_usd");
                                  var Custo_aquisição_euro=document.getElementById("Custo_aquisição_euro");
                                  var vidautil=document.getElementById("vidautil");
+                                 const today = new Date();
+                                 const hoje=today.toLocaleDateString();
+                              
+                                
                                  
                                 
                                  var erro= document.getElementById("erro-registar");
                      
-                            
+                                 alert(hoje>dataaquisicao);
                      
                                  if(num_mobilizado.value == ''){
-                                     
+                                  
                                      erro.innerHTML="Por favor preencha o campo Nº imobilizado";
                                      erro.removeAttribute('hidden');
                                      num_mobilizado.focus();
