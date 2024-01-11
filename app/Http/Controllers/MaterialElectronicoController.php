@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\HelperController;
 use App\Models\MotivoAbate;
+use App\Models\NotificacaoMat_eletronico as Notificacao;
+
+
 
 class MaterialElectronicoController extends Controller
 {
@@ -20,6 +23,12 @@ class MaterialElectronicoController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+
+     function __construct() {
+        $this->calcularData();
+    }
+
+    
      public function material_eletronicos(){
 
         $p=DB::table('materiaeletronico')
@@ -297,6 +306,107 @@ class MaterialElectronicoController extends Controller
          
          return view('material_eletronico.consultar',['mat'=>$this->material_eletronicos(),'dep'=>$dep,'sms'=>'Móvel transferido com sucesso']);
      }
+
+
+
+     public function movel_vencido($id)
+     {
+         $mat=$this->material_eletronico(addslashes($id));
+         $id_notificacao=$this->notificacaoByMovel($id)->id;
+         $notificacao=Notificacao::findOrFail( $id_notificacao);
+         $s=['estado'=>'visto'];
+         $notificacao->update($s);
+         return view('',['mat'=> $mat]);
+ 
+    }
+
+
+    public function inserirNotificao($id)
+    {
+        $n=new Notificacao();
+        $n->materiaeletronico_id=addslashes($id);
+        $n->descricao="O tempo de vida útil para este Móvel terminou";
+        $n->estado="não visto";
+        $n->save();
+        return true;
+    }
+
+    public function diasEmAno($anos, $dias)
+    {
+        $result=$dias/365;
+        return $result;
+
+    }
+
+    public function MaterialNotificado($id)
+    {
+            $p=DB::table('_notificacao_mat_eletronico')
+            ->join('materiaeletronico','materiaeletronico.id','=','_notificacao_mat_eletronico.materiaeletronico_id')
+            ->where('materiaeletronico.id','=',$id)
+            ->select('_notificacao_mat_eletronico.*')
+            ->get();
+
+            if( $p->count()>0)
+            {
+                return true;
+            }
+
+            return false;
+    
+         
+    }
+
+    public function notificacaoByMovel($id)
+    {
+        $p=DB::table('_notificacao_mat_eletronico')
+        ->join('materiaeletronico','materiaeletronico.id','=','_notificacao_mat_eletronico.materiaeletronico_id')
+        ->where('materiaeletronico.id','=',$id)
+        ->select('_notificacao_mat_eletronico.*')
+        ->get();
+
+            return  $p->first();      
+    }
+
+
+    public function Notificacoes()
+    {
+            $p=DB::table('_notificacao_mat_eletronico')
+            ->join('materiaeletronico','materiaeletronico.id','=','_notificacao_mat_eletronico.materiaeletronico_id')
+            ->where('notificacao_mat_escritorio.estado','=','não visto')
+            ->select('_notificacao_mat_eletronico.*')
+            ->get();
+
+            return $p;
+    }
+
+
+    public function calcularData()
+        {
+            $mat=MaterialElectronico::all();
+           // $v=Veiculo::findOrFail(8);
+            foreach($mat as $m)
+            {
+                $dataAquisicao = $m->dataAquisicao;
+                $hoje=new DateTime();
+                $dateaquisicao=new DateTime($m->data_aquisicao);
+                $diferenca=$hoje->diff($dateaquisicao);
+                $vida_util=$m->vida_util;
+                $dif_em_ano=$this->diasEmAno($vida_util, $diferenca->days);
+                
+                if(!$this->MaterialNotificado($m->id))
+                {
+                   
+                    if($dif_em_ano-$vida_util>=0)
+                    {
+                        $this->inserirNotificao($m->id);
+
+                    }
+
+                }
+            }   
+        }
+
+
 
 
 }

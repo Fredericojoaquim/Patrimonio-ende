@@ -88,7 +88,7 @@
                     {{ method_field('PUT') }}
                     
 
-                <p class="text-center">Tem certeza que deseja desbloquear este utilizador? </p>
+                <p class="text-center">Tem certeza que deseja Bloquear este utilizador? </p>
 
                 <div class="text-right">
                     <input id="user_id" name="user_id"  type="hidden">
@@ -119,7 +119,7 @@
                     {{ method_field('PUT') }}
                     
 
-                <p class="text-center">Tem certeza que deseja bloquear este utilizador? </p>
+                <p class="text-center">Tem certeza que deseja desbloquear este utilizador? </p>
 
                 <div class="text-right">
                     <input id="id" name="user_id"  type="hidden">

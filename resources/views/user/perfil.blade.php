@@ -72,7 +72,7 @@
                 <form action="{{url('user/perfil/alterar-foto')}}" method="POST" id="form-registar" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
-                        <input class="form-control" name="imagem" type="file" id="formFile">
+                        <input class="form-control" name="imagem" type="file" id="file">
                         <input type="hidden" value="{{Auth::user()->id}}" name="user_id">
                     </div>
 
@@ -90,5 +90,35 @@
     </div>
 </div>
  <!-- EndModal -->
+ <script src="{{url('assets/vendor/jquery/jquery-3.3.1.min.js')}}"></script> 
+ <script>
+
+$(document).ready(function(){
+    btn_registar=document.getElementById("btn-registar");
+
+    btn_registar.addEventListener('click', (event)=>{
+
+            event.preventDefault();
+            
+
+            var file=document.getElementById("file");
+            var erro= document.getElementById("erro-registar");
+            var formregistar=document.getElementById("form-registar");
+
+            if(file.value == ''){
+                
+                erro.innerHTML="Por favor selecione uma foto";
+                erro.removeAttribute('hidden');
+                
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+                formregistar.submit();
+            }
+    });
+});
+
+
+ </script>
 
 @endsection

@@ -23,9 +23,10 @@
                                         <form  action="{{url('veiculo/update')}}" method="POST" id="form-registar">
                                                  @csrf
                                                  {{ method_field('PUT') }}
+                                                 @if(isset($v))
 
                                             <div class="row">
-                                                @if(isset($v))
+                                             
                                                     
                                                 <div class="form-group col-lg-6 margin-input">
 
@@ -153,45 +154,58 @@
                                                     <input id="dataAquisicao" value="{{$v->dataAquisicao}}" type="date" name="dataAquisicao"   class="form-control" placeholder="">
                                                 </div><br><br>
                                                
-                                                <div class="form-group col-lg-12">
-                                                    <h4 class="card-header text-center">INFORMAÇÕES DO SEGURO</h3>  <br>
-                                                </div>
+                                                <div class="form-group col-lg-12 my_margin text-center">
+                                                    <h3 class="text-center">INFORMAÇÕES DO SEGURO</h3>
+                                                    <strong><p class="text-center">Tem seguro?</p></strong>
+    
+                                                    <label class="custom-control custom-radio custom-control-inline">
+                                                        <input type="radio" id="nao_seguros" onclick="habilitaseguro()"   name="nao_seguro"  class="custom-control-input" value="sim"><span class="custom-control-label">SIM</span>
+                                                    </label>
+                                                    <label class="custom-control custom-radio custom-control-inline">
+                                                        <input type="radio"  id="nao_seguro" onclick="habilitaseguro()"  name="nao_seguro" class="custom-control-input" value="não"><span class="custom-control-label">NÃO</span>
+                                                    </label>
+                                                    
+                                                </div><br>
+     
+                                        </div>
 
-                                              
-                                                        <div class="form-group col-lg-6 margin-input">
-                                                                <label for="inputText13">Nome seguradora</label>
-                                                                <input id="nome_seguradora" value="{{$v->nome_segurador}}" type="text"  name="nome_seguradora"  placeholder="" class="form-control">
-                                                        </div>
+                                        @endif
+                                        <div class="row" id="div_seguro" hidden> 
+                                            <div class="form-group col-lg-6">
+                                                <label for="inputText13">Nome seguradora</label>
+                                                <input id="nome_seguradora" type="text"  name="nome_seguradora"  placeholder="" class="form-control">
+                                             </div>
 
 
-                                                        <div class="form-group col-lg-6">
-                                                                <label for="inputText4" class="col-form-label">Cobertura</label>
-                                                                <input id="cobertura" value="{{$v->cobertura}}" type="text"  name="cobertura"  class="form-control" placeholder="">
-                                                        </div>
+                                            <div class="form-group col-lg-6">
+                                                    <label for="inputText4" class="col-form-label">Cobertura</label>
+                                                    <input id="cobertura" type="text"  name="cobertura"  class="form-control" placeholder="">
+                                            </div>
 
-                                                        <div class="form-group col-lg-6 margin-input">
-                                                                <label for="inputPassword">Apólice</label>
-                                                                <input id="apolice" type="text" value="{{$v->apolice}}"   name="apolice"  placeholder="" class="form-control">
-                                                        </div>
+                                            <div class="form-group col-lg-6 margin-input">
+                                                    <label for="inputPassword">Apólice</label>
+                                                    <input id="apolice" type="text"   name="apolice"  placeholder="" class="form-control">
+                                            </div>
 
-                                                        <div class="form-group col-lg-6 margin-input">
-                                                                <label for="valor_seguro">Valor</label>
-                                                                <input id="valor_seguro" type="text" value="{{$v->valor_seguro}}" name="valor_seguro"  class="form-control">
-                                                        </div>
+                                            <div class="form-group col-lg-6 margin-input">
+                                                    <label for="valor_seguro">Valor</label>
+                                                    <input id="valor_seguro" type="text"   name="valor_seguro"  placeholder="" class="form-control">
+                                            </div>
 
-                                                        <div class="form-group col-lg-6">
-                                                                <label for="datainicio" class="col-form-label">Data início</label>
-                                                                <input id="datainicio" type="date" value="{{$v->data_inicio}}"   name="datainicio"  class="form-control" placeholder="">
-                                                        </div>
+                                            <div class="form-group col-lg-6">
+                                                    <label for="datainicio" class="col-form-label">Data início</label>
+                                                    <input id="datainicio" type="date"  name="datainicio"  class="form-control" placeholder="">
+                                            </div>
 
-                                        
+                            
 
-                                                        <div class="form-group col-lg-6 margin-input">
-                                                                <label for="datafim">Data fim</label>
-                                                                <input id="datafim" type="date" value="{{$v->data_fim}}"  name="datafim" placeholder="" class="form-control">
-                                                        </div>
-                                               
-                                                @endif
+                                            <div class="form-group col-lg-6 margin-input">
+                                                    <label for="datafim">Data fim</label>
+                                                    <input id="datafim" type="date"  name="datafim" placeholder="" class="form-control">
+                                            </div>
+                                            
+                                          
+
                                         </div>
 
                                            
@@ -208,6 +222,25 @@
 
 <script src="{{url('assets/vendor/jquery/jquery-3.3.1.min.js')}}"></script> 
 <script>
+
+function habilitaseguro()
+{
+    
+   // var nao=document.getElementById("nao_seguro");
+  
+    var check=document.querySelector('input[name="nao_seguro"]:checked').value;
+    var div_seguro=document.getElementById("div_seguro");
+     if(check=='sim')
+     {
+        div_seguro.removeAttribute('hidden');
+
+     }else{
+        div_seguro.setAttribute('hidden', true);
+     }
+    
+
+
+}
 
 function changeValue(event) {
 	event.value = addCommas(event.value.replace(/\D/g, ''));
