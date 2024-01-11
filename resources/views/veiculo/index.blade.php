@@ -96,6 +96,7 @@
                                                             <option value="Selecione">Selecione</option>
                                                             <option value="Gasolina">Gasolina</option>
                                                             <option value="Gasóleo">Gasóleo</option>
+                                                            <option value="Outro">Outro</option>
                                                         </select>
                                                    </div>
 
@@ -150,14 +151,28 @@
                                                     <input id="dataAquisicao" type="date" name="dataAquisicao"   class="form-control" placeholder="">
                                                 </div><br><br>
 
-                                                <div class="form-group col-lg-12 my_margin">
+                                                <div class="form-group col-lg-12 my_margin text-center">
                                                 <h3 class="text-center">INFORMAÇÕES DO SEGURO</h3>
+                                                <strong><p class="text-center">Tem seguro?</p></strong>
+
+                                                <label class="custom-control custom-radio custom-control-inline">
+                                                    <input type="radio" id="nao_seguros" onclick="habilitaseguro()"   name="nao_seguro"  class="custom-control-input" value="sim"><span class="custom-control-label">SIM</span>
+                                                </label>
+                                                <label class="custom-control custom-radio custom-control-inline">
+                                                    <input type="radio"  id="nao_seguro" onclick="habilitaseguro()"  name="nao_seguro" class="custom-control-input" value="não"><span class="custom-control-label">NÃO</span>
+                                                </label>
+                                                
                                                 </div><br>
 
-                                                <div class="form-group col-lg-6">
-                                                    <label for="inputText13">Nome seguradora</label>
-                                                    <input id="nome_seguradora" type="text"  name="nome_seguradora"  placeholder="" class="form-control">
-                                                 </div>
+                                                
+                                        
+                                        </div>
+
+                                        <div class="row" id="div_seguro" hidden> 
+                                            <div class="form-group col-lg-6">
+                                                <label for="inputText13">Nome seguradora</label>
+                                                <input id="nome_seguradora" type="text"  name="nome_seguradora"  placeholder="" class="form-control">
+                                             </div>
 
 
                                             <div class="form-group col-lg-6">
@@ -186,14 +201,11 @@
                                                     <label for="datafim">Data fim</label>
                                                     <input id="datafim" type="date"  name="datafim" placeholder="" class="form-control">
                                             </div>
-                                               
-                                              
+                                            
+                                          
 
-                                                <div class="row ">
-                                                       
-                                                </div>
-                                        
                                         </div>
+                                        
 
                                            
                                             
@@ -220,6 +232,26 @@ function addCommas(value) {
 }
 
 
+function habilitaseguro()
+{
+    
+   // var nao=document.getElementById("nao_seguro");
+  
+    var check=document.querySelector('input[name="nao_seguro"]:checked').value;
+    var div_seguro=document.getElementById("div_seguro");
+     if(check=='sim')
+     {
+        div_seguro.removeAttribute('hidden');
+
+     }else{
+        div_seguro.setAttribute('hidden', true);
+     }
+    
+
+
+}
+
+
 function habilitarDesabilitar(){
                            
             var Custo_aquisição_kz=document.getElementById("Custo_aquisição_kz");
@@ -243,6 +275,8 @@ function habilitarDesabilitar(){
 
 
 $(document).ready(function(){
+
+    habilitaseguro();
 
     btn_registar=document.getElementById("btn-registar");
     btn_registar.addEventListener('click', (event)=>{

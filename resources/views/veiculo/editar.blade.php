@@ -98,6 +98,7 @@
                                                             <option value="Selecione">Selecione</option>
                                                             <option value="Gasolina">Gasolina</option>
                                                             <option value="Gasóleo">Gasóleo</option>
+                                                            <option value="Outro">Outro</option>
                                                         </select>
                                                    </div>
 
