@@ -71,7 +71,7 @@
 
                                                 <div class="form-group col-lg-6">
                                                     <label for="inputText7" class="col-form-label">Vida útil (em Ano)</label>
-                                                    <input id="vidautil" name="vidautil" type="text" class="form-control" placeholder="">
+                                                    <input id="vidautil"  onkeypress="return somenteNumeros(event)" name="vidautil" type="text" class="form-control" placeholder="">
                                                 </div>
 
                                                 <div class="form-group col-lg-6 margin-input">
@@ -221,37 +221,6 @@
 <script src="{{url('assets/vendor/jquery/jquery-3.3.1.min.js')}}"></script> 
 <script>
 
-function DataAtual()
-{
-    const data=new Date();
-    const dia=String(data.getDate()).padStart(2,'0');
-    const mes=String(data.getMonth()+1).padStart(2,'0');
-    const ano=data.getFullYear();
-    var dataatual=ano+'-'+mes+'-'+dia;
-    return dataatual;
-}
-
-function diferencaData(data)
-{
-    const d1  = DataAtual();
-    const d2  = data;
-    const diffInMs   = new Date(d2) - new Date(d1)
-    const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
-    return diffInDays; // 38
-
-}
-
-
-
-
-function changeValue(event) {
-	event.value = addCommas(event.value.replace(/\D/g, ''));
-	calculate();
-}
-
-function addCommas(value) {
-        return value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-}
 
 
 function habilitaseguro()
@@ -554,23 +523,6 @@ $(document).ready(function(){
           
         }
 
-            
-                
-             
-        
-
-
-           
-
-            
-
-            
-
-            
-            
-
-            
-                
             
 
           //  

@@ -74,7 +74,7 @@
 
                                                 <div class="form-group col-lg-6">
                                                     <label for="inputText7" class="col-form-label">Vida útil (em Ano)</label>
-                                                    <input id="vidautil" value="{{$v->vida_util}}" name="vidautil" type="text" class="form-control" placeholder="">
+                                                    <input id="vidautil" value="{{$v->vida_util}}" onkeypress="return somenteNumeros(event)" name="vidautil" type="text" class="form-control" placeholder="">
                                                 </div>
 
                                                 <div class="form-group col-lg-6 margin-input">
@@ -221,7 +221,10 @@
                      </div>
 
 <script src="{{url('assets/vendor/jquery/jquery-3.3.1.min.js')}}"></script> 
+<script src="{{url('assets/vendor/jquery/jquery-3.3.1.min.js')}}"></script> 
 <script>
+
+
 
 function habilitaseguro()
 {
@@ -242,41 +245,33 @@ function habilitaseguro()
 
 }
 
-function changeValue(event) {
-	event.value = addCommas(event.value.replace(/\D/g, ''));
-	calculate();
-}
 
-function addCommas(value) {
-        return value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-}
+function habilitarDesabilitar(){
+                           
+            var Custo_aquisição_kz=document.getElementById("Custo_aquisição_kz");
+            var Custo_aquisição_usd=document.getElementById("Custo_aquisição_usd");
+            var Custo_aquisição_euro=document.getElementById("Custo_aquisição_euro");
+            var tipoaquisicao=document.getElementById("tipoaquisicao");
+                      
+            if(tipoaquisicao.value != '2' && tipoaquisicao.value != '7' && tipoaquisicao.value != '8' )
+             {                       
+                    Custo_aquisição_usd.disabled = true;
+                     Custo_aquisição_euro.disabled = true;
+                    Custo_aquisição_kz.disabled = true;
+           }else{
+                    Custo_aquisição_usd.disabled = false;
+                    Custo_aquisição_euro.disabled = false;
+                     Custo_aquisição_kz.disabled = false;
+                      
+            }
+      }
 
 
-    function habilitarDesabilitar(){
-                               
-                var Custo_aquisição_kz=document.getElementById("Custo_aquisição_kz");
-                var Custo_aquisição_usd=document.getElementById("Custo_aquisição_usd");
-                var Custo_aquisição_euro=document.getElementById("Custo_aquisição_euro");
-                var tipoaquisicao=document.getElementById("tipoaquisicao");
-                          
-                if(tipoaquisicao.value != '2' && tipoaquisicao.value != '7'&& tipoaquisicao.value != '8' )
-                 {                       
-                        Custo_aquisição_usd.disabled = true;
-                         Custo_aquisição_euro.disabled = true;
-                        Custo_aquisição_kz.disabled = true;
-               }else{
-                        Custo_aquisição_usd.disabled = false;
-                        Custo_aquisição_euro.disabled = false;
-                         Custo_aquisição_kz.disabled = false;
-                          
-                }
-          }
-    
-    
-    
-    $(document).ready(function(){
-        btn_registar=document.getElementById("btn-registar");
-        btn_registar.addEventListener('click', (event)=>{
+
+$(document).ready(function(){
+
+    btn_registar=document.getElementById("btn-registar");
+    btn_registar.addEventListener('click', (event)=>{
 
             event.preventDefault();
 
@@ -300,8 +295,9 @@ function addCommas(value) {
             var dataAquisicao=document.getElementById("dataAquisicao");
             
             var erro= document.getElementById("erro-registar");
+           
 
-       
+          
 
             if(tipoveiculo.value == 'Selecione'){
                 
@@ -456,6 +452,30 @@ function addCommas(value) {
                 return false;
             }else{
                 erro.setAttribute('hidden', true);
+              //  formregistar.submit();
+             
+            }
+
+            if(diferencaData(data_fabrico.value) > 0){
+                erro.innerHTML="A data de fabrico não pode ser uma data futura";
+                erro.removeAttribute('hidden');
+                data_fabrico.focus();
+                return false;
+            }else{
+                
+                erro.setAttribute('hidden', true);
+               // formregistar.submit();
+             
+            }
+
+            if(diferencaData(dataAquisicao.value) > 0){
+                erro.innerHTML="A data de Aquisição não pode ser uma data futura";
+                erro.removeAttribute('hidden');
+                dataAquisicao.focus();
+                return false;
+            }else{
+                
+                erro.setAttribute('hidden', true);
                 formregistar.submit();
              
             }
@@ -468,34 +488,47 @@ function addCommas(value) {
                 return false;
             }else{
                 erro.setAttribute('hidden', true);
-                formregistar.submit();
+               // formregistar.submit();
              
             }
+
+            //
+            if(diferencaData(data_fabrico.value) > 0){
+                erro.innerHTML="A data de fabrico não pode ser uma data futura";
+                erro.removeAttribute('hidden');
+                data_fabrico.focus();
+                return false;
+            }else{
+                
+                erro.setAttribute('hidden', true);
+               // formregistar.submit();
+             
+            }
+
+            if(diferencaData(dataAquisicao.value) > 0){
+                erro.innerHTML="A data de Aquisição não pode ser uma data futura";
+                erro.removeAttribute('hidden');
+                dataAquisicao.focus();
+                return false;
+            }else{
+                
+                erro.setAttribute('hidden', true);
+               formregistar.submit();
+             
+            }
+
+
+
+            
+
           
         }
 
-            
-                
-             
-        
-
-
-           
-
-            
-
-            
-
-            
-            
-
-            
-                
             
 
           //  
     });
 
      });
-    </script>
+</script>
 @endsection
