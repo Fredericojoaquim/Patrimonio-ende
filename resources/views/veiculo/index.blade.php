@@ -221,6 +221,28 @@
 <script src="{{url('assets/vendor/jquery/jquery-3.3.1.min.js')}}"></script> 
 <script>
 
+function DataAtual()
+{
+    const data=new Date();
+    const dia=String(data.getDate()).padStart(2,'0');
+    const mes=String(data.getMonth()+1).padStart(2,'0');
+    const ano=data.getFullYear();
+    var dataatual=ano+'-'+mes+'-'+dia;
+    return dataatual;
+}
+
+function diferencaData(data)
+{
+    const d1  = DataAtual();
+    const d2  = data;
+    const diffInMs   = new Date(d2) - new Date(d1)
+    const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+    return diffInDays; // 38
+
+}
+
+
+
 
 function changeValue(event) {
 	event.value = addCommas(event.value.replace(/\D/g, ''));
@@ -276,7 +298,7 @@ function habilitarDesabilitar(){
 
 $(document).ready(function(){
 
-    habilitaseguro();
+  
 
     btn_registar=document.getElementById("btn-registar");
     btn_registar.addEventListener('click', (event)=>{
@@ -303,8 +325,9 @@ $(document).ready(function(){
             var dataAquisicao=document.getElementById("dataAquisicao");
             
             var erro= document.getElementById("erro-registar");
+           
 
-       
+          
 
             if(tipoveiculo.value == 'Selecione'){
                 
@@ -459,6 +482,30 @@ $(document).ready(function(){
                 return false;
             }else{
                 erro.setAttribute('hidden', true);
+              //  formregistar.submit();
+             
+            }
+
+            if(diferencaData(data_fabrico.value) > 0){
+                erro.innerHTML="A data de fabrico não pode ser uma data futura";
+                erro.removeAttribute('hidden');
+                data_fabrico.focus();
+                return false;
+            }else{
+                
+                erro.setAttribute('hidden', true);
+               // formregistar.submit();
+             
+            }
+
+            if(diferencaData(dataAquisicao.value) > 0){
+                erro.innerHTML="A data de Aquisição não pode ser uma data futura";
+                erro.removeAttribute('hidden');
+                dataAquisicao.focus();
+                return false;
+            }else{
+                
+                erro.setAttribute('hidden', true);
                 formregistar.submit();
              
             }
@@ -471,9 +518,39 @@ $(document).ready(function(){
                 return false;
             }else{
                 erro.setAttribute('hidden', true);
-                formregistar.submit();
+               // formregistar.submit();
              
             }
+
+            //
+            if(diferencaData(data_fabrico.value) > 0){
+                erro.innerHTML="A data de fabrico não pode ser uma data futura";
+                erro.removeAttribute('hidden');
+                data_fabrico.focus();
+                return false;
+            }else{
+                
+                erro.setAttribute('hidden', true);
+               // formregistar.submit();
+             
+            }
+
+            if(diferencaData(dataAquisicao.value) > 0){
+                erro.innerHTML="A data de Aquisição não pode ser uma data futura";
+                erro.removeAttribute('hidden');
+                dataAquisicao.focus();
+                return false;
+            }else{
+                
+                erro.setAttribute('hidden', true);
+               formregistar.submit();
+             
+            }
+
+
+
+            
+
           
         }
 
