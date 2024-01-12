@@ -12,6 +12,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\HelperController;
 use App\Models\MotivoAbate;
 use App\Models\NotificacaoMat_eletronico as Notificacao;
+use DateTime;
 
 
 
@@ -48,9 +49,10 @@ class MaterialElectronicoController extends Controller
 
     public function index()
     {
-      
+        $not_mat_eletronico=$this->Notificacoes();
+        $total_notificao=$not_mat_eletronico->count();
         $dep=Departamento::all();
-        return view('material_eletronico.consultar',['mat'=>$this->material_eletronicos(),'dep'=>$dep]);
+        return view('material_eletronico.consultar',['mat'=>$this->material_eletronicos(),'dep'=>$dep,'not_mat_eletronico'=>$not_mat_eletronico,'total_notificao_eletronico'=> $total_notificao]);
         
     }
 
@@ -123,6 +125,7 @@ class MaterialElectronicoController extends Controller
         $m->departamento_id=addslashes($request->departamento);
         $m->custo_aquisicao_usd=$Custo_aquisição_usd;
         $m->custo_aquisicao_euro=$Custo_aquisição_euro;
+        $m->vida_util=addslashes($request->vidautil);
         
         $m->save();
         return view('material_eletronico.registar',['sms'=>'Material Registado com sucesso']);
@@ -221,7 +224,8 @@ class MaterialElectronicoController extends Controller
             'valor_aquisicao'=>$valoraquisicao,
             'departamento_id'=>addslashes($request->departamento),
             'custo_aquisicao_usd'=>$Custo_aquisição_usd,
-             'custo_aquisicao_euro'=>$Custo_aquisição_euro
+            'custo_aquisicao_euro'=>$Custo_aquisição_euro,
+            'vida_util'=>addslashes($request->vidautil),
     ];
 
     $m=MaterialElectronico::findOrFail(addslashes($request->id));
@@ -316,7 +320,7 @@ class MaterialElectronicoController extends Controller
          $notificacao=Notificacao::findOrFail( $id_notificacao);
          $s=['estado'=>'visto'];
          $notificacao->update($s);
-         return view('',['mat'=> $mat]);
+         return view('material_eletronico.materialExpirado',['mat'=> $mat]);
  
     }
 
@@ -372,7 +376,7 @@ class MaterialElectronicoController extends Controller
     {
             $p=DB::table('_notificacao_mat_eletronico')
             ->join('materiaeletronico','materiaeletronico.id','=','_notificacao_mat_eletronico.materiaeletronico_id')
-            ->where('notificacao_mat_escritorio.estado','=','não visto')
+            ->where('_notificacao_mat_eletronico.estado','=','não visto')
             ->select('_notificacao_mat_eletronico.*')
             ->get();
 
@@ -405,6 +409,9 @@ class MaterialElectronicoController extends Controller
                 }
             }   
         }
+
+
+        
 
 
 

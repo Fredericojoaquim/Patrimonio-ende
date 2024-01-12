@@ -136,7 +136,7 @@
                                                    </select>
                                                </div>
 
-                                               <div class="form-group col-lg-12 col-md-12 margin-input">
+                                               <div class="form-group col-lg-6 col-md-12 margin-input">
                                                 <label for="inputText4">Departamento</label>
                                                <select name="departamento"  id="departamento" class="form-control form-control-sm">
                                                    <option value="Selecione">Selecione</option>
@@ -149,7 +149,14 @@
                                                  @endif
                                                    
                                                </select>
-                                           </div>
+                                                </div>
+
+                                                <div class="form-group col-lg-6">
+                                                    <label for="inputText7" class="col-form-label">Vida útil (em Ano)</label>
+                                                    <input id="vidautil" name="vidautil" type="text" class="form-control" placeholder="">
+                                                </div>
+
+
 
                                           
                                             </div>  
@@ -220,6 +227,7 @@ btn_registar.addEventListener('click', (event)=>{
         var Custo_aquisição_usd=document.getElementById("Custo_aquisição_usd");
         var Custo_aquisição_euro=document.getElementById("Custo_aquisição_euro");
         var erro= document.getElementById("erro-registar");
+        var vidautil=document.getElementById("vidautil");
 
         if(num_mobilizado.value == ''){
             
@@ -370,8 +378,19 @@ btn_registar.addEventListener('click', (event)=>{
             return false;
         }else{
             erro.setAttribute('hidden', true);
-            formregistar.submit();
-        }      
+            
+        } 
+        
+        if(vidautil.value == ''){
+             erro.innerHTML="Por favor preencha o campo Vida Util";
+             erro.removeAttribute('hidden');
+              vidautil.focus();
+              return false;
+         }else{
+               erro.setAttribute('hidden', true);
+               formregistar.submit();
+                                
+         }     
 
 });
 

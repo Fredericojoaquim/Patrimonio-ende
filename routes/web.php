@@ -171,6 +171,8 @@ Route::get('historico-ocorrencia-materia/editar/{id}', [OcorrenciaEletronico ::c
 Route::put('historico-ocorrencia-materia/update', [OcorrenciaEletronico::class,'update'])->name('ocorrencia-eletronico.update');
 Route::get('material-electronico/comprovativo/{id}', [MaterialElectronicoController::class,'comprovativo']);
 
+Route::get('material-electronico/movel-vencido/{id}', [MaterialElectronicoController::class,'movel_vencido']);
+
 
 });
 

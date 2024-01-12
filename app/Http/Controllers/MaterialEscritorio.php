@@ -82,7 +82,6 @@ class MaterialEscritorio extends Controller
     public function create()
     {
         $fornecedores=FornecedorMovel::all();
-       
         $dep=Departamento::all();
         $t=TipoAquisicaoModel::all();
 

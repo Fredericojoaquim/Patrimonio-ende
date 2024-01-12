@@ -54,6 +54,12 @@
                                  {{$total_notificacao_mat_eletronico}}
                                 
                                 @endif
+
+                                @if(isset($total_notificao_eletronico) && $total_notificao_eletronico!=0 )
+
+                                {{$total_notificao_eletronico}}
+                               
+                               @endif
                             <span class="indicator"></span></a>
                             <ul class="dropdown-menu dropdown-menu-right notification-dropdown">
                                 <li>
@@ -94,6 +100,24 @@
                                             @endforeach
                                             
                                         @endif
+
+
+                                        @if(isset($not_mat_eletronico))
+                                        @foreach($not_mat_eletronico as $n)
+                                       
+
+                                        <a href="{{url("material-electronico/movel-vencido/$n->materiaeletronico_id")}}" class="list-group-item list-group-item-action active">
+                                            <div class="notification-info">
+                                                <div class="notification-list-user-img"><img src="{{asset('assets/images/avatar-2.jpg')}}" alt="" class="user-avatar-md rounded-circle"></div>
+                                                <div class="notification-list-user-block"><span class="notification-list-user-name">Vida útil expirado</span>{{$n->descricao}}. Clique aqui para ver detalhes
+                                                    <div class="notification-date">2 min ago</div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                            
+                                        @endforeach
+                                        
+                                    @endif
 
   
                                         </div>
@@ -497,6 +521,34 @@
                                                     </li>
                                                     <li class="nav-item">
                                                         <a class="nav-link" href="{{url('motivo-abate/consultar')}}">Consultar</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-101_" aria-controls="submenu-101_">Tipo de Seguro</a>
+                                            <div id="submenu-101_" class="collapse submenu" style="">
+                                                <ul class="nav flex-column">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="{{url('')}}">Registar</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="{{url('')}}">Consultar</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-102_" aria-controls="submenu-101_">Pre-Definições</a>
+                                            <div id="submenu-102_" class="collapse submenu" style="">
+                                                <ul class="nav flex-column">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="{{url('')}}">Registar</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="{{url('')}}">Consultar</a>
                                                     </li>
                                                 </ul>
                                             </div>
