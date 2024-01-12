@@ -85,10 +85,15 @@
                                                 </div>
 
 
-                                                <div class="form-group col-lg-12 col-md-12 margin-input">
+                                                <div class="form-group col-lg-6 col-md-6 margin-input">
                                                     <label for="dimensao">Dimensões</label>
                                                     <input id="dimensao" value="{{$te->dimensao}}" name="dimensao" type="text" placeholder="" class="form-control">
                                                     
+                                                </div>
+
+                                                <div class="form-group col-lg-6">
+                                                    <label for="inputText7" class="col-form-label">Vida útil (em Ano)</label>
+                                                    <input id="vidautil" value="{{$te->vida_util}}"  onkeypress="return somenteNumeros(event)" name="vidautil" type="text" class="form-control" placeholder="">
                                                 </div>
 
                                                

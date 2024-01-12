@@ -120,6 +120,8 @@ Route::put('imoveis/terreno/update', [TerrenoController::class,'update']);
 Route::get('terreno/comprovativo/{id}', [TerrenoController::class,'comprovativo']);
 Route::get('imoveis/terreno/pesquisar', [TerrenoController::class,'pesquisar']);
 
+Route::get('terreno/terreno-vencido/{id}', [TerrenoController::class,'terreno_vencido']);
+
 //residencia
 Route::get('residencia/create', [ResidenciaController::class,'create']);
 Route::get('residencia/listar', [ResidenciaController::class,'index'])->name('residencia.listar');

@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\HelperController;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\MotivoAbate;
+use DateTime;
+use App\Models\NotificacaoTerreno as Notificacao;
 
 
 class TerrenoController extends Controller
@@ -20,13 +22,16 @@ class TerrenoController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+     function __construct() {
+        $this->calcularData();
+    }
+
      public function terrenos()
      {
         $te=DB::table('terrenos')
          ->join('endereco','terrenos.endereco_id','=','endereco.id')
          ->join('tipoaquisicao','tipoaquisicao.id','=','terrenos.tipo_aquisicao')
-        
-         ->where('trabalhos.estado','=','ativo')
+         ->where('terrenos.estado','=','ativo')
          ->select('terrenos.*','terrenos.id as codigo','endereco.*')
          ->get();
 
@@ -44,7 +49,6 @@ class TerrenoController extends Controller
          ->where('terrenos.estado','=','ativo')
          ->select('terrenos.*','terrenos.id as codigo','endereco.*','tipoaquisicao.descricao as desctipo')
          ->get();
-
          return $te;
 
      }
@@ -53,10 +57,13 @@ class TerrenoController extends Controller
 
     public function index()
     {
+        $not_terrenos=$this->Notificacoes();
+        $total_notificao_terrenos=$not_terrenos->count();
+
         $te=$this->terrenos();
       
 
-         return view('terreno.consultar',['te'=>$te]);
+         return view('terreno.consultar',['te'=>$te,'not_terrenos'=>$not_terrenos,'total_notificao_terreno'=>$total_notificao_terrenos]);
     }
 
     /**
@@ -123,6 +130,7 @@ class TerrenoController extends Controller
         $t->tipo_aquisicao=addslashes($request->tipoaquisicao);
         $t->data_aquisicao=addslashes($request->dataaquisicao);
         $t->endereco_id=addslashes($e->id);
+        $t->vida_util=addslashes($request->vidautil);
         $t->estado='ativo';
 
         $t->save();
@@ -215,10 +223,11 @@ class TerrenoController extends Controller
         'dimensao'=>addslashes($request->dimensao),
         'tipo_aquisicao'=>addslashes($request->tipoaquisicao),
         'data_aquisicao'=>addslashes($request->dataaquisicao),
+        'vida_util'=>addslashes($request->vidautil),
     ];
 
     $te= Terreno::findOrFail(addslashes($request->id));
-    $te->update( $aux_ter);
+    $te->update($aux_ter);
 
     return view('terreno.consultar',['te'=>$this->terrenos(),'sms'=>'Registo alterado com sucesso']);
         
@@ -304,6 +313,108 @@ class TerrenoController extends Controller
         $abate=MotivoAbate::all();
         return view('abates.terrenos',['abates'=>$abate,'te'=>$te]);
     }
+
+
+    public function terreno_vencido($id)
+    {
+        $ve=$this->terreno(addslashes($id));
+       
+        $id_notificacao=$this->notificacaoByTerreno($id)->id;
+        $notificacao=Notificacao::findOrFail( $id_notificacao);
+        $s=['estado'=>'visto'];
+        $notificacao->update($s);
+        return view('terreno.terrenovencido',['ve'=> $ve]);
+
+    }
+
+
+    public function inserirNotificao($id)
+    {
+        $n=new Notificacao();
+        $n->terreno_id=$id;
+        $n->descricao="O tempo de vida útil para este Móvel terminou";
+        $n->estado="não visto";
+        $n->save();
+        return true;
+    }
+
+
+    public function diasEmAno($anos, $dias)
+    {
+        $result=$dias/365;
+        return $result;
+
+    }
+
+    public function TerrenoNotificado($id)
+    {
+            $p=DB::table('_notificacao_terreno')
+            ->join('terrenos','terrenos.id','=','_notificacao_terreno.terreno_id')
+            ->where('_notificacao_terreno.id','=',$id)
+            ->select('_notificacao_terreno.*')
+            ->get();
+
+            if( $p->count()>0)
+            {
+                return true;
+            }
+
+            return false;
+    
+         
+    }
+
+
+    public function notificacaoByTerreno($id)
+    {
+        $p=DB::table('_notificacao_terreno')
+        ->join('terrenos','terrenos.id','=','_notificacao_terreno.terreno_id')
+        ->where('_notificacao_terreno.id','=',$id)
+        ->select('_notificacao_terreno.*')
+        ->get();
+
+            return  $p->first();      
+    }
+
+
+    public function Notificacoes()
+    {
+        $p=DB::table('_notificacao_terreno')
+        ->join('terrenos','terrenos.id','=','_notificacao_terreno.terreno_id')
+        ->where('_notificacao_terreno.estado','=','não visto')
+        ->select('_notificacao_terreno.*')
+        ->get();
+            return $p;
+    }
+
+
+    public function calcularData()
+    {
+        $te=Terreno::all();
+       // $v=Veiculo::findOrFail(8);
+        foreach($te as $t)
+        {
+            $dataAquisicao = $t->dataAquisicao;
+            $hoje=new DateTime();
+            $dateaquisicao=new DateTime($t->data_aquisicao);
+            $diferenca=$hoje->diff($dateaquisicao);
+            $vida_util=$t->vida_util;
+            $dif_em_ano=$this->diasEmAno($vida_util, $diferenca->days);
+            
+            if(!$this->TerrenoNotificado($t->id))
+            {
+               
+                if($dif_em_ano-$vida_util>=0)
+                {
+                    $this->inserirNotificao($t->id);
+
+                }
+
+            }
+        }   
+    }
+
+
 
 
 }

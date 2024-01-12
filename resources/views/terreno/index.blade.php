@@ -84,11 +84,17 @@
                                                 </div>
 
 
-                                                <div class="form-group col-lg-12 col-md-12 margin-input">
+                                                <div class="form-group col-lg-6 col-md-12 margin-input">
                                                     <label for="dimensao">Dimensões</label>
-                                                    <input id="dimensao" name="dimensao" type="text" placeholder="" class="form-control">
-                                                    
+                                                    <input id="dimensao" name="dimensao" type="text" placeholder="" class="form-control">  
                                                 </div>
+
+                                                <div class="form-group col-lg-6">
+                                                    <label for="inputText7" class="col-form-label">Vida útil (em Ano)</label>
+                                                    <input id="vidautil"  onkeypress="return somenteNumeros(event)" name="vidautil" type="text" class="form-control" placeholder="">
+                                                </div>
+
+                                               
 
                                                
                                             </div>  
@@ -149,6 +155,7 @@
                      </div>
 
 <script src="{{url('assets/vendor/jquery/jquery-3.3.1.min.js')}}"></script> 
+
 
 <script>
 

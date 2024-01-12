@@ -201,7 +201,7 @@
                                  var Custo_aquisição_euro=document.getElementById("Custo_aquisição_euro");
                                  var vidautil=document.getElementById("vidautil");
                                  const today = new Date();
-                                 const hoje=today.toLocaleDateString();
+                                 
                               
                                 
                                  

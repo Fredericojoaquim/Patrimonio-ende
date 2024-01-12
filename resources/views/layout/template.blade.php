@@ -60,6 +60,12 @@
                                 {{$total_notificao_eletronico}}
                                
                                @endif
+
+                               @if(isset($total_notificao_terreno) && $total_notificao_terreno!=0 )
+
+                               {{$total_notificao_terreno}}
+                              
+                              @endif
                             <span class="indicator"></span></a>
                             <ul class="dropdown-menu dropdown-menu-right notification-dropdown">
                                 <li>
@@ -118,6 +124,24 @@
                                         @endforeach
                                         
                                     @endif
+
+
+                                    @if(isset($not_terrenos))
+                                    @foreach($not_terrenos as $n)
+                                   
+
+                                    <a href="{{url("terreno/terreno-vencido/$n->terreno_id")}}" class="list-group-item list-group-item-action active">
+                                        <div class="notification-info">
+                                            <div class="notification-list-user-img"><img src="{{asset('assets/images/avatar-2.jpg')}}" alt="" class="user-avatar-md rounded-circle"></div>
+                                            <div class="notification-list-user-block"><span class="notification-list-user-name">Vida útil expirado</span>{{$n->descricao}}. Clique aqui para ver detalhes
+                                                <div class="notification-date">2 min ago</div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                        
+                                    @endforeach
+                                    
+                                @endif
 
   
                                         </div>
