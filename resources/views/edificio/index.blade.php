@@ -213,6 +213,7 @@ $(document).ready(function(){
         var municipio=document.getElementById("municipio");
         var bairro=document.getElementById("bairro");
         var rua=document.getElementById("rua");
+        var vidautil=document.getElementById("vidautil");
  
 
         
@@ -311,6 +312,16 @@ $(document).ready(function(){
         }else{
             erro.setAttribute('hidden', true);
     }
+
+    if(vidautil.value == ''){
+        erro.innerHTML="Por favor preencha o campo Vida Util";
+        erro.removeAttribute('hidden');
+        vidautil.focus();
+            return false;
+        }else{
+     erro.setAttribute('hidden', true);
+             
+     }
 
 
     

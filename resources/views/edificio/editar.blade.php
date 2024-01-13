@@ -86,16 +86,22 @@
 
                                                 <div class="form-group col-lg-6 col-md-12 margin-input">
                                                     <label for="numandar">Nº andar</label>
-                                                    <input id="numandar" value="{{$ed->num_andar}}" name="numandar" type="text" placeholder="" class="form-control">
+                                                    <input id="numandar" onkeypress="return somenteNumeros(event)" value="{{$ed->num_andar}}" name="numandar" type="text" placeholder="" class="form-control">
                                                     
                                                 </div>
 
 
                                                 <div class="form-group col-lg-6 col-md-12 margin-input">
                                                     <label for="numapartamento">Nº Apartamento</label>
-                                                    <input id="numapartamento" value="{{$ed->num_apartamento}}" name="numapartamento" type="text" placeholder="" class="form-control">
+                                                    <input id="numapartamento" onkeypress="return somenteNumeros(event)" value="{{$ed->num_apartamento}}" name="numapartamento" type="text" placeholder="" class="form-control">
                                                     
                                                 </div>
+
+                                                <div class="form-group col-lg-12">
+                                                    <label for="vidautil" class="col-form-label">Vida útil (em Ano)</label>
+                                                    <input id="vidautil" value="{{$ed->vida_util}}"  onkeypress="return somenteNumeros(event)" name="vidautil" type="text" class="form-control" placeholder="">
+                                                </div>
+
                                             </div>  
                                             <h4 class="card-header myh4">Endereço</h3>  
                                             <div class="row">
@@ -211,6 +217,7 @@ $(document).ready(function(){
         var municipio=document.getElementById("municipio");
         var bairro=document.getElementById("bairro");
         var rua=document.getElementById("rua");
+        var vidautil=document.getElementById("vidautil");
  
 
         
@@ -310,6 +317,15 @@ $(document).ready(function(){
             erro.setAttribute('hidden', true);
     }
 
+    if(vidautil.value == ''){
+        erro.innerHTML="Por favor preencha o campo Vida Util";
+        erro.removeAttribute('hidden');
+        vidautil.focus();
+            return false;
+        }else{
+     erro.setAttribute('hidden', true);
+             
+     }
 
     
     if(provincia.value == 'Selecione'){

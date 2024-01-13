@@ -92,7 +92,6 @@ class EdificioController extends Controller
         $ed=$this->edificios();
         $not_edificio=$this->Notificacoes();
         $total_notificao_edificio=$not_edificio->count();
-        
          return view('edificio.consultar',['edificio'=>$ed,'not_edificio'=> $not_edificio, 'total_notificao_edificio'=>$total_notificao_edificio]);
         
     }
@@ -162,6 +161,7 @@ class EdificioController extends Controller
         $ed->num_apartamento=addslashes($request->numapartamento);
         $ed->num_andar=addslashes($request->numandar);
         $ed->endereco_id=addslashes($e->id);
+        $ed->vida_util=addslashes($request->vidautil);
         $ed->estado='ativo';
         
         $ed->save();
@@ -252,6 +252,7 @@ class EdificioController extends Controller
         'num_apartamento'=>addslashes($request->numapartamento),
         'num_andar'=>addslashes($request->numandar),
         'endereco_id'=>addslashes($e->id),
+        'vida_util'=>addslashes($request->vidautil)
         ];
 
         $ed->update($auxed);
@@ -320,7 +321,7 @@ class EdificioController extends Controller
         $notificacao=Notificacao::findOrFail( $id_notificacao);
         $s=['estado'=>'visto'];
         $notificacao->update($s);
-        return view('residencia.residenciaExpirado',['ed'=> $ed]);
+        return view('edificio.edificioVencido',['ed'=> $ed]);
 
     }
 
