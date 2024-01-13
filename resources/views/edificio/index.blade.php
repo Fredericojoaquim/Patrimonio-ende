@@ -214,9 +214,6 @@ $(document).ready(function(){
         var bairro=document.getElementById("bairro");
         var rua=document.getElementById("rua");
         var vidautil=document.getElementById("vidautil");
- 
-
-        
         var erro= document.getElementById("erro-registar");
 
         if(numimobilizado.value == ''){
@@ -291,7 +288,19 @@ $(document).ready(function(){
             return false;
         }else{
             erro.setAttribute('hidden', true);
-        }
+     }
+
+    if(diferencaData(dataaquisicao.value) > 0){
+                erro.innerHTML="A data de Aquisição não pode ser uma data futura";
+                erro.removeAttribute('hidden');
+                dataaquisicao.focus();
+                return false;
+     }else{
+                
+         erro.setAttribute('hidden', true);
+               // formregistar.submit();
+             
+    }
 
     if(numandar.value == ''){
             
@@ -322,9 +331,7 @@ $(document).ready(function(){
      erro.setAttribute('hidden', true);
              
      }
-
-
-    
+ 
     if(provincia.value == 'Selecione'){
             
             erro.innerHTML="Por favor selecione uma  província";

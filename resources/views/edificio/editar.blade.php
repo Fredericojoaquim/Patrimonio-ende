@@ -297,6 +297,17 @@ $(document).ready(function(){
             erro.setAttribute('hidden', true);
         }
 
+        if(diferencaData(dataaquisicao.value) > 0){
+                erro.innerHTML="A data de Aquisição não pode ser uma data futura";
+                erro.removeAttribute('hidden');
+                dataaquisicao.focus();
+                return false;
+         }else{
+                
+         erro.setAttribute('hidden', true);
+               // formregistar.submit();      
+        }
+
     if(numandar.value == ''){
             
             erro.innerHTML="Por favor preencha o campo Nº andar";
