@@ -177,10 +177,21 @@
                                              </div>
 
 
-                                            <div class="form-group col-lg-6">
-                                                    <label for="inputText4" class="col-form-label">Cobertura</label>
-                                                    <input id="cobertura" type="text"  name="cobertura"  class="form-control" placeholder="">
-                                            </div>
+                                             <div class="form-group col-lg-6 col-md-12 margin-input">
+                                                <label for="inputText4">Tipo seguro</label>
+                                               <select name="tiposeguro"  id="tiposeguro" class="form-control form-control-sm">
+                                                   <option value="Selecione">Selecione</option>
+                                                   @if(isset($tipo))
+                                                   
+                                                       @foreach($tiposeguro as $t)
+                                                       <option value="{{$t->id}}">{{$t->descricao}}</option>
+                                                       @endforeach
+                                               
+                                                    @endif
+                                               
+                                               </select>
+                                           </div>
+                                           
 
                                             <div class="form-group col-lg-6 margin-input">
                                                     <label for="inputPassword">Apólice</label>

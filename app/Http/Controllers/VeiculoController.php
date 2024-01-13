@@ -11,6 +11,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\MotivoAbate;
 use App\Models\NotificacaoVeiculo as Notificao;
 use DateTime;
+use App\Models\TipoSeguro;
 
 
 class VeiculoController extends Controller
@@ -59,11 +60,12 @@ class VeiculoController extends Controller
      */
     public function create()
     {
+        $tiposeguro=TipoSeguro::all();
         $dep=Departamento::all();
         $t= TipoAquisicaoModel::all();
         $not_veiculo=$this->Notificacoes();
         $total_notificao=$not_veiculo->count();
-        return view('veiculo.index',['tipo'=>$t, 'dep'=>$dep,'not_veiculo'=>$not_veiculo,'total_notificacao'=>$total_notificao]);
+        return view('veiculo.index',['tipo'=>$t, 'dep'=>$dep,'not_veiculo'=>$not_veiculo,'total_notificacao'=>$total_notificao,'tiposeguro'=> $tiposeguro]);
     }
 
     /**
@@ -100,10 +102,10 @@ class VeiculoController extends Controller
         }
 
         $valor_seguro=null;
-       $nome_seguradora=""; $cobertura=null;$apolice=null; $datainicio=null; $datafim=null;
+       $nome_seguradora=""; $tiposeguro=null;$apolice=null; $datainicio=null; $datafim=null;
        if(!is_null($request->cobertura))
        {
-        $cobertura=addslashes($request->cobertura);
+        $tiposeguro=addslashes($request->cobertura);
 
        }
        if(!is_null($request->nome_seguradora))
@@ -147,13 +149,13 @@ class VeiculoController extends Controller
         $v->vida_util=addslashes($request->vidautil);
         $v->dataAquisicao=addslashes($request->dataAquisicao);
         $v->nome_segurador= $nome_seguradora;
-        $v->cobertura=$cobertura;
         $v->valor_seguro=$valor_seguro;
         $v->apolice=$apolice;
         $v->data_inicio= $datainicio;
         $v->data_fim=$datafim;
         $v->departamento_id=addslashes($request->departamento);
         $v->estado='ativo';
+        $v->tiposguro_id=$tiposeguro;
         $v->save();
 
         /*if($this->compararData($request->dataAquisicao))
@@ -166,7 +168,8 @@ class VeiculoController extends Controller
 
         $dep=Departamento::all();
         $t= TipoAquisicaoModel::all();
-        return view('veiculo.index',['sms'=>'Veículo registada com sucesso', 'dep'=>$dep,'tipo'=>$t]);
+        $tiposeguro=TipoSeguro::all();
+        return view('veiculo.index',['sms'=>'Veículo registada com sucesso', 'dep'=>$dep,'tipo'=>$t,'tiposeguro'=> $tiposeguro]);
 
     }
 
@@ -204,11 +207,11 @@ class VeiculoController extends Controller
     {
         $h=new HelperController();
        $valor_seguro=null;
-       $nome_seguradora=""; $cobertura=null;$apolice=null; $datainicio=null; $datafim=null;
+       $nome_seguradora=""; $tiposeguro=null;$apolice=null; $datainicio=null; $datafim=null;
 
-       if(!is_null($request->cobertura))
+       if(!is_null($request->tiposeguro))
        {
-        $cobertura=addslashes($request->cobertura);
+        $tiposeguro=addslashes($request->tiposeguro);
 
        }
        if(!is_null($request->nome_seguradora))
@@ -279,14 +282,14 @@ class VeiculoController extends Controller
             'custo_aquisicao_usd'=>$Custo_aquisição_usd,
             'custo_aquisicao_euro'=>$Custo_aquisição_euro,
             'nome_segurador'=>$nome_seguradora,
-            'cobertura'=>$cobertura,
             'valor_seguro'=>$valor_seguro,
             'apolice'=>$apolice,
             'data_inicio'=>$datainicio,
             'data_fim'=> $request->datafim,
             'departamento_id'=>addslashes($request->departamento),
             'vida_util'=>addslashes($request->vidautil),
-            'dataAquisicao'=>addslashes($request->dataAquisicao)
+            'dataAquisicao'=>addslashes($request->dataAquisicao),
+            'tiposguro_id'=>$tiposeguro
         ];
 
         $v=Veiculo::findOrFail(addslashes($request->id));
@@ -315,7 +318,8 @@ class VeiculoController extends Controller
         {
             $dep=Departamento::all();
             $t= TipoAquisicaoModel::all();
-            return view('veiculo.editar',['v'=>$p->first(),'tipo'=>$t, 'dep'=>$dep]);
+            $tiposeguro=TipoSeguro::all();
+            return view('veiculo.editar',['v'=>$p->first(),'tipo'=>$t, 'dep'=>$dep,'tiposeguro'=>$tiposeguro]);
 
         }
 

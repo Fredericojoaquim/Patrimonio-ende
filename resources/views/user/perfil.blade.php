@@ -34,16 +34,17 @@
         <button class="my_link"  data-toggle="modal" data-target="#exampleModal">Alterar foto</button>
     </div>
     <div class="text-center">
-        <h2 class="font-24 mb-0">{{Auth::user()->name}}</h2>
+        <h2 class="font-24 mb-0">{{$user->name}}</h2>
         <p>{{Auth::user()->getPermissionNames()->first()}}</p>
     </div>
 </div>
 <div class="card-body border-top">
     <h3 class="font-16">Informação de Contacto</h3>
+    <a class="my_link"  href="{{url('user/perfil/minhaConta')}}">Alterar meus dados</a> <br> <br>
     <div class="">
         <ul class="list-unstyled mb-0">
-        <li class="mb-2"><i class="fas fa-fw fa-envelope mr-2"></i>{{Auth::user()->email}}</li>
-        <li class="mb-0"><i class="fas fa-fw fa-phone mr-2"></i>(+244) {{Auth::user()->telefone}}</li>
+        <li class="mb-2"><i class="fas fa-fw fa-envelope mr-2"></i>{{$user->email}}</li>
+        <li class="mb-0"><i class="fas fa-fw fa-phone mr-2"></i>(+244) {{$user->telefone}}</li>
     </ul>
     </div>
 </div>

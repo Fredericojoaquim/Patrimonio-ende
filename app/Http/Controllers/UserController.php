@@ -183,7 +183,8 @@ class UserController extends Controller
 
 
     public function perfil (){
-        return view('user.perfil');
+        $u=User::findOrFail(Auth::user()->id);
+        return view('user.perfil',['user'=>$u]);
     }
 
     public function alterarFoto(Request $request)
@@ -213,5 +214,41 @@ class UserController extends Controller
         }
     }
 
+    }
+
+
+    public function alterarMinhaConta()
+    {
+       
+        $u=User::findOrFail(Auth::user()->id);
+        return view('user.alterarDados',['user'=>$u]);
+
+    }
+
+
+    public function MinhaContaUpdate(Request $request)
+    {
+      
+        $s="";
+
+        if(!is_null($request->password)){
+         
+            $s=[
+                'name'=> addslashes($request->name),
+                'telefone'=> addslashes($request->telefone),
+                'password'=> Hash::make($request->password)
+            ];
+        }else{
+            $s=[
+                'name'=> addslashes($request->name),
+                'telefone'=> addslashes($request->telefone)
+            ];
+
+        }
+
+        $u=User::findOrFail(Auth::user()->id);
+        $u->update($s); 
+        return view('user.perfil',['sms'=>'Dados alterado com sucesso','user'=>$u]);
+        
     }
 }

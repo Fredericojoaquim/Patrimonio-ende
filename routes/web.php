@@ -17,6 +17,7 @@ use App\Http\Controllers\MotivoAbateController;
 use App\Http\Controllers\OcorrenciaEletronico;
 use App\Http\Controllers\AbateVeiculo;
 use App\Http\Controllers\AbateController;
+use App\Http\Controllers\TipoSeguro;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -82,6 +83,15 @@ Route::get('motivo-abate/editar/{id}', [MotivoAbateController::class,'edit']);
 Route::put('motivo-abate/update', [MotivoAbateController::class,'update']);
 Route::get('motivo-abate/pesquisar', [MotivoAbateController::class,'pesquisar']);
 
+//tipo seguros
+Route::get('tipo-seguro/create', [TipoSeguro::class,'create']);
+Route::post('tipo-seguro/salvar', [TipoSeguro::class,'store']);
+Route::get('tipo-seguro/consultar', [TipoSeguro::class,'index']);
+Route::get('tipo-seguro/editar/{id}', [TipoSeguro::class,'edit']);
+Route::put('tipo-seguro/alterar', [TipoSeguro::class,'update']);
+Route::get('tipo-seguro/pesquisar', [TipoSeguro::class,'pesquisar']);
+
+
 });
 
 
@@ -143,8 +153,9 @@ Route::get('edificio/edificio-vencida/{id}', [EdificioController::class,'Edifici
 });
 
 Route::get('user/perfil', [UserController::class,'perfil'])->middleware('auth');
+Route::get('user/perfil/minhaConta', [UserController::class,'alterarMinhaConta'])->middleware('auth');
 Route::post('user/perfil/alterar-foto', [UserController::class,'alterarFoto'])->middleware('auth');
-
+Route::put('user/perfil/update', [UserController::class,'MinhaContaUpdate']);
 //login
 Route::post('/login', [AuthenticatedSessionController::class,'store']);
 
