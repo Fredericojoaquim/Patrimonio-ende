@@ -66,6 +66,18 @@
                                {{$total_notificao_terreno}}
                               
                               @endif
+
+                              @if(isset($total_notificao_residencia) && $total_notificao_residencia!=0 )
+
+                              {{$total_notificao_residencia}}
+                             
+                             @endif
+
+                             @if(isset($total_notificao_edificio) && $total_notificao_edificio!=0 )
+
+                             {{$total_notificao_edificio}}
+                            
+                            @endif
                             <span class="indicator"></span></a>
                             <ul class="dropdown-menu dropdown-menu-right notification-dropdown">
                                 <li>
@@ -142,6 +154,44 @@
                                     @endforeach
                                     
                                 @endif
+
+
+
+                                @if(isset($not_residencia))
+                                @foreach($not_residencia as $n)
+                               
+
+                                <a href="{{url("terreno/residencia-vencida/$n->residencia_id")}}" class="list-group-item list-group-item-action active">
+                                    <div class="notification-info">
+                                        <div class="notification-list-user-img"><img src="{{asset('assets/images/avatar-2.jpg')}}" alt="" class="user-avatar-md rounded-circle"></div>
+                                        <div class="notification-list-user-block"><span class="notification-list-user-name">Vida útil expirado</span>{{$n->descricao}}. Clique aqui para ver detalhes
+                                            <div class="notification-date">2 min ago</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                    
+                                @endforeach
+                                
+                            @endif
+
+
+                            @if(isset($not_edificio))
+                            @foreach($not_edificio as $n)
+                           
+
+                            <a href="{{url("edificio/edificio-vencida/$n->edificio_id")}}" class="list-group-item list-group-item-action active">
+                                <div class="notification-info">
+                                    <div class="notification-list-user-img"><img src="{{asset('assets/images/avatar-2.jpg')}}" alt="" class="user-avatar-md rounded-circle"></div>
+                                    <div class="notification-list-user-block"><span class="notification-list-user-name">Vida útil expirado</span>{{$n->descricao}}. Clique aqui para ver detalhes
+                                        <div class="notification-date">2 min ago</div>
+                                    </div>
+                                </div>
+                            </a>
+                                
+                            @endforeach
+                            
+                        @endif
+
 
   
                                         </div>

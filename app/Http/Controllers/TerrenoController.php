@@ -332,7 +332,7 @@ class TerrenoController extends Controller
     {
         $n=new Notificacao();
         $n->terreno_id=$id;
-        $n->descricao="O tempo de vida útil para este Móvel terminou";
+        $n->descricao="O tempo de vida útil para este terreno terminou";
         $n->estado="não visto";
         $n->save();
         return true;

@@ -130,7 +130,7 @@ Route::get('residencia/editar/{id}', [ResidenciaController::class,'edit']);
 Route::put('residencia/update', [ResidenciaController::class,'update']);
 Route::get('residencia/pesquisar', [ResidenciaController::class,'pesquisar']);
 Route::get('imoveis/residencia/comprovativo/{id}', [ResidenciaController::class,'comprovativo']);
-
+Route::get('terreno/residencia-vencida/{id}', [ResidenciaController::class,'Residencia_vencida']);
 //Edifício
 Route::get('imoveis/edificio/create', [EdificioController::class,'create']);
 Route::get('imoveis/edificio/consultar', [EdificioController::class,'index']);
@@ -139,6 +139,7 @@ Route::get('imoveis/edificio/editar/{id}', [EdificioController::class,'edit']);
 Route::put('imoveis/edificio/update', [EdificioController::class,'update']);
 Route::get('imoveis/edificio/pesquisar', [EdificioController::class,'pesquisar']);
 Route::get('imoveis/edificio/comprovativo/{id}', [EdificioController::class,'comprovativo']);
+Route::get('edificio/edificio-vencida/{id}', [EdificioController::class,'Edificio_vencido']);
 });
 
 Route::get('user/perfil', [UserController::class,'perfil'])->middleware('auth');

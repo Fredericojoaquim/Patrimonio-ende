@@ -10,6 +10,9 @@ use App\Models\TipoAquisicaoModel;
 use App\Http\Controllers\HelperController;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\MotivoAbate;
+use App\Models\NotificacaoResidencia as Notificacao;
+use DateTime;
+
 
 class ResidenciaController extends Controller
 {
@@ -18,6 +21,10 @@ class ResidenciaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     function __construct() {
+        $this->calcularData();
+    }
 
      public function residencias()
      {
@@ -48,7 +55,7 @@ class ResidenciaController extends Controller
         ->join('endereco','endereco.id','=','residencia.endereco_id')
         ->join('tipoaquisicao','tipoaquisicao.id','=','residencia.tipo_aquisicao')
        ->where('residencia.id','=',addslashes($id))
-        ->select('residencia.*','endereco.*','residencia.id as codigo','residencia.descricao as desc')
+        ->select('residencia.*','endereco.*','residencia.id as codigo','residencia.descricao as desc','tipoaquisicao.descricao as tipo_desc')
         ->get();
 
         return $p;
@@ -70,8 +77,11 @@ class ResidenciaController extends Controller
 
     public function index()
     {
+        $not_residencia=$this->Notificacoes();
+        $total_notificao_residencia=$not_residencia->count();
+
         $p=$this->residencias();
-         return view('residencia.consultar',['res'=>$p]);
+         return view('residencia.consultar',['res'=>$p,'not_residencia'=>$not_residencia, 'total_notificao_residencia'=>$total_notificao_residencia]);
 
     }
 
@@ -146,6 +156,7 @@ class ResidenciaController extends Controller
         $r->num_compartimento=addslashes($request->numcompartimento);
         $r->endereco_id=addslashes($e->id);
         $r->estado='ativo';
+        $r->vida_util=addslashes($request->vidautil);
         $r->save();
 
         return view('residencia.index',['sms'=>'Residencia registada com sucesso']);
@@ -242,6 +253,7 @@ class ResidenciaController extends Controller
             'dimensao'=>addslashes($request->dimensao),
             'num_compartimento'=>addslashes($request->numcompartimento),
             'endereco_id'=>addslashes($e->id),
+            'vida_util'=>addslashes($request->vidautil),
         ];
         $res->update($aux_res);
 
@@ -302,5 +314,105 @@ class ResidenciaController extends Controller
         $abate=MotivoAbate::all();
         return view('abates.residencia',['abates'=>$abate,'res'=>$res]);
     }
+
+
+    public function Residencia_vencida($id)
+    {
+        $re=$this->residencia(addslashes($id));
+      
+       
+        $id_notificacao=$this->notificacaoByResidencia($id)->id;
+        $notificacao=Notificacao::findOrFail( $id_notificacao);
+        $s=['estado'=>'visto'];
+        $notificacao->update($s);
+        return view('residencia.residenciaExpirado',['ve'=> $re]);
+
+    }
+
+    public function inserirNotificao($id)
+    {
+        $n=new Notificacao();
+        $n->residencia_id=$id;
+        $n->descricao="O tempo de vida útil para esta Residencia terminou";
+        $n->estado="não visto";
+        $n->save();
+        return true;
+    }
+
+
+    public function diasEmAno($anos, $dias)
+    {
+        $result=$dias/365;
+        return $result;
+
+    }
+
+    public function ResidenciaNotificado($id)
+    {
+            $p=DB::table('_notificacao_residencia')
+            ->join('residencia','residencia.id','=','_notificacao_residencia.residencia_id')
+            ->where('_notificacao_residencia.id','=',$id)
+            ->select('_notificacao_residencia.*')
+            ->get();
+
+            if( $p->count()>0)
+            {
+                return true;
+            }
+
+            return false;
+    
+         
+    }
+
+    public function notificacaoByResidencia($id)
+    {
+        $p=DB::table('_notificacao_residencia')
+            ->join('residencia','residencia.id','=','_notificacao_residencia.residencia_id')
+            ->where('_notificacao_residencia.id','=',$id)
+            ->select('_notificacao_residencia.*')
+            ->get();
+            return  $p->first();      
+    }
+
+
+    public function Notificacoes()
+    {
+
+        $p=DB::table('_notificacao_residencia')
+            ->join('residencia','residencia.id','=','_notificacao_residencia.residencia_id')
+            ->where('_notificacao_residencia.estado','=','não visto')
+            ->select('_notificacao_residencia.*')
+            ->get();
+            return $p;
+    }
+
+
+    public function calcularData()
+    {
+        $te=Residencia::all();
+       // $v=Veiculo::findOrFail(8);
+        foreach($te as $t)
+        {
+            $dataAquisicao = $t->dataAquisicao;
+            $hoje=new DateTime();
+            $dateaquisicao=new DateTime($t->data_aquisicao);
+            $diferenca=$hoje->diff($dateaquisicao);
+            $vida_util=$t->vida_util;
+            $dif_em_ano=$this->diasEmAno($vida_util, $diferenca->days);
+            
+            if(!$this->ResidenciaNotificado($t->id))
+            {
+               
+                if($dif_em_ano-$vida_util>=0)
+                {
+                    $this->inserirNotificao($t->id);
+
+                }
+
+            }
+        }   
+    }
+
 
 }

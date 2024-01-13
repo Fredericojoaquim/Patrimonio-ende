@@ -10,6 +10,9 @@ use App\Models\TipoAquisicaoModel;
 use App\Http\Controllers\HelperController;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\MotivoAbate;
+use App\Models\NotificacaoEdificio as Notificacao;
+use DateTime;
+
 
 
 
@@ -20,6 +23,10 @@ class EdificioController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     function __construct() {
+        $this->calcularData();
+    }
 
      public function edificios()
      {
@@ -83,8 +90,10 @@ class EdificioController extends Controller
     public function index()
     {
         $ed=$this->edificios();
+        $not_edificio=$this->Notificacoes();
+        $total_notificao_edificio=$not_edificio->count();
         
-         return view('edificio.consultar',['edificio'=>$ed]);
+         return view('edificio.consultar',['edificio'=>$ed,'not_edificio'=> $not_edificio, 'total_notificao_edificio'=>$total_notificao_edificio]);
         
     }
 
@@ -300,4 +309,107 @@ class EdificioController extends Controller
 
      
     }
+
+
+    public function Edificio_vencido($id)
+    {
+        $ed=$this->edificio(addslashes($id));
+      
+       
+        $id_notificacao=$this->notificacaoByEdificio($id)->id;
+        $notificacao=Notificacao::findOrFail( $id_notificacao);
+        $s=['estado'=>'visto'];
+        $notificacao->update($s);
+        return view('residencia.residenciaExpirado',['ed'=> $ed]);
+
+    }
+
+
+    public function inserirNotificao($id)
+    {
+        $n=new Notificacao();
+        $n->edificio_id=$id;
+        $n->descricao="O tempo de vida útil para este Edificio terminou";
+        $n->estado="não visto";
+        $n->save();
+        return true;
+    }
+
+
+    public function diasEmAno($anos, $dias)
+    {
+        $result=$dias/365;
+        return $result;
+
+    }
+
+    public function EdificioNotificado($id)
+    {
+            $p=DB::table('notificacao_edificio')
+            ->join('edificio','edificio.id','=','notificacao_edificio.edificio_id')
+            ->where('notificacao_edificio.id','=',$id)
+            ->select('notificacao_edificio.*')
+            ->get();
+
+            if( $p->count()>0)
+            {
+                return true;
+            }
+
+            return false;
+    
+         
+    }
+
+
+    public function notificacaoByEdificio($id)
+    {
+        $p=DB::table('notificacao_edificio')
+            ->join('edificio','edificio.id','=','notificacao_edificio.edificio_id')
+            ->where('notificacao_edificio.id','=',$id)
+            ->select('notificacao_edificio.*')
+            ->get();
+            return  $p->first();      
+    }
+
+
+    public function Notificacoes()
+    {
+        $p=DB::table('notificacao_edificio')
+            ->join('edificio','edificio.id','=','notificacao_edificio.edificio_id')
+            ->where('notificacao_edificio.estado','=','não visto')
+            ->select('notificacao_edificio.*')
+            ->get();
+            return $p;
+    }
+
+
+    public function calcularData()
+    {
+        $te=Edificio::all();
+       // $v=Veiculo::findOrFail(8);
+        foreach($te as $t)
+        {
+            $dataAquisicao = $t->dataAquisicao;
+            $hoje=new DateTime();
+            $dateaquisicao=new DateTime($t->data_aquisicao);
+            $diferenca=$hoje->diff($dateaquisicao);
+            $vida_util=$t->vida_util;
+            $dif_em_ano=$this->diasEmAno($vida_util, $diferenca->days);
+            
+            if(!$this->EdificioNotificado($t->id))
+            {
+               
+                if($dif_em_ano-$vida_util>=0)
+                {
+                    $this->inserirNotificao($t->id);
+
+                }
+
+            }
+        }   
+    }
+
+
+
 }

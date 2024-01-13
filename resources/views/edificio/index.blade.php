@@ -85,15 +85,20 @@
 
                                                 <div class="form-group col-lg-6 col-md-12 margin-input">
                                                     <label for="numandar">Nº andar</label>
-                                                    <input id="numandar" name="numandar" type="text" placeholder="" class="form-control">
+                                                    <input id="numandar" onkeypress="return somenteNumeros(event)" name="numandar" type="text" placeholder="" class="form-control">
                                                     
                                                 </div>
 
 
                                                 <div class="form-group col-lg-6 col-md-12 margin-input">
                                                     <label for="numapartamento">Nº Apartamento</label>
-                                                    <input id="numapartamento" name="numapartamento" type="text" placeholder="" class="form-control">
+                                                    <input id="numapartamento" onkeypress="return somenteNumeros(event)" name="numapartamento" type="text" placeholder="" class="form-control">
                                                     
+                                                </div>
+
+                                                <div class="form-group col-lg-12">
+                                                    <label for="vidautil" class="col-form-label">Vida útil (em Ano)</label>
+                                                    <input id="vidautil"  onkeypress="return somenteNumeros(event)" name="vidautil" type="text" class="form-control" placeholder="">
                                                 </div>
                                             </div>  
                                             <h4 class="card-header myh4">Endereço</h3>  

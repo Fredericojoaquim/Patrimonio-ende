@@ -97,9 +97,15 @@
 
                                                 <div class="form-group col-lg-6 col-md-6\ margin-input">
                                                     <label for="numcompartimento">Nº Compartimento</label>
-                                                    <input id="numcompartimento" value="{{$r->num_compartimento}}" name="numcompartimento" type="text" placeholder="" class="form-control">
+                                                    <input id="numcompartimento" onkeypress="return somenteNumeros(event)" value="{{$r->num_compartimento}}" name="numcompartimento" type="text" placeholder="" class="form-control">
                                                     
                                                 </div>
+
+                                                <div class="form-group col-lg-12">
+                                                    <label for="vidautil" class="col-form-label">Vida útil (em Ano)</label>
+                                                    <input id="vidautil"  onkeypress="return somenteNumeros(event)"  value="{{$r->vida_util}}" name="vidautil" type="text" class="form-control" placeholder="">
+                                                </div>
+
                                             </div>  
                                             <h4 class="card-header myh4">Endereço</h3>  
                                             <div class="row">
@@ -219,6 +225,7 @@ $(document).ready(function(){
         var municipio=document.getElementById("municipio");
         var bairro=document.getElementById("bairro");
         var rua=document.getElementById("rua");
+        var vidautil=document.getElementById("vidautil");
  
 
         
@@ -330,6 +337,16 @@ $(document).ready(function(){
         }else{
             erro.setAttribute('hidden', true);
     }
+
+    if(vidautil.value == ''){
+        erro.innerHTML="Por favor preencha o campo Vida Util";
+        erro.removeAttribute('hidden');
+        vidautil.focus();
+            return false;
+        }else{
+     erro.setAttribute('hidden', true);
+             
+     }
 
 
     
