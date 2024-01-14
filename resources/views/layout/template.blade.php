@@ -619,10 +619,10 @@
                                             <div id="submenu-102_" class="collapse submenu" style="">
                                                 <ul class="nav flex-column">
                                                     <li class="nav-item">
-                                                        <a class="nav-link" href="{{url('')}}">Registar</a>
+                                                        <a class="nav-link" href="{{url('pre-difinicoes/create')}}">Registar</a>
                                                     </li>
                                                     <li class="nav-item">
-                                                        <a class="nav-link" href="{{url('')}}">Consultar</a>
+                                                        <a class="nav-link" href="{{url('pre-definicoe/consultar')}}">Consultar</a>
                                                     </li>
                                                 </ul>
                                             </div>

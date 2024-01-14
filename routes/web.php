@@ -18,6 +18,7 @@ use App\Http\Controllers\OcorrenciaEletronico;
 use App\Http\Controllers\AbateVeiculo;
 use App\Http\Controllers\AbateController;
 use App\Http\Controllers\TipoSeguro;
+use App\Http\Controllers\Predifinicoes;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -90,6 +91,11 @@ Route::get('tipo-seguro/consultar', [TipoSeguro::class,'index']);
 Route::get('tipo-seguro/editar/{id}', [TipoSeguro::class,'edit']);
 Route::put('tipo-seguro/alterar', [TipoSeguro::class,'update']);
 Route::get('tipo-seguro/pesquisar', [TipoSeguro::class,'pesquisar']);
+
+//pre-difinicoes
+Route::get('pre-difinicoes/create', [Predifinicoes::class,'create']);
+Route::post('pre-definicoe/registar', [Predifinicoes::class,'store']);
+Route::get('pre-definicoe/consultar', [Predifinicoes::class,'index']);
 
 
 });
