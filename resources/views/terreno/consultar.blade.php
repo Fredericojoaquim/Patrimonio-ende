@@ -4,15 +4,6 @@
 
 @section('content')
 
-<form action="{{url('imoveis/terreno/pesquisar')}}" >
-    @csrf
-    <div class="input-group rounded">
-        <input type="search" name="num_mobilizado"  class="form-control rounded" placeholder="Nº imobilizado" aria-label="Search" aria-describedby="search-addon" />
-        <button type="button" class="btn btn-primary">
-            <i class="fas fa-search"></i>
-          </button>
-    </div>
-</form>
 
                     <div class="card">
                                     <h3 class="card-header">Listar Terrenos</h3>
@@ -41,7 +32,7 @@
                                                 
                                                 
                                                     <div class="table-responsive">
-                                                        <table id="example" class="table table-striped table-bordered second" style="width:100%">
+                                                        <table id="datatable" class="table table-striped table-bordered second" style="width:100%">
                                                             <thead>
                                                                 <tr>
                                                                     <th>#</th>
@@ -67,7 +58,7 @@
                                                                     <td>{{$e->dimensao}}</td>
                                                                     <td>{{$e->data_aquisicao}}</td>
                                                                     <td>{{$e->finalidade}}</td>
-                                                                    <td>
+                                                                    <td class="d-flex justify-content-center">
                                                                          <a href="{{url("imoveis/terreno/editar/$e->codigo")}}" class="btn btn-sm  active"><i class="fas fa-edit"></i></a>
                                                                        
                                                                          <a href="{{url("terreno/comprovativo/$e->codigo")}}" target="_blank" class="btn btn-sm  active"><i class="fas fa-file"></i></a> 
@@ -86,5 +77,13 @@
 
 
 
-
+<script src="{{asset('assets/vendor/jquery/jquery-3.3.1.min.js')}}"></script>       
+<script>
+                                
+        $(document).ready(function(){
+                                        
+            //codigo para inicializar a data table
+        var table=$('#datatable').DataTable(); 
+        });
+</script>  
 @endsection
