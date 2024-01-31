@@ -38,7 +38,7 @@
                                                 
                                                 
                                                     <div class="table-responsive">
-                                                        <table id="example" class="table table-striped table-bordered second" style="width:100%">
+                                                        <table id="datatable" class="table table-striped table-bordered second" style="width:100%">
                                                             <thead>
                                                                 <tr>
                                                                     <th>#</th>
@@ -175,6 +175,12 @@
 
  <script src="{{asset('assets/vendor/jquery/jquery-3.3.1.min.js')}}"></script>       
         <script>
+
+$(document).ready(function(){
+
+//codigo para inicializar a data table
+ var table=$('#datatable').DataTable(); 
+});
                         
                          function retornaid(id){
                            // alert(id);

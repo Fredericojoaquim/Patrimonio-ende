@@ -3,12 +3,7 @@
 
 
 @section('content')
-<div class="input-group rounded">
-    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
-    <button type="button" class="btn btn-primary">
-        <i class="fas fa-search"></i>
-      </button>
-</div>
+
                     <div class="card">
                                     <h3 class="card-header">Listar Material Electronico</h3>
                                     @if (@isset($sms))
@@ -22,7 +17,7 @@
                                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                             <div class="card">
                                                     <div class="table-responsive">
-                                                        <table id="example" class="table table-striped table-bordered second" style="width:100%">
+                                                        <table id="datatable" class="table table-striped table-bordered second" style="width:100%">
                                                             <thead>
                                                                 <tr>
                                                                     <th>#</th>
@@ -171,6 +166,9 @@
 
 
          $(document).ready(function(){
+            //codigo para inicializar a data table
+              var table=$('#datatable').DataTable(); 
+
          btn_registar=document.getElementById("btn-registar");
          btn_registar.addEventListener('click', (event)=>{
 

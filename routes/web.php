@@ -19,6 +19,7 @@ use App\Http\Controllers\AbateVeiculo;
 use App\Http\Controllers\AbateController;
 use App\Http\Controllers\TipoSeguro;
 use App\Http\Controllers\Predifinicoes;
+use App\Http\Controllers\Pessoal;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -97,7 +98,12 @@ Route::get('pre-difinicoes/create', [Predifinicoes::class,'create']);
 Route::post('pre-definicoe/registar', [Predifinicoes::class,'store']);
 Route::get('pre-definicoe/consultar', [Predifinicoes::class,'index']);
 
-
+//pessoal
+Route::get('pessoal/create', [Pessoal::class,'create']);
+Route::get('pessoal/consultar', [Pessoal::class,'index']);
+Route::post('pessoal/registar', [Pessoal::class,'store']);
+Route::get('pessoal/edit/{id}', [Pessoal::class,'edit']);
+Route::put('pessoal/update', [Pessoal::class,'update']);
 });
 
 

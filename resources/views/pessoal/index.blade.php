@@ -5,7 +5,7 @@
 @section('content')
 
 <div class="card">
-                                    <h3 class="card-header">Alterar Utilizador</h3>
+                                    <h3 class="card-header">Registar Pessoal</h3>
 
                                     <div class="card-body">
                                         @if (@isset($sms))
@@ -27,50 +27,62 @@
                                         <div class="alert alert-danger" id="erro-registar" hidden>
 
                                         </div>
-                                        <form  action = "{{url('user/editar/salvar')}}"   method="Post" enctype="multipart/form-data" id="form-registar">
+                                        <form  action = "{{url('pessoal/registar')}}"   method="Post" enctype="multipart/form-data" id="form-registar">
                                         @csrf
-                                        {{ method_field('PUT') }}
 
                                             <div class="row">
                                                 <div class="form-group col-lg-6 col-md-12">
 
                                                     <label for="inputText3" class="col-form-label">Nome</label>
-                                                    <input id="nome" name="name" value="{{$u->name}}" type="text" class="form-control">
+                                                    <input id="nome" name="nome" type="text" class="form-control">
+                                                </div>
+
+
+                                                <div class="form-group col-lg-6 col-md-12">
+
+                                                    <label for="inputText3" class="col-form-label">Data Nascimento</label>
+                                                    <input id="datanasc" name="datanasc" type="date" class="form-control">
                                                 </div>
 
                                                 <div class="form-group col-lg-6 col-md-12">
+
                                                     <label for="inputText3" class="col-form-label">Email</label>
-                                                    <input id="email" name="email" value="{{$u->email}}" type="email" class="form-control">
+                                                    <input id="email" name="email" type="email" class="form-control">
                                                 </div>
 
-                                               
-
-            
+                                                <div class="form-group col-lg-6 col-md-12">
+                                                    <label for="telefone" class="col-form-label">Telefone</label>
+                                                    <input id="telefone" name="telefone" type="text" class="form-control">
+                                               </div>
 
                                                 <div class="form-group col-lg-6 col-md-12 margin-input">
-                                                    <label for="perfil">Perfil</label>
-                                                   <select name="perfil" id="perfil" class="form-control form-control-sm">
+                                                    <label for="perfil">Departamento</label>
+                                                   <select name="departamento" id="departamento" class="form-control form-control-sm">
                                                        <option value="Selecione">Selecione</option>
-                                                       @if(isset($perfil))
+                                                       @if(isset($dep))
                                                        
-                                                           @foreach($perfil as $p)
-                                                           <option value="{{$p->name}}">{{$p->name}}</option>
+                                                           @foreach($dep as $p)
+                                                           <option value="{{$p->id}}">{{$p->descricao}}</option>
                                                            @endforeach
                                                    
                                                         @endif
-                                                   
                                                    </select>
                                                </div>
 
                                                <div class="form-group col-lg-6 col-md-12">
-                                                <label for="telefone" class="col-form-label">Telefone</label>
-                                                <input id="telefone" value="{{$p->telefone}}" name="telefone" type="text" class="form-control">
-                                            </div>
+                                                <label for="funcao" class="col-form-label">Função</label>
+                                                <input id="funcao" name="funcao" type="text" class="form-control">
+                                              </div>
+
+                                              
+
+                                               
+                                               
                                  
                                             </div>     
                                             <div class="text-right">
-                                                <input id="id" name="id" value="{{$u->id}}" type="hidden" class="form-control">
-                                                <button class="btn btn-success" id="btn-registar" type="submit">Alterar</button>
+                                                <button class="btn btn-success" id="btn-registar" type="submit">Registar</button>
+                                                
                                             </div>
                                             
                                         </form>
@@ -92,8 +104,11 @@ $(document).ready(function(){
 
             var formregistar=document.getElementById("form-registar");
             var nome=document.getElementById("nome");
+            var datanasc=document.getElementById("datanasc");
             var email=document.getElementById("email");
-            var perfil=document.getElementById("perfil");
+            var funcao=document.getElementById("funcao");
+            var telefone=document.getElementById("telefone");
+            var departamento=document.getElementById("departamento");
             var erro= document.getElementById("erro-registar");
 
        
@@ -103,6 +118,16 @@ $(document).ready(function(){
                 erro.innerHTML="Por favor preencha o campo Nome";
                 erro.removeAttribute('hidden');
                 nome.focus();
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+            }
+
+            if(datanasc.value == ''){
+                
+                erro.innerHTML="Por favor preencha a data de nascimento";
+                erro.removeAttribute('hidden');
+                datanasc.focus();
                 return false;
             }else{
                 erro.setAttribute('hidden', true);
@@ -118,22 +143,38 @@ $(document).ready(function(){
                 erro.setAttribute('hidden', true);
             }
 
-           
-
-            
-
-            if(perfil.value == 'Selecione'){
-                
-                erro.innerHTML="Por favor Selecione o perfil do utilizador";
+            if(telefone.value == ''){
+                erro.innerHTML="Por favor preencha o campo telefone";
                 erro.removeAttribute('hidden');
-                perfil.focus();
+                telefone.focus();
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+            }
+
+           
+            if(departamento.value == 'Selecione'){
+                
+                erro.innerHTML="Por favor Selecione o departamento";
+                erro.removeAttribute('hidden');
+                departamento.focus();
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+            }
+
+            if(funcao.value == ''){
+                
+                erro.innerHTML="Por favor Selecione a função";
+                erro.removeAttribute('hidden');
+                departamento.focus();
                 return false;
             }else{
                 erro.setAttribute('hidden', true);
                 formregistar.submit();
             }
 
-           
+            
 
             
                 

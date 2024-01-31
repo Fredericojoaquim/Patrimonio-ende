@@ -3,6 +3,7 @@
 
 
 @section('content')
+<!--
 <form action="{{url('material-escritorio/pesquisar')}}" >
     @csrf
     <div class="input-group rounded">
@@ -11,8 +12,8 @@
             <i class="fas fa-search"></i>
           </button>
     </div>
-</form>
-                    <div class="card">
+</form> -->    
+               <div class="card">
                                     <h3 class="card-header">Listar Material Escritório</h3>
                                     @if (@isset($sms))
 
@@ -33,7 +34,7 @@
                                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                             <div class="card">
                                                     <div class="table-responsive">
-                                                        <table id="example" class="table table-striped table-bordered second" style="width:100%">
+                                                        <table id="datatable" class="table table-striped table-bordered second" style="width:100%">
                                                             <thead>
                                                                 <tr>
                                                                     <th>#</th>
@@ -128,9 +129,13 @@
     </div>
 </div>
  <!-- EndModal -->
-
+ <script src="{{asset('assets/vendor/jquery/jquery-3.3.1.min.js')}}"></script>   
  <script>
+ $(document).ready(function(){
 
+     //codigo para inicializar a data table
+      var table=$('#datatable').DataTable(); 
+ });
 function retornaidTranferir(id){
     
     $('#material_id').val(id);

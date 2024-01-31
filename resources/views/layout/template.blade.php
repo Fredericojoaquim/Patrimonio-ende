@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="{{asset('css/estilo.css')}}">
     <link rel="stylesheet" href="{{asset('assets/vendor/fonts/flag-icon-css/flag-icon.min.css')}}">
     <link rel="SHORTCUT ICON" href="{{asset('img/logo.ico')}}">
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
     <title> @yield('title') </title>
 
 </head>
@@ -542,6 +544,20 @@
                                         </li>
 
                                         <li class="nav-item">
+                                            <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-104_" aria-controls="submenu-104_">Pessoal</a>
+                                            <div id="submenu-104_" class="collapse submenu" style="">
+                                                <ul class="nav flex-column">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="{{url('pessoal/create')}}">Registar</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="{{url('pessoal/consultar')}}">Consultar</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+
+                                        <li class="nav-item">
                                             <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-8" aria-controls="submenu-8">Departamento</a>
                                             <div id="submenu-8" class="collapse submenu" style="">
                                                 <ul class="nav flex-column">
@@ -613,6 +629,8 @@
                                                 </ul>
                                             </div>
                                         </li>
+
+                                        
 
                                         <li class="nav-item">
                                             <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-102_" aria-controls="submenu-101_">Pre-Definições</a>
@@ -716,6 +734,9 @@
     <script src="{{asset('assets/vendor/charts/c3charts/C3chartjs.js')}}"></script>
     <script src="{{asset('assets/libs/js/dashboard-ecommerce.js')}}"></script>
     <script src="{{asset('js/meujs.js')}}"></script>
+
+       <!--DATA TABLE-->
+   <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 </body>
  
 </html>

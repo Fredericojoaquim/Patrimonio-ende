@@ -1,20 +1,9 @@
 @extends('layout.template')
-@section('title', 'Utilizadores')
+@section('title', 'Pessoal')
 
 
 @section('content')
-<!--
-<form action="{{url('user/pesquisar')}}" >
-    @csrf
-    <div class="input-group rounded">
-        <input type="search" name="nome"  class="form-control rounded" placeholder="nome do utilizador" aria-label="Search" aria-describedby="search-addon" />
-        <button type="button" class="btn btn-primary">
-            <i class="fas fa-search"></i>
-          </button>
-    </div>
-</form>
 
--->
 
             @if(isset($erro))
             <div class="alert alert-danger" id="erro-registar">
@@ -28,7 +17,7 @@
                 </div>
             @endif
                     <div class="card">
-                                    <h3 class="card-header">Listar Utilizador</h3>
+                                    <h3 class="card-header">Pessoal</h3>
 
                                     <div class="card-body">
                                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -39,37 +28,34 @@
                                                 
                                                 
                                                     <div class="table-responsive">
-                                                        <table id="datatable" class="table table-striped table-bordered second" style="width:100%">
+                                                        <table id="datatable" class="table table-striped table table-responsive" style="width:100%">
                                                             <thead>
                                                                 <tr>
                                                                     <th>#</th>
                                                                     <th>Nome</th>
+                                                                    <th>Data nascimento</th>
                                                                     <th>Email</th>
                                                                     <th>Perfil</th>
                                                                     <th>Telefone</th>
-                                                                    <th>Estado</th>
+                                                                   
                                                                     <th>Acções</th>
                                                                     
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                @if(isset($user))
-                                                                    @foreach($user as $u)
+                                                                @if(isset($pessoal))
+                                                                    @foreach($pessoal as $p)
                                                                 <tr>
-                                                                    <td>{{$u->codigo}}</td>
-                                                                    <td>{{$u->name}}</td>
-                                                                    <td>{{$u->email}}</td>
-                                                                    <td>{{$u->perfil}}</td>
-                                                                    <td>{{$u->telefone}}</td>
-                                                                    <td>{{$u->estado}}</td>
-                                                                    <td class="d-flex justify-content-center">
-                                                                         <a href="{{url("user/editar/$u->codigo")}}" class="btn btn-sm active"><i class="fas fa-edit"></i></a>
-                                                                         @if($u->estado=='ativo')
-                                                                         <a href="#" class="btn btn-sm  active" data-toggle="modal" onclick="retornaid({{$u->codigo}})" data-target="#BloquearModal">bloquear</a>
-                                                                         @else
-                                                                         <a href="#" class="btn btn-sm  active"  data-toggle="modal" onclick="retornaid2({{$u->codigo}})" data-target="#DesquearModal">desbloquear</a>
-                                                                         @endif
-                                                                        
+                                                                    <td>{{$p->id}}</td>
+                                                                    <td>{{$p->nome}}</td>
+                                                                    <td>{{$p->datanasc}}</td>
+                                                                    <td>{{$p->email}}</td>
+                                                                    <td>{{$p->telefone}}</td>
+                                                                    <td>{{$p->departamento}}</td>
+                                                                   
+                                                                    <td>
+                                                                         <a href="{{url("pessoal/edit/$p->id")}}" class="btn btn-sm active"><i class="fas fa-edit"></i></a>
+                                                                         
                                                                      </td>
                                                                 </tr>
                                                                 @endforeach
@@ -152,13 +138,11 @@
                             // alert(id);
              $('#id').val(id);
          }
-
-         $(document).ready(function(){
-        //codigo para inicializar a data table
-          var table=$('#datatable').DataTable();   
-        });
                     
- 
+     $(document).ready(function(){
+        //codigo para inicializar a data table
+      var table=$('#datatable').DataTable();   
+    });
  </script>
 
 @endsection
