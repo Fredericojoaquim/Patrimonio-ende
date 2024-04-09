@@ -152,7 +152,7 @@
                                             <div class="text-right">
                                                 <button class="btn btn-success" id="btn-registar">Alterar</button>
                                                 <input type="hidden" value="{{$m->id}}" name="id">
-                                                <button class="btn btn-danger" type="reset">Cancelar</button>
+                                                
                                             </div>
                                             
                                         </form>

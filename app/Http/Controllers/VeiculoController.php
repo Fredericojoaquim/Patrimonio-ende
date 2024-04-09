@@ -25,6 +25,14 @@ class VeiculoController extends Controller
         $this->calcularData();
     }
 
+    public function pessoal()
+    {
+        $p=DB::table('pessoal')
+       
+         ->where('pessoal.departamento_id','=','')
+        ->select('veiculos.*','tipoaquisicao.descricao as tipoaquisicao_desc','departamentos.descricao as departamentos' )
+        ->get();
+    }
 
      public function veiculos(){
 

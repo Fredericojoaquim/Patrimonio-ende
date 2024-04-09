@@ -5,7 +5,7 @@
 @section('content')
 
                     <div class="card">
-                                    <h3 class="card-header">Material Escritório</h3>
+                                    <h3 class="card-header">Histórico de atribuições</h3>
                                     @if (@isset($sms))
 
                                         <div class="alert alert-success" role="alert">
@@ -29,16 +29,10 @@
                                                             <thead>
                                                                 <tr>
                                                                     <th>#</th>
-                                                                    <th>Nº Mobilizado</th>
-                                                                    <th>Tipo</th>
-                                                                    <th>Valor aquisição</th>
-                                                                    <th>Tipo Aquisição</th>
-                                                                    <th>Cor</th>
-                                                                    <th>Atribuido ao</th>
-                                                                    <th>Data Aquisição</th>
-                                                                    <th>Vida útil</th>
-                                                                    <th>Estado</th>
-                                                                    <th>Acções</th>
+                                                                    <th>Nome</th>
+                                                                    <th>Departamento</th>
+                                                                    <th>Data atribuição</th>
+                                                                    
                                                                     
                                                                     
                                                                 </tr>
@@ -48,18 +42,12 @@
                                                                     @foreach($mat as $m)
                                                                 <tr>
                                                                     <td>{{$m->id}}</td>
-                                                                    <td>{{$m->num_mobilizado}}</td>
-                                                                    <td>{{$m->tipo}}</td>
-                                                                    <td>{{$m->valor_aquisicao}}</td>
-                                                                    <td>{{$m->tipoaquisicao_desc}}</td>
-                                                                    <td>{{$m->cor}}</td>
-                                                                    <td> {{$m->pessoal}}</td>
-                                                                    <td>{{$m->data_aquisicao}}</td>
-                                                                    <td>{{$m->vida_util}}</td>
-                                                                    <td class="status-fail">Vencido</td>
-                                                                    <td class="d-flex justify-content-center">
-                                                                        <a href="" class="btn btn-sm active">histórico</a>
-                                                                    </td>
+                                                                    <td>{{$m->pessoal}}</td>
+                                                                    <td>{{$m->departamento}}</td>
+                                                                    <td>{{$m->dataregisto}}</td>
+                                                                    
+                                                                    
+                                                                   
                                                                    
                                                                     
                                                                 </tr>

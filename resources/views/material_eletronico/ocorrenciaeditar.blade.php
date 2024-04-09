@@ -73,8 +73,6 @@
 
                 <div class="text-right">
                     <button class="btn btn-success ">Registar</button>
-                    
-                    <button class="btn btn-danger" type="reset" ><a href="#" class="closebutton" data-dismiss="modal" aria-label="Close">Cancelar</a></button>
                 </div>
 
 

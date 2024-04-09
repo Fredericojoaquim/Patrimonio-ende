@@ -163,8 +163,7 @@
                                            
                                          
                                             <div class="text-right">
-                                                <button class="btn btn-success" id="btn-registar" type="submit">Registar</button>
-                                                <button class="btn btn-danger" type="reset">Cancelar</button>
+                                                <button class="btn btn-success" id="btn-registar" type="submit">Registar</button> 
                                             </div>
                                             
                                         </form>

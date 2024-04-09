@@ -20,6 +20,7 @@ use App\Http\Controllers\AbateController;
 use App\Http\Controllers\TipoSeguro;
 use App\Http\Controllers\Predifinicoes;
 use App\Http\Controllers\Pessoal;
+use App\Http\Controllers\testePdfController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -183,7 +184,7 @@ Route::get('material-escritorio/pesquisar', [MaterialEscritorio::class,'pesquisa
 Route::get('material-escritorio/comprovativo/{id}', [MaterialEscritorio::class,'comprovativo']);
 Route::put('material-escritorio/transferir', [MaterialEscritorio::class,'transferir']);
 Route::get('material-escritorio/vida-util-vencido/{id}', [MaterialEscritorio::class,'movel_vencido']);
-
+Route::get('material-escritorio/historico/{id}', [MaterialEscritorio::class,'historicoAtribuicoes']);
 //material electronico
 Route::get('material-electronico/registar', [MaterialElectronicoController ::class,'create'])->name('material-eletronico.registar');
 Route::post('material-electronico/salvar', [MaterialElectronicoController ::class,'store'])->name('material-eletronico.salvar');
@@ -254,4 +255,7 @@ Route::get('tecnica/movel/informacao/{id}', [OcorrenciaEletronico::class,'inform
 Route::get('/teste/pdf', [testePdfController::class,'teste']);
 
 Route::get('/teste/data', [VeiculoController::class,'calcularData']);
+
+Route::get('/paginateste', [testePdfController::class,'teste2']);
+Route::post('/enviar', [testePdfController::class,'enviarteste']);
 

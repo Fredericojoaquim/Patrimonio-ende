@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Predefinicoes;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -31,7 +32,7 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request)
     {
        // dd($request->password);
-    
+       // $p=Predefinicoes::all()->first();
         $user=DB::table('users')
         ->where('email','=',addslashes($request->email))
         ->where('password','=', Hash::check('password', addslashes($request->password)))

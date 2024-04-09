@@ -164,7 +164,7 @@
                                             <div class="text-right">
                                                 <input type="hidden" name="id" value="{{$m->id}}">
                                                 <button class="btn btn-success" id="btn-registar" type="submit">Alterar</button>
-                                                <button class="btn btn-danger" type="reset">Cancelar</button>
+                                                
                                             </div>
                                             
                                         </form>

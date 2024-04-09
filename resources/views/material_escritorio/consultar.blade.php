@@ -3,6 +3,50 @@
 
 
 @section('content')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<style>
+
+    /* Estilo para o campo de pesquisa */
+.dataTables_filter label {
+    display: flex;
+    align-items: center;
+}
+
+.dataTables_filter input[type="search"] {
+    width: calc(100% - 30px); /* Definindo o tamanho do campo de pesquisa */
+    padding: .375rem .75rem .375rem 30px; /* Adicionando espaço para o ícone */
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    position: relative; /* Posicionamento relativo para o ícone */
+}
+
+/* Estilo para o ícone de lupa */
+.dataTables_filter input[type="search"]::before {
+    content: "\f002"; /* Código do ícone de lupa do FontAwesome */
+    font-family: "Font Awesome 5 Free"; /* Fonte do FontAwesome */
+    position: absolute;
+    left: 10px; /* Posição do ícone */
+    top: 50%;
+    transform: translateY(-50%);
+    color: #dd1717; /* Cor do ícone */
+}
+
+/* Estilo para o botão de pesquisa */
+.dataTables_filter input[type="search"]:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 .2rem rgba(0,123,255,.25);
+}
+
+
+
+</style>
 <!--
 <form action="{{url('material-escritorio/pesquisar')}}" >
     @csrf
@@ -44,7 +88,7 @@
                                                                     <th>Tipo Aquisição</th>
                                                                     <th>Data Aquisição</th>
                                                                     <th>Cor</th>
-                                                                    <th>Departamento</th>
+                                                                    <th>Atribuído ao</th>
                                                                     <th>Acções</th>
                                                                     
                                                                 </tr>
@@ -60,12 +104,13 @@
                                                                     <td>{{$m->tipoaquisicao_desc}}</td>
                                                                     <td>{{$m->data_aquisicao}}</td>
                                                                     <td>{{$m->cor}}</td>
-                                                                    <td>{{$m->departamentos}}</td>
+                                                                    <td>{{$m->pessoal}}</td>
                                                                    
                                                                     <td class="d-flex justify-content-center">
                                                                          <a href="{{url("material-escritorio/editar/$m->id")}}" class="btn btn-sm active"><i class="fas fa-edit"></i></a>
                                                                          <a href="{{URL("material-escritorio/comprovativo/$m->id")}}" target="_blank" class="btn btn-sm  active"><i class="fas fa-file"></i></a>
-                                                                         <a class="btn btn-sm  active" data-toggle="modal" data-target="#ModalTransferir" href="#" onclick="retornaidTranferir({{$m->id}})">Tranferir</a>
+                                                                         <a class="btn btn-sm  active" data-toggle="modal" data-target="#ModalTransferir" href="#" onclick="retornaidTranferir({{$m->id}})">Atribuir</a>
+                                                                         <a class="btn btn-sm  active" href="{{url("material-escritorio/historico/$m->id")}}">Histórico <br> Atribuições</a>
                                                                       
                                                                      </td>
                                                                 </tr>
@@ -88,7 +133,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Transferir Veículo</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Atribuir Móvel</h5>
                 <a href="#" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </a>
@@ -101,13 +146,13 @@
                     {{ method_field('PUT') }}
                     <div class="form-group col-lg-12 margin-input">
 
-                        <label for="input-select">Departamento Beneficiário</label>
-                        <select id="departamento" class="form-control" name="departamento" id="input-select">
+                        <label for="input-select">Atribuir para</label>
+                        <select id="departamento" class="form-control" name="pessoal_id" id="input-select">
                             <option value="Selecione">Selecione</option>
-                            @if(isset($dep))
+                            @if(isset($pessoal))
                            
-                            @foreach($dep as $d)
-                            <option value="{{$d->id}}">{{$d->descricao}}</option>
+                            @foreach($pessoal as $p)
+                            <option value="{{$p->id}}">{{$p->nome}}</option>
                             @endforeach
                     
                          @endif
@@ -116,7 +161,8 @@
 
                 <div class="text-right">
                     <input type="hidden" name="material_id" id="material_id">
-                    <button class="btn btn-success" id="btn-transferir">Transferir</button>
+                    <button class="btn btn-success" id="btn-transferir">Atribuir</button>
+                    
                     <button class="btn btn-danger" type="reset" ><a href="#" class="closebutton" data-dismiss="modal" aria-label="Close">Cancelar</a></button>
                 </div>
 
@@ -134,12 +180,64 @@
  $(document).ready(function(){
 
      //codigo para inicializar a data table
-      var table=$('#datatable').DataTable(); 
+     // var table=$('#datatable').DataTable(); 
  });
+ 
 function retornaidTranferir(id){
     
     $('#material_id').val(id);
  }
+
+
+ $(document).ready(function() {
+   
+
+    
+
+   // var table=$('#datatable').DataTable(); 
+     // Adicione classes do Bootstrap ao campo de pesquisa
+    
+
+
+     //
+     $(document).ready(function() {
+
+    $('#datatable').DataTable({
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese-Brasil.json"
+        }
+    });
+
+    // Verifique se a DataTable já foi inicializada antes de recriá-la
+    if ($.fn.DataTable.isDataTable('#datatable')) {
+        // Destrua a DataTable existente antes de recriá-la
+        $('#datatable').DataTable().destroy();
+    }
+
+    $('#datatable').DataTable({
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese-Brasil.json"
+        }
+    });
+    var table=$('#datatable').DataTable();
+   // Adicione classes do Bootstrap aos botões de paginação após a DataTable ser inicializada
+   $('#datatable_paginate .paginate_button').addClass('btn btn-outline-primary');
+
+// Personalize os ícones dos botões de paginação
+$('#datatable_previous').html('<i class="fas fa-chevron-left"></i> Anterior');
+$('#datatable_next').html('Próximo <i class="fas fa-chevron-right"></i>');
+
+   
+
+
+    
+   
+});
+
+    
+
+});
+
 
   //validação transferir
 

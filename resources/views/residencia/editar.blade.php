@@ -158,7 +158,7 @@
                                                 <input type="hidden" value="{{$r->endereco_id}}"  name="endereco_id" id="endereco_id">
                                                 <input type="hidden" value="{{$r->codigo}}"  name="id" id="id">
                                                 <button class="btn btn-success" id="btn-registar" type="submit">Alterar</button>
-                                                <button class="btn btn-danger" type="reset">Cancelar</button>
+                                               
                                             </div>
                                         @endif
                                             

@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\HelperController;
 use App\Models\MotivoAbate;
+use App\Models\Pessoal;
+use App\Models\matescritorio_pessoal;
 use App\Models\NotificacaoMat_Escritorio as Notificacao;
 use DateTime;
 
@@ -30,14 +32,29 @@ class MaterialEscritorio extends Controller
      public function material_escritorios(){
 
         $p=DB::table('materialescritorio')
-        ->join('departamentos','departamentos.id','=','materialescritorio.departamento_id')
+        ->join('matescritorio_pessoal','matescritorio_pessoal.material_id','=','materialescritorio.id')
+        ->join('pessoal','pessoal.id','=','matescritorio_pessoal.pessoal_id')
         ->join('tipoaquisicao','tipoaquisicao.id','=','materialescritorio.tipo_aquisicao')
         ->where('materialescritorio.estado','=','ativo')
-      
-        ->select('materialescritorio.*','tipoaquisicao.descricao as tipoaquisicao_desc','departamentos.descricao as departamentos' )
+        ->where('matescritorio_pessoal.estado','=','ativo')
+        ->select('materialescritorio.*','tipoaquisicao.descricao as tipoaquisicao_desc','pessoal.nome as pessoal' )
         ->get();
 
         return $p;
+
+     }
+
+     public function historicoAtribuicoes($id)
+     {
+        $mat=DB::table('matescritorio_pessoal')
+        ->join('pessoal','pessoal.id','=','matescritorio_pessoal.pessoal_id')
+        ->join('departamentos','departamentos.id','=','pessoal.departamento_id')
+        ->select('matescritorio_pessoal.*','pessoal.nome as pessoal','matescritorio_pessoal.created_at as dataregisto','departamentos.descricao as departamento')
+        ->orderBy('created_at', 'asc')
+        ->get();
+
+        return view('material_escritorio.detalhes',['mat'=>$mat]);
+
 
      }
 
@@ -66,12 +83,14 @@ class MaterialEscritorio extends Controller
     {
         $not_mat_escritorio=$this->Notificacoes();
         $total_notificao=$not_mat_escritorio->count();
-
+        $pessoal=Pessoal::all();
+        
        
 
         $dep=Departamento::all();
         $material=$this->material_escritorios();
-        return view('material_escritorio.consultar',['mat'=>$material,'dep'=> $dep, 'not_mat_escritorio'=>$not_mat_escritorio,'total_notificacao_mat_eletronico'=>$total_notificao]);
+
+        return view('material_escritorio.consultar',['mat'=>$material,'dep'=> $dep, 'not_mat_escritorio'=>$not_mat_escritorio,'total_notificacao_mat_eletronico'=>$total_notificao,'pessoal'=>$pessoal]);
     }
 
     /**
@@ -84,9 +103,10 @@ class MaterialEscritorio extends Controller
         $fornecedores=FornecedorMovel::all();
         $dep=Departamento::all();
         $t=TipoAquisicaoModel::all();
+        $pessoal=Pessoal::all();
 
         
-        return view('material_escritorio.index',['dep'=>$dep, 'tipo'=>$t, 'for'=>$fornecedores]);
+        return view('material_escritorio.index',['dep'=>$dep, 'tipo'=>$t, 'for'=>$fornecedores,'pessoal'=>$pessoal]);
     }
 
     /**
@@ -136,22 +156,27 @@ class MaterialEscritorio extends Controller
         $m->cor=$request->cor;
         $m->tipo=$request->tipomovel;
         $m->fornecedor_id=$request->fornecedor;
-        $m->departamento_id=$request->departamento;
         $m->estado='ativo';
         $m->custo_aquisicao_usd=$Custo_aquisição_usd;
         $m->custo_aquisicao_euro= $Custo_aquisição_euro;
         $m->vida_util=addslashes($request->vidautil);
-        
-       
-    
+        $m->valor_residual=addslashes($request->vresidual);
+        $m->data_utilizacao=addslashes($request->datautilizacao);
         $m->save();
 
+        $matp=new matescritorio_pessoal();
+        //salvando o historico da atribuição do material ao pessoal
+        $matp->pessoal_id=$request->pessoal;
+        $matp->material_id=$m->id;
+        $matp->estado='ativo';
+        $matp->save();
+
         $fornecedores=FornecedorMovel::all();
-       
+        $pessoal=Pessoal::all();
         $dep=Departamento::all();
         $t=TipoAquisicaoModel::all();
 
-        return view('material_escritorio.index',['sms'=>'Material registado com sucesso','dep'=>$dep, 'tipo'=>$t, 'for'=>$fornecedores]);
+        return view('material_escritorio.index',['sms'=>'Material registado com sucesso','dep'=>$dep, 'tipo'=>$t, 'for'=>$fornecedores,'pessoal'=>$pessoal]);
 
     }
 
@@ -286,13 +311,20 @@ class MaterialEscritorio extends Controller
 
     public function material_escritorio($id){
 
+       
+
         $p=DB::table('materialescritorio')
-        ->join('departamentos','departamentos.id','=','materialescritorio.departamento_id')
+        
         ->join('tipoaquisicao','tipoaquisicao.id','=','materialescritorio.tipo_aquisicao')
         ->join('fornecedor','fornecedor.id','=','materialescritorio.fornecedor_id')
+        ->join('matescritorio_pessoal','matescritorio_pessoal.material_id','=','materialescritorio.id')
+        ->join('pessoal','pessoal.id','=','matescritorio_pessoal.pessoal_id')
+       
+        ->where('materialescritorio.estado','=','ativo')
+        ->where('matescritorio_pessoal.estado','=','ativo')
        
         ->where('materialescritorio.id','=',addslashes($id))
-        ->select('materialescritorio.*','tipoaquisicao.descricao as tipoaquisicao_desc','departamentos.descricao as departamentos','fornecedor.nome as fornecedor' )
+        ->select('materialescritorio.*','tipoaquisicao.descricao as tipoaquisicao_desc','fornecedor.nome as fornecedor','pessoal.nome as pessoal' )
         ->get();
 
         return $p;
@@ -326,14 +358,23 @@ class MaterialEscritorio extends Controller
 
     public function transferir(Request $request)
     {
-        dd($request->departamentoid);
+     /** transferir o bem para outra pessoa */
+     //alterar o estado do antigo registo
+     $m=matescritorio_pessoal::where('estado', 'ativo')->first();
+     $s=['estado'=>'cessado'];
+     matescritorio_pessoal::findOrFail($m->id)->update($s);
 
-        $s=['departamento_id'=>addslashes($request->departamento)];
-        $m=MaterialEscritorioModel::findOrFail(addslashes($request->material_id));
-        $m->update($s);
-        $dep=Departamento::all();
+     //salvando o historico da atribuição do material ao pessoal
+        $matp=new matescritorio_pessoal();
+        $matp->pessoal_id=$request->pessoal_id;
+        $matp->material_id=$request->material_id;
+        $matp->estado='ativo';
+        $matp->save();
+
+    
+        $pessoal=Pessoal::all();
         $material=$this->material_escritorios();
-        return view('material_escritorio.consultar',['mat'=>$material,'dep'=> $dep, 'sms'=>'Móvel transferido com sucesso']);
+        return view('material_escritorio.consultar',['mat'=>$material, 'sms'=>'Móvel transferido com sucesso','pessoal'=>$pessoal]);
 
     }
 

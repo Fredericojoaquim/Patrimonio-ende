@@ -53,10 +53,7 @@
                                                     
                                                 </div>
 
-                                                <div class="form-group col-lg-6">
-                                                    <label for="inputText7" class="col-form-label">Vida útil (em Ano)</label>
-                                                    <input id="vidautil" name="vidautil" type="text" class="form-control" placeholder="">
-                                                </div>
+                                               
 
 
                                                 <div class="form-group col-lg-6 col-md-12 margin-input">
@@ -96,13 +93,13 @@
 
                                                 <div class="form-group col-lg-6 margin-input">
 
-                                                    <label for="input-select">Departamento Beneficiário</label>
-                                                    <select class="form-control" name="departamento" id="departamento">
+                                                    <label for="input-select">Pessoal</label>
+                                                    <select class="form-control" name="pessoal" id="pessoal">
                                                         <option value="Selecione">Selecione</option>
-                                                        @if(isset($dep))
+                                                        @if(isset($pessoal))
                                                        
-                                                        @foreach($dep as $d)
-                                                        <option value="{{$d->id}}">{{$d->descricao}}</option>
+                                                        @foreach($pessoal as $p)
+                                                        <option value="{{$p->id}}">{{$p->nome}}</option>
                                                         @endforeach
                                                 
                                                      @endif
@@ -139,6 +136,21 @@
                                                     <input id="finalidade" name="finalidade"  type="text" class="form-control" >
                                                 </div>
 
+                                                <div class="form-group col-lg-6">
+                                                    <label for="vidautil"  class="col-form-label">Vida útil</label>
+                                                    <input id="vidautil" name="vidautil"  type="text" class="form-control" >
+                                                </div>
+
+                                                <div class="form-group col-lg-6">
+                                                    <label for="vresidual"  class="col-form-label">Valor residual</label>
+                                                    <input id="vresidual" name="vresidual"  type="text" class="form-control" >
+                                                </div>
+
+                                                <div class="form-group col-lg-6 margin-input">
+                                                    <label for="datautilizacao">Data início utilização</label>
+                                                    <input id="datautilizacao"  name="datautilizacao" type="date"  class="form-control">
+                                                </div>
+
                                               
 
                                            </div>
@@ -147,8 +159,7 @@
                                             
                                             
                                             <div class="text-right">
-                                                <button class="btn btn-success" id="btn-registar">Registar</button>
-                                                <button class="btn btn-danger" type="reset">Cancelar</button>
+                                                <button class="btn btn-success" id="btn-registar">Registar</button> 
                                             </div>
                                             
                                         </form>
@@ -191,7 +202,7 @@
                                  var descricao=document.getElementById("descricao");
                                  var valor=document.getElementById("valor");
                                  var dataaquisicao=document.getElementById("dataaquisicao");
-                                 var departamento=document.getElementById("departamento");
+                                 var pessoal=document.getElementById("pessoal");
                                  var tipoaquisicao=document.getElementById("tipoaquisicao");
                                  var marca=document.getElementById("marca");
                                  var tipomovel=document.getElementById("tipomovel");
@@ -199,7 +210,7 @@
                                  var finalidade=document.getElementById("finalidade");
                                  var Custo_aquisição_usd=document.getElementById("Custo_aquisição_usd");
                                  var Custo_aquisição_euro=document.getElementById("Custo_aquisição_euro");
-                                 var vidautil=document.getElementById("vidautil");
+                                
                                  const today = new Date();
                                  
                               
@@ -208,7 +219,7 @@
                                 
                                  var erro= document.getElementById("erro-registar");
                      
-                                 alert(hoje>dataaquisicao);
+                                
                      
                                  if(num_mobilizado.value == ''){
                                   
@@ -240,15 +251,7 @@
                                     
                                  }
 
-                                 if(vidautil.value == ''){
-                                    erro.innerHTML="Por favor preencha o campo Vida Util";
-                                    erro.removeAttribute('hidden');
-                                    vidautil.focus();
-                                    return false;
-                                }else{
-                                    erro.setAttribute('hidden', true);
                                 
-                                }
 
                                  if(tipoaquisicao.value == 'Selecione'){
                                      erro.innerHTML="Por favor preencha o campo tipo aquisição";
@@ -302,10 +305,10 @@
                                     
                                  }
 
-                                 if(departamento.value == 'Selecione'){
-                                     erro.innerHTML="Por favor preencha o campo data departamento";
+                                 if(pessoal.value == 'Selecione'){
+                                     erro.innerHTML="Por favor preencha o campo data pessoal";
                                      erro.removeAttribute('hidden');
-                                     departamento.focus();
+                                     pessoal.focus();
                                      return false;
                                  }else{
                                      erro.setAttribute('hidden', true);

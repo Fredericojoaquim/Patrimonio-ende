@@ -20,6 +20,8 @@
     <link rel="SHORTCUT ICON" href="{{asset('img/logo.ico')}}">
 
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
     <title> @yield('title') </title>
 
 </head>
@@ -230,7 +232,7 @@
                                 @auth
                                    <form action="/logout" method="POST">
                                         @csrf
-                                        <a class="dropdown-item" a href="/logout" onclick="event.preventDefault(); this.closest('form').submit();"><i class="fas fa-power-off mr-2"></i>Logout</a>
+                                        <a class="dropdown-item"  href="/logout" onclick="event.preventDefault(); this.closest('form').submit();"><i class="fas fa-power-off mr-2"></i>Logout</a>
                                    </form>
                                 @endauth
                             </div>
@@ -383,6 +385,20 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-3" aria-controls="submenu-3"><i class="fas fa-f fa-car"></i>Gerir Veículos</a>
                                 <div id="submenu-3" class="collapse submenu" style="">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{url('veiculo/create')}}">Registar</a>
+                                            <a class="nav-link" href="{{url('veiculo/consultar')}}">Consultar</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            @endcan
+
+                            @can('gestor de veiculo')
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-3_" aria-controls="submenu-3_"><i class="fas fa-f fa-user"></i>Pessoal</a>
+                                <div id="submenu-3_" class="collapse submenu" style="">
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
                                             <a class="nav-link" href="{{url('veiculo/create')}}">Registar</a>

@@ -35,9 +35,8 @@
                                                                     <th>Nome</th>
                                                                     <th>Data nascimento</th>
                                                                     <th>Email</th>
-                                                                    <th>Perfil</th>
                                                                     <th>Telefone</th>
-                                                                   
+                                                                    <th>Departamento</th>
                                                                     <th>Acções</th>
                                                                     
                                                                 </tr>

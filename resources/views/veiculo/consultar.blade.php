@@ -3,23 +3,7 @@
 
 
 @section('content')
-<form action="{{url('veiculo/pesquisar')}}" >
-    @csrf
-    <div class="input-group rounded">
-       
-            
-           <select name="selectbusca" id="selectbusca" class="form-control form-control-sm">
-               <option value="Selecione">Selecione</option>
-               <option value="Matricula">Matricula</option>
-               <option value="Marca">Marca</option>
-           </select> <br>
-       
-        <input type="search" name="descricao"  class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
-        <button type="button" class="btn btn-primary">
-            <i class="fas fa-search"></i>
-          </button>
-    </div>
-</form>
+
                     <div class="card">
                                     <h3 class="card-header">Listar Veículos</h3>
 
@@ -69,6 +53,7 @@
                                                                         <!--  <a href="#" class="btn btn-sm  active"><i class="m-r-10 mdi mdi-delete"></i></a>
                                                                          <a href="#" class="btn btn-sm  active"><i class="fas fa-eye"></i></a>-->
                                                                          <a href="{{url("veiculo/comprovativo/$v->id")}}" target="_blank" class="btn btn-sm  active"><i class="fas fa-file"></i></a> 
+                                                                         <a class="btn btn-sm  active" data-toggle="modal" data-target="#ModalTransferir" href="#" onclick="retornaidTranferir({{$v->id}})">Atribuir</a>
                                                                          <a class="btn btn-sm  active" data-toggle="modal" data-target="#ModalTransferir" href="#" onclick="retornaidTranferir({{$v->id}})">Tranferir</a>
                                                                          <a href="#" class="btn btn-sm  active" data-toggle="modal" data-target="#exampleModal" onclick="retornaid({{$v->id}})">Registar Ocorrencia</a>
                                                                          <a href="{{url("historico-ocorrencia-veiculo/$v->id")}}" class="btn btn-sm  active">Listar Ocorrencia</a>

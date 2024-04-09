@@ -77,10 +77,6 @@
                                             <input id="id" value="{{$p->id}}" name="id" type="hidden" class="form-control">
                                           </div>
 
-                                          
-
-                                           
-                                           
                              
                                         </div> 
                                             
@@ -88,7 +84,7 @@
 
                                          
                                             <div class="text-right">
-                                                <button class="btn btn-success" id="btn-registar" type="submit">Registar</button>
+                                                <button class="btn btn-success" id="btn-registar" type="submit">Alterar</button>
                                                 
                                             </div>
                                             

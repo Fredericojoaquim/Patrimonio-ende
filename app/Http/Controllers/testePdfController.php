@@ -14,4 +14,21 @@ class testePdfController extends Controller
         $pdf->loadHtml('<h1> Hello world </h1>');
         return $pdf->stream();
     }
+
+
+    public function teste2()
+    {
+       
+        return view('teste.teste');
+    }
+
+
+    public function enviarteste(Request $request)
+    {
+       
+        dd($request);
+    }
+
+
+    
 }

@@ -154,7 +154,7 @@
                                                 <input type="hidden" name="id" value="{{$ed->codigo}}">
                                                 <input type="hidden" name="endereco_id" value="{{$ed->endereco_id}}">
                                                 <button class="btn btn-success" id="btn-registar" type="submit">Alterar</button>
-                                                <button class="btn btn-danger" type="reset">Cancelar</button>
+                                               
                                             </div>
                                             
                                         </form>
