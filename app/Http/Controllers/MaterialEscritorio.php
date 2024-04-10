@@ -49,7 +49,7 @@ class MaterialEscritorio extends Controller
         $mat=DB::table('matescritorio_pessoal')
         ->join('pessoal','pessoal.id','=','matescritorio_pessoal.pessoal_id')
         ->join('departamentos','departamentos.id','=','pessoal.departamento_id')
-        ->select('matescritorio_pessoal.*','pessoal.nome as pessoal','matescritorio_pessoal.created_at as dataregisto','departamentos.descricao as departamento')
+        ->select('matescritorio_pessoal.*','pessoal.nome as pessoal','matescritorio_pessoal.created_at as dataregisto','departamentos.descricao as departamento','pessoal.funcao')
         ->orderBy('created_at', 'asc')
         ->get();
 
@@ -199,18 +199,26 @@ class MaterialEscritorio extends Controller
      */
     public function edit($id)
     {
+        
         $p=DB::table('materialescritorio')
-        ->join('departamentos','departamentos.id','=','materialescritorio.departamento_id')
+        ->join('matescritorio_pessoal','matescritorio_pessoal.material_id','=','materialescritorio.id')
+        ->join('pessoal','pessoal.id','=','matescritorio_pessoal.pessoal_id')
         ->join('tipoaquisicao','tipoaquisicao.id','=','materialescritorio.tipo_aquisicao')
+        ->where('materialescritorio.estado','=','ativo')
+        ->where('matescritorio_pessoal.estado','=','ativo')
         ->where('materialescritorio.id','=',addslashes($id))
-        ->select('materialescritorio.*','tipoaquisicao.descricao as tipoaquisicao_desc','departamentos.descricao as departamentos' )
+        ->select('materialescritorio.*','tipoaquisicao.descricao as tipoaquisicao_desc','pessoal.nome as pessoal' )
         ->get();
+
+
+
         if($p->count()>0){
             $m=$p->first();
             $dep=Departamento::all();
+            $pessoal=Pessoal::all();
             $t=TipoAquisicaoModel::all();
             $fornecedores=FornecedorMovel::all();
-            return view('material_escritorio.editar', ["m" =>$m, 'dep'=>$dep, 'tipo'=>$t, 'for'=>$fornecedores]);
+            return view('material_escritorio.editar', ["m" =>$m, 'dep'=>$dep, 'tipo'=>$t, 'for'=>$fornecedores,'pessoal'=>$pessoal]);
         }
 
         return view('material_escritorio.consultar', ["erro" =>'Registo não encontrado']);
@@ -266,14 +274,23 @@ class MaterialEscritorio extends Controller
             'cor'=>addslashes($request->cor),
             'tipo'=>addslashes( $request->tipomovel),
             'fornecedor_id'=>addslashes( $request->fornecedor),
-            'departamento_id'=>addslashes($request->departamento),
             'custo_aquisicao_usd'=>$Custo_aquisição_usd,
              'custo_aquisicao_euro'=>$Custo_aquisição_euro,
              'vida_util'=>addslashes($request->vidautil),
+             'valor_residual'=>addslashes($request->vresidual),
+             'data_utilizacao'=>addslashes($request->datautilizacao)
     ];
+   
+       
     
         $m=MaterialEscritorioModel::findOrFail(addslashes($request->id));
         $m->update($s);
+
+        //
+
+        $m=matescritorio_pessoal::where('estado', 'ativo')->where('material_id', $m->id)->first();
+        $s=['pessoal_id'=>addslashes($request->pessoal)];
+        matescritorio_pessoal::findOrFail($m->id)->update($s);
         $material=$this->material_escritorios();
         return view('material_escritorio.consultar',['mat'=>$material,'sms'=>'Registo alterado com sucesso']);
     }
@@ -360,7 +377,7 @@ class MaterialEscritorio extends Controller
     {
      /** transferir o bem para outra pessoa */
      //alterar o estado do antigo registo
-     $m=matescritorio_pessoal::where('estado', 'ativo')->first();
+     $m=matescritorio_pessoal::where('estado', 'ativo')->where('material_id', $request->material_id)->first();
      $s=['estado'=>'cessado'];
      matescritorio_pessoal::findOrFail($m->id)->update($s);
 

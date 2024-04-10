@@ -210,6 +210,9 @@
                                  var finalidade=document.getElementById("finalidade");
                                  var Custo_aquisição_usd=document.getElementById("Custo_aquisição_usd");
                                  var Custo_aquisição_euro=document.getElementById("Custo_aquisição_euro");
+                                 var vidautil=document.getElementById("vidautil");
+                                 var vresidual=document.getElementById("vresidual");
+                                 var datautilizacao=document.getElementById("datautilizacao");
                                 
                                  const today = new Date();
                                  
@@ -256,7 +259,7 @@
                                  if(tipoaquisicao.value == 'Selecione'){
                                      erro.innerHTML="Por favor preencha o campo tipo aquisição";
                                      erro.removeAttribute('hidden');
-                                     departamento.focus();
+                                     tipoaquisicao.focus();
                                      return false;
                                  }else{
                                      erro.setAttribute('hidden', true);
@@ -306,7 +309,7 @@
                                  }
 
                                  if(pessoal.value == 'Selecione'){
-                                     erro.innerHTML="Por favor preencha o campo data pessoal";
+                                     erro.innerHTML="Por favor preencha o campo pessoal";
                                      erro.removeAttribute('hidden');
                                      pessoal.focus();
                                      return false;
@@ -355,8 +358,42 @@
                                      return false;
                                  }else{
                                      erro.setAttribute('hidden', true);
-                                     formregistar.submit();
                                     
+                                    
+                                 }
+
+
+                                 if(vidautil.value == ''){
+                                     erro.innerHTML="Por favor preencha o campo vida util";
+                                     erro.removeAttribute('hidden');
+                                     vidautil.focus();
+                                     return false;
+                                 }else{
+                                     erro.setAttribute('hidden', true);
+                                    
+                                    
+                                 }
+
+                                 if(vresidual.value == ''){
+                                     erro.innerHTML="Por favor preencha o campo valor residual";
+                                     erro.removeAttribute('hidden');
+                                     vresidual.focus();
+                                     return false;
+                                 }else{
+                                     erro.setAttribute('hidden', true);
+                                     
+                                    
+                                 }
+
+
+                                 if(datautilizacao.value == ''){
+                                     erro.innerHTML="Por favor preencha o campo data utilização";
+                                     erro.removeAttribute('hidden');
+                                     datautilizacao.focus();
+                                     return false;
+                                 }else{
+                                     erro.setAttribute('hidden', true);
+                                     formregistar.submit();
                                  }
                
                          });

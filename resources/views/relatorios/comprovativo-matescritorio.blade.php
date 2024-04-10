@@ -56,7 +56,7 @@
 
             <tr style="border: 1px solid black;">
                 <td style="border: 1px solid black;">Cor: {{$v->cor}}</td>
-                <td style="border: 1px solid black;">Departamento Benficiario:{{$v->departamentos}}</td>
+                <td style="border: 1px solid black;">Atribuído ao:{{$v->pessoal}}</td>
                 <td style="border: 1px solid black;">Fornecedor:{{$v->fornecedor}}</td>
             </tr>
 

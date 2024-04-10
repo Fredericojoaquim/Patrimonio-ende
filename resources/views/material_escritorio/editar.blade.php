@@ -5,7 +5,7 @@
 @section('content')
 
                  <div class="card">
-                                    <h5 class="card-header">Registar Material Escritório</h5>
+                                    <h5 class="card-header">Alterar Material Escritório</h5>
 
                                     <div class="card-body">
 
@@ -100,13 +100,13 @@
 
                                                 <div class="form-group col-lg-6 margin-input">
 
-                                                    <label for="input-select">Departamento Beneficiário</label>
-                                                    <select class="form-control" name="departamento" id="departamento">
+                                                    <label for="input-select">Atribuir para</label>
+                                                    <select class="form-control" name="pessoal" id="pessoal">
                                                         <option value="Selecione">Selecione</option>
-                                                        @if(isset($dep))
+                                                        @if(isset($pessoal))
                                                        
-                                                        @foreach($dep as $d)
-                                                        <option value="{{$d->id}}">{{$d->descricao}}</option>
+                                                        @foreach($pessoal as $p)
+                                                        <option value="{{$p->id}}">{{$p->nome}}</option>
                                                         @endforeach
                                                 
                                                      @endif
@@ -140,6 +140,16 @@
                                                 <div class="form-group col-lg-6">
                                                     <label for="finalidade"  class="col-form-label">Finalidade</label>
                                                     <input id="finalidade" value="{{$m->finalidade}}" name="finalidade"  type="text" class="form-control" >
+                                                </div>
+
+                                                <div class="form-group col-lg-6">
+                                                    <label for="vresidual"  class="col-form-label">Valor residual</label>
+                                                    <input id="vresidual" name="vresidual" value="{{$m->valor_residual}}"  type="text" class="form-control" >
+                                                </div>
+
+                                                <div class="form-group col-lg-6 margin-input">
+                                                    <label for="datautilizacao">Data início utilização</label>
+                                                    <input id="datautilizacao" value="{{$m->data_utilizacao}}"  name="datautilizacao" type="date"  class="form-control">
                                                 </div>
 
                                               
@@ -205,7 +215,7 @@ function addCommas(value) {
              var descricao=document.getElementById("descricao");
              var valor=document.getElementById("valor");
              var dataaquisicao=document.getElementById("dataaquisicao");
-             var departamento=document.getElementById("departamento");
+             var pessoal=document.getElementById("pessoal");
              var tipoaquisicao=document.getElementById("tipoaquisicao");
              var marca=document.getElementById("marca");
              var tipomovel=document.getElementById("tipomovel");
@@ -214,6 +224,8 @@ function addCommas(value) {
              var Custo_aquisição_usd=document.getElementById("Custo_aquisição_usd");
              var Custo_aquisição_euro=document.getElementById("Custo_aquisição_euro");
              var vidautil=document.getElementById("vidautil");
+             var vresidual=document.getElementById("vresidual");
+             var datautilizacao=document.getElementById("datautilizacao");
              
             
              var erro= document.getElementById("erro-registar");
@@ -263,7 +275,7 @@ function addCommas(value) {
              if(tipoaquisicao.value == 'Selecione'){
                  erro.innerHTML="Por favor preencha o campo tipo aquisição";
                  erro.removeAttribute('hidden');
-                 departamento.focus();
+                 tipoaquisicao.focus();
                  return false;
              }else{
                  erro.setAttribute('hidden', true);
@@ -312,17 +324,15 @@ function addCommas(value) {
                 
              }
 
-             if(departamento.value == 'Selecione'){
-                 erro.innerHTML="Por favor preencha o campo data departamento";
+             if(pessoal.value == 'Selecione'){
+                 erro.innerHTML="Por favor preencha o campo pessoal";
                  erro.removeAttribute('hidden');
-                 departamento.focus();
+                 pessoal.focus();
                  return false;
              }else{
                  erro.setAttribute('hidden', true);
                 
              }
-
-             
 
              if(marca.value == ''){
                  erro.innerHTML="Por favor preencha o campo Marca";
@@ -362,9 +372,29 @@ function addCommas(value) {
                  return false;
              }else{
                  erro.setAttribute('hidden', true);
-                 formregistar.submit();
-                
+ 
              }
+
+             if(vresidual.value == ''){
+                 erro.innerHTML="Por favor preencha o campo valor residual";
+                erro.removeAttribute('hidden');
+                 vresidual.focus();
+                  return false;
+            }else{
+            erro.setAttribute('hidden', true);
+                                     
+                                    
+            }
+
+             if(datautilizacao.value == ''){
+                 erro.innerHTML="Por favor preencha o campo data utilização";
+                erro.removeAttribute('hidden');
+                datautilizacao.focus();
+                return false;
+            }else{
+                erro.setAttribute('hidden', true);
+                ormregistar.submit();
+            }
 
      });
  

@@ -28,9 +28,10 @@
                                                         <table id="example" class="table table-striped table-bordered second" style="width:100%">
                                                             <thead>
                                                                 <tr>
-                                                                    <th>#</th>
+                                                                
                                                                     <th>Nome</th>
                                                                     <th>Departamento</th>
+                                                                    <th>Função</th>
                                                                     <th>Data atribuição</th>
                                                                     
                                                                     
@@ -41,10 +42,16 @@
                                                                 @if(isset($mat))
                                                                     @foreach($mat as $m)
                                                                 <tr>
-                                                                    <td>{{$m->id}}</td>
+                                                                   
                                                                     <td>{{$m->pessoal}}</td>
                                                                     <td>{{$m->departamento}}</td>
-                                                                    <td>{{$m->dataregisto}}</td>
+                                                                    <td>{{$m->funcao}}</td>
+
+                                                                    @php
+                                                                        //formatar a data
+                                                                        $dataFormatada = date('d/m/Y', strtotime($m->dataregisto));
+                                                                    @endphp
+                                                                    <td>{{$dataFormatada}}</td>
                                                                     
                                                                     
                                                                    

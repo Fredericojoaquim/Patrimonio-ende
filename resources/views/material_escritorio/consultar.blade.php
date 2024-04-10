@@ -251,7 +251,7 @@ $('#datatable_next').html('Próximo <i class="fas fa-chevron-right"></i>');
                         var erro_transferir= document.getElementById("erro-transferir");
 
                         if(departamento.value == 'Selecione'){
-                            erro_transferir.innerHTML="Por favor Selecione um Departamento";
+                            erro_transferir.innerHTML="Por favor Selecione um colaborador";
                             erro_transferir.removeAttribute('hidden');
                             departamento.focus();
                             return false;
