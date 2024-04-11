@@ -12,9 +12,11 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\HelperController;
 use App\Models\MotivoAbate;
 use App\Models\Pessoal;
+use App\Models\DepreciacaoMatEscritorio;
 use App\Models\matescritorio_pessoal;
 use App\Models\NotificacaoMat_Escritorio as Notificacao;
 use DateTime;
+use App\Http\Controllers\Helper;
 
 
 class MaterialEscritorio extends Controller
@@ -37,6 +39,7 @@ class MaterialEscritorio extends Controller
         ->join('tipoaquisicao','tipoaquisicao.id','=','materialescritorio.tipo_aquisicao')
         ->where('materialescritorio.estado','=','ativo')
         ->where('matescritorio_pessoal.estado','=','ativo')
+        ->orderBy('materialescritorio.id', 'asc')
         ->select('materialescritorio.*','tipoaquisicao.descricao as tipoaquisicao_desc','pessoal.nome as pessoal' )
         ->get();
 
@@ -49,6 +52,7 @@ class MaterialEscritorio extends Controller
         $mat=DB::table('matescritorio_pessoal')
         ->join('pessoal','pessoal.id','=','matescritorio_pessoal.pessoal_id')
         ->join('departamentos','departamentos.id','=','pessoal.departamento_id')
+        ->where('matescritorio_pessoal.material_id','=',addslashes($id))
         ->select('matescritorio_pessoal.*','pessoal.nome as pessoal','matescritorio_pessoal.created_at as dataregisto','departamentos.descricao as departamento','pessoal.funcao')
         ->orderBy('created_at', 'asc')
         ->get();
@@ -175,6 +179,13 @@ class MaterialEscritorio extends Controller
         $pessoal=Pessoal::all();
         $dep=Departamento::all();
         $t=TipoAquisicaoModel::all();
+        //dados da depreciação
+        $dep=new DepreciacaoMatEscritorio();
+      
+        $depAnual=($m->valor_aquisicao-$m->valor_residual)/$m->vida_util;
+        $dep->material_id=$m->id;
+        $dep->dp_anual=$depAnual;
+        $dep->save();
 
         return view('material_escritorio.index',['sms'=>'Material registado com sucesso','dep'=>$dep, 'tipo'=>$t, 'for'=>$fornecedores,'pessoal'=>$pessoal]);
 
@@ -498,7 +509,25 @@ class MaterialEscritorio extends Controller
         }
 
 
+public function historicoDepreciacao($id)
+{
+    $dep=DB::table('depreciacao__mat__escritorio')
+                ->join('materialescritorio','materialescritorio.id','=','depreciacao__mat__escritorio.material_id')
+                ->where('materialescritorio.id','=',$id)
+                ->select('depreciacao__mat__escritorio.*','materialescritorio.valor_aquisicao as valoraquisicao','materialescritorio.valor_residual as valorresidual','materialescritorio.vida_util as vidautil','materialescritorio.data_utilizacao as datainicio') 
+                ->get();
+    $dados= $dep->first();
 
+    $h=new Helper();
+    $vidautilRestante=$h->calcularVidaUtilRestante($dados-> datainicio, $dados->vidautil);
+    $dado=$h->calcularDepreciacaoAcumuladaEValorContabil($dados->vidautil, $dados-> datainicio, $dados->valorresidual, $dados->dp_anual, $dados->valoraquisicao);
+
+
+              
+   
+    return view('material_escritorio.historicoDepreciacao',['dep'=>$dep,'vidautilRestante'=>$vidautilRestante,'dado'=>$dado]);
+    
+}
         
 
 

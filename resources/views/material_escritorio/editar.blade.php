@@ -393,7 +393,7 @@ function addCommas(value) {
                 return false;
             }else{
                 erro.setAttribute('hidden', true);
-                ormregistar.submit();
+                formregistar.submit();
             }
 
      });

@@ -137,7 +137,7 @@
                                                 </div>
 
                                                 <div class="form-group col-lg-6">
-                                                    <label for="vidautil"  class="col-form-label">Vida útil</label>
+                                                    <label for="vidautil"  class="col-form-label">Vida útil (em ano)</label>
                                                     <input id="vidautil" name="vidautil"  type="text" class="form-control" >
                                                 </div>
 
@@ -393,12 +393,38 @@
                                      return false;
                                  }else{
                                      erro.setAttribute('hidden', true);
-                                     formregistar.submit();
                                  }
+                        
+                                 //verificar data
+                                 var dataAtual = new Date();
+    
+                                    // Converte a data digitada para um objeto Date
+                                    var dataDigitadaObj = new Date(dataaquisicao.value);
+                                    
+                                    // Verifica se a data digitada é posterior à data atual
+                                    
+                                    if (dataDigitadaObj > dataAtual) {
+                                        erro.innerHTML="A data de aquisição não pode ser uma data futura, porfavor verifique";
+                                        erro.removeAttribute('hidden');
+                                        dataaquisicao.focus();
+                                        return false; // A data digitada é superior à data atual
+                                    } else {
+                                        // A data digitada não é superior à data atual
+                                        erro.setAttribute('hidden', true);
+                                        formregistar.submit();
+                                    }
+
+                         
+                           
                
                          });
-                     
-                          });
+
+
+                         // Função para verificar se a data digitada é superior à data atual
+                       
+                            // Obtém a data atua
+                          
+                        });
                      </script>
 
 @endsection

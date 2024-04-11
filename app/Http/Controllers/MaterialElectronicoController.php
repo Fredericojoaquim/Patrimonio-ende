@@ -7,10 +7,12 @@ use App\Models\MaterialElectronico ;
 use App\Models\TipoAquisicaoModel;
 use App\Models\FornecedorMovel;
 use App\Models\Departamento;
+use App\Models\Pessoal;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\HelperController;
 use App\Models\MotivoAbate;
+use App\Models\MatEletronico_pessoal ;
 use App\Models\NotificacaoMat_eletronico as Notificacao;
 use DateTime;
 
@@ -33,16 +35,23 @@ class MaterialElectronicoController extends Controller
      public function material_eletronicos(){
 
         $p=DB::table('materiaeletronico')
-        ->join('departamentos','departamentos.id','=','materiaeletronico.departamento_id')
+        ->join('mateletronico_pessoal','mateletronico_pessoal.material_id','=','materiaeletronico.id')
+        ->join('pessoal','pessoal.id','=','mateletronico_pessoal.pessoal_id')
         ->join('tipoaquisicao','tipoaquisicao.id','=','materiaeletronico.tipoaquisicao_id')
         ->join('fornecedor','fornecedor.id','=','materiaeletronico.fornecedor_id')
         ->where('materiaeletronico.estado','=','ativo')
-        ->select('materiaeletronico.*','tipoaquisicao.descricao as tipoaquisicao_desc','departamentos.descricao as departamentos', 'fornecedor.nome as fornecedor' )
+        ->where('mateletronico_pessoal.estado','=','ativo')
+        ->select('materiaeletronico.*','tipoaquisicao.descricao as tipoaquisicao_desc','pessoal.nome as pessoal' , 'fornecedor.nome as fornecedor' )
         ->get();
+
+        
+
 
         return $p;
 
      }
+
+    
 
      
 
@@ -52,7 +61,8 @@ class MaterialElectronicoController extends Controller
         $not_mat_eletronico=$this->Notificacoes();
         $total_notificao=$not_mat_eletronico->count();
         $dep=Departamento::all();
-        return view('material_eletronico.consultar',['mat'=>$this->material_eletronicos(),'dep'=>$dep,'not_mat_eletronico'=>$not_mat_eletronico,'total_notificao_eletronico'=> $total_notificao]);
+        $pessoal=Pessoal::all();
+        return view('material_eletronico.consultar',['mat'=>$this->material_eletronicos(),'dep'=>$dep,'not_mat_eletronico'=>$not_mat_eletronico,'total_notificao_eletronico'=> $total_notificao,'pessoal'=>$pessoal]);
         
     }
 
@@ -66,7 +76,8 @@ class MaterialElectronicoController extends Controller
         $dep=Departamento::all();
         $t= TipoAquisicaoModel::all();
         $fornecedores=FornecedorMovel::all();
-        return view('material_eletronico.registar',['fornecedor'=>$fornecedores, 'tipo'=>$t,'dep'=>$dep]);
+        $pessoal=Pessoal::all();
+        return view('material_eletronico.registar',['fornecedor'=>$fornecedores, 'tipo'=>$t,'dep'=>$dep,'pessoal'=>$pessoal]);
     }
 
     /**
@@ -122,12 +133,23 @@ class MaterialElectronicoController extends Controller
         $m->tipo=addslashes($request->tipo);
         $m->fornecedor_id=addslashes($request->fornecedor);
         $m->valor_aquisicao=$valoraquisicao;
-        $m->departamento_id=addslashes($request->departamento);
+       
         $m->custo_aquisicao_usd=$Custo_aquisição_usd;
         $m->custo_aquisicao_euro=$Custo_aquisição_euro;
+       
         $m->vida_util=addslashes($request->vidautil);
-        
+        $m->valor_residual=addslashes($request->vresidual);
+        $m->data_utilizacao=addslashes($request->datautilizacao);
+
         $m->save();
+        //
+        $mat=new MatEletronico_pessoal();
+        $mat->pessoal_id=addslashes($request->pessoal);
+        $mat->material_id=$m->id;
+        $mat->estado='ativo';
+        $mat->save();
+
+
         return view('material_eletronico.registar',['sms'=>'Material Registado com sucesso']);
 
         
@@ -153,20 +175,18 @@ class MaterialElectronicoController extends Controller
      */
     public function edit($id)
     {
-        $p=DB::table('materiaeletronico')
-        ->join('departamentos','departamentos.id','=','materiaeletronico.departamento_id')
-        ->join('tipoaquisicao','tipoaquisicao.id','=','materiaeletronico.tipoaquisicao_id')
-        ->join('fornecedor','fornecedor.id','=','materiaeletronico.fornecedor_id')
-        ->where('materiaeletronico.id','=',addslashes($id))
-        ->select('materiaeletronico.*','tipoaquisicao.descricao as tipoaquisicao_desc','departamentos.descricao as departamentos', 'fornecedor.nome as fornecedor' )
-        ->get();
+       
+        $p=$this->material_eletronico($id);
+      
+
         if($p->count()>0)
         {
             $dep=Departamento::all();
             $t= TipoAquisicaoModel::all();
             $fornecedores=FornecedorMovel::all();
+            $pessoal=Pessoal::all();
             //dd($p->first());
-            return view('material_eletronico.editar',['m'=>$p->first(),'fornecedor'=>$fornecedores, 'tipo'=>$t,'dep'=>$dep]);
+            return view('material_eletronico.editar',['m'=>$p->first(),'fornecedor'=>$fornecedores, 'tipo'=>$t,'dep'=>$dep,'pessoal'=>$pessoal]);
 
         }
         
@@ -190,8 +210,7 @@ class MaterialElectronicoController extends Controller
 
         if(!is_null($request->valoraquisicao))
         {
-         $valoraquisicao=$h->moeda(addslashes($request->valoraquisicao));
-         dd($valoraquisicao);
+         $valoraquisicao=$h->moeda(addslashes($request->valoraquisicao)); 
  
         }
  
@@ -222,14 +241,19 @@ class MaterialElectronicoController extends Controller
             'tipo'=>addslashes($request->tipo),
             'fornecedor_id'=>addslashes($request->fornecedor),
             'valor_aquisicao'=>$valoraquisicao,
-            'departamento_id'=>addslashes($request->departamento),
             'custo_aquisicao_usd'=>$Custo_aquisição_usd,
             'custo_aquisicao_euro'=>$Custo_aquisição_euro,
             'vida_util'=>addslashes($request->vidautil),
+            'valor_residual'=>addslashes($request->vresidual),
+            'data_utilizacao'=>addslashes($request->datautilizacao),
     ];
 
     $m=MaterialElectronico::findOrFail(addslashes($request->id));
     $m->update($s);
+    //atualizar a tabela de materia-pessoal
+    $mat=MatEletronico_pessoal::where('estado', 'ativo')->where('material_id', $m->id)->first();
+        $s=['pessoal_id'=>addslashes($request->pessoal)];
+        MatEletronico_pessoal::findOrFail($mat->id)->update($s);
     return view('material_eletronico.consultar',['mat'=>$this->material_eletronicos(),'sms'=>'Registo alterado com sucesso']);
 
     }
@@ -246,13 +270,15 @@ class MaterialElectronicoController extends Controller
     }
 
     public function material_eletronico($id){
-
         $p=DB::table('materiaeletronico')
-        ->join('departamentos','departamentos.id','=','materiaeletronico.departamento_id')
+        ->join('mateletronico_pessoal','mateletronico_pessoal.material_id','=','materiaeletronico.id')
+        ->join('pessoal','pessoal.id','=','mateletronico_pessoal.pessoal_id')
         ->join('tipoaquisicao','tipoaquisicao.id','=','materiaeletronico.tipoaquisicao_id')
         ->join('fornecedor','fornecedor.id','=','materiaeletronico.fornecedor_id')
+        ->where('materiaeletronico.estado','=','ativo')
+        ->where('mateletronico_pessoal.estado','=','ativo')
         ->where('materiaeletronico.id','=',addslashes($id))
-        ->select('materiaeletronico.*','tipoaquisicao.descricao as tipoaquisicao_desc','departamentos.descricao as departamentos', 'fornecedor.nome as fornecedor' )
+        ->select('materiaeletronico.*','tipoaquisicao.descricao as tipoaquisicao_desc','pessoal.nome as pessoal' , 'fornecedor.nome as fornecedor' )
         ->get();
 
         return $p;
@@ -300,15 +326,24 @@ class MaterialElectronicoController extends Controller
 
      public function transferir(Request $request)
      {
-         $s=['departamento_id'=>addslashes($request->departamento)];
-         $m=MaterialElectronico::findOrFail(addslashes($request->material_id));
-         $m->update($s);
-         $dep=Departamento::all();
- 
 
+        /*/  */
+        $m=MatEletronico_pessoal::where('estado', 'ativo')->where('material_id', $request->material_id)->first();
+        $s=['estado'=>'cessado'];
+        MatEletronico_pessoal::findOrFail($m->id)->update($s);
+
+     //salvando o historico da atribuição do material ao pessoal
+        $matp=new MatEletronico_pessoal();
+        $matp->pessoal_id=$request->pessoal_id;
+        $matp->material_id=$request->material_id;
+        $matp->estado='ativo';
+        $matp->save();
+
+        /** */
          $dep=Departamento::all();
+         $pessoal=Pessoal::all();
          
-         return view('material_eletronico.consultar',['mat'=>$this->material_eletronicos(),'dep'=>$dep,'sms'=>'Móvel transferido com sucesso']);
+         return view('material_eletronico.consultar',['mat'=>$this->material_eletronicos(),'dep'=>$dep,'sms'=>'Móvel transferido com sucesso','pesssoal'=>$pessoal]);
      }
 
 
@@ -411,7 +446,20 @@ class MaterialElectronicoController extends Controller
         }
 
 
-        
+        public function historicoAtribuicoes($id)
+        {   
+           $mat=DB::table('mateletronico_pessoal')
+           ->join('pessoal','pessoal.id','=','mateletronico_pessoal.pessoal_id')
+           ->join('departamentos','departamentos.id','=','pessoal.departamento_id')
+           ->where('mateletronico_pessoal.material_id','=',addslashes($id))
+           ->select('mateletronico_pessoal.*','pessoal.nome as pessoal','mateletronico_pessoal.created_at as dataregisto','departamentos.descricao as departamento','pessoal.funcao')
+           ->orderBy('created_at', 'asc')
+           ->get();
+   
+           return view('material_eletronico.detalhes',['mat'=>$mat]);
+   
+   
+        }
 
 
 

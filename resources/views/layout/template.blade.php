@@ -21,7 +21,7 @@
 
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title> @yield('title') </title>
 
 </head>
@@ -351,6 +351,8 @@
                                                     <li class="nav-item">
                                                         <a class="nav-link" href="{{url('material-escritorio/consultar')}}">Consultar</a>
                                                     </li>
+
+                                                    
                                                 </ul>
                                             </div>
                                         </li>

@@ -111,7 +111,7 @@
                                                                          <a href="{{URL("material-escritorio/comprovativo/$m->id")}}" target="_blank" class="btn btn-sm  active"><i class="fas fa-file"></i></a>
                                                                          <a class="btn btn-sm  active" data-toggle="modal" data-target="#ModalTransferir" href="#" onclick="retornaidTranferir({{$m->id}})">Atribuir</a>
                                                                          <a class="btn btn-sm  active" href="{{url("material-escritorio/historico/$m->id")}}">Histórico <br> Atribuições</a>
-                                                                      
+                                                                         <a class="btn btn-sm  active" href="{{url("material-escritorio/historico-depreciacao/$m->id")}}">Histórico <br> depreciação</a>
                                                                      </td>
                                                                 </tr>
                                                                 @endforeach

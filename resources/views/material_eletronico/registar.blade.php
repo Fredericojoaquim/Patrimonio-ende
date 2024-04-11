@@ -137,13 +137,14 @@
                                                </div>
 
                                                <div class="form-group col-lg-6 col-md-12 margin-input">
-                                                <label for="inputText4">Departamento</label>
-                                               <select name="departamento"  id="departamento" class="form-control form-control-sm">
+                                                <label for="inputText4">Atribuir ao</label>
+                                               <select name="pessoal"  id="pessoal" class="form-control form-control-sm">
                                                    <option value="Selecione">Selecione</option>
-                                                 @if(isset($dep))
+
+                                                 @if(isset($pessoal))
                                                    
-                                                       @foreach($dep as $d)
-                                                       <option value="{{$d->id}}">{{$d->descricao}}</option>
+                                                       @foreach($pessoal as $p)
+                                                       <option value="{{$p->id}}">{{$p->nome}}</option>
                                                        @endforeach
                                                    
                                                  @endif
@@ -154,6 +155,16 @@
                                                 <div class="form-group col-lg-6">
                                                     <label for="inputText7" class="col-form-label">Vida útil (em Ano)</label>
                                                     <input id="vidautil" name="vidautil" type="text" class="form-control" placeholder="">
+                                                </div>
+
+                                                <div class="form-group col-lg-6">
+                                                    <label for="vresidual"  class="col-form-label">Valor residual</label>
+                                                    <input id="vresidual" name="vresidual"  type="text" class="form-control" >
+                                                </div>
+
+                                                <div class="form-group col-lg-6 margin-input">
+                                                    <label for="datautilizacao">Data início utilização</label>
+                                                    <input id="datautilizacao"  name="datautilizacao" type="date"  class="form-control">
                                                 </div>
 
 
@@ -222,11 +233,13 @@ btn_registar.addEventListener('click', (event)=>{
         var armazenamento=document.getElementById("armazenamento");
         var tipo=document.getElementById("tipo");
         var fornecedor=document.getElementById("fornecedor");
-        var departamento=document.getElementById("departamento");
+        var pessoal=document.getElementById("pessoal");
         var Custo_aquisição_usd=document.getElementById("Custo_aquisição_usd");
         var Custo_aquisição_euro=document.getElementById("Custo_aquisição_euro");
         var erro= document.getElementById("erro-registar");
         var vidautil=document.getElementById("vidautil");
+        var vresidual=document.getElementById("vresidual");
+        var datautilizacao=document.getElementById("datautilizacao");
 
         if(num_mobilizado.value == ''){
             
@@ -369,11 +382,11 @@ btn_registar.addEventListener('click', (event)=>{
         }
 
 
-        if(departamento.value == 'Selecione'){
+        if(pessoal.value == 'Selecione'){
             
-            erro.innerHTML="Por favor Selecione um  departamento";
+            erro.innerHTML="Por favor Selecione um  pessoal";
             erro.removeAttribute('hidden');
-            departamento.focus();
+            pessoal.focus();
             return false;
         }else{
             erro.setAttribute('hidden', true);
@@ -387,9 +400,47 @@ btn_registar.addEventListener('click', (event)=>{
               return false;
          }else{
                erro.setAttribute('hidden', true);
-               formregistar.submit();
+             
                                 
-         }     
+         }  
+         
+         
+         if(vresidual.value == ''){
+           erro.innerHTML="Por favor preencha o campo valor residual";
+           erro.removeAttribute('hidden');
+           vresidual.focus();
+           return false;
+         }else{
+              erro.setAttribute('hidden', true);
+                                     
+         }
+
+        if(datautilizacao.value == ''){
+            erro.innerHTML="Por favor preencha o campo data utilização";
+             erro.removeAttribute('hidden');
+            datautilizacao.focus();
+            return false;
+        }else{
+               erro.setAttribute('hidden', true);
+        }
+
+        var dataAtual = new Date();
+    
+         // Converte a data digitada para um objeto Date
+         var dataDigitadaObj = new Date(dataaquisicao.value);
+                                    
+           // Verifica se a data digitada é posterior à data atual
+                                    
+        if (dataDigitadaObj > dataAtual) {
+                 erro.innerHTML="A data de aquisição não pode ser uma data futura, porfavor verifique";
+                 erro.removeAttribute('hidden');
+                dataaquisicao.focus();
+             return false; // A data digitada é superior à data atual
+         } else {
+                    // A data digitada não é superior à data atual
+              erro.setAttribute('hidden', true);
+              formregistar.submit();
+         }
 
 });
 

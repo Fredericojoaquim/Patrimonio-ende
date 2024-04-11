@@ -62,7 +62,7 @@
 
             <tr>
                 <td style="border: 1px solid black;">Ram:{{$v->Ram}}</td>
-                <td style="border: 1px solid black;">Departamento Benficiario:{{$v->departamentos}}</td>
+                <td style="border: 1px solid black;">Atribuido ao:{{$v->pessoal}}</td>
                 <td style="border: 1px solid black;">Fornecedor:{{$v->fornecedor}}</td>
             </tr>
 

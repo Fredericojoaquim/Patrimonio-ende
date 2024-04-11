@@ -27,7 +27,7 @@
                                                                     <th>Marca</th>
                                                                     <th>Data Aquisição</th>
                                                                     <th>Cor</th>
-                                                                    <th>Departamento</th>
+                                                                    <th>Atribuído ao</th>
                                                                     <th>Acções</th>
                                                                     
                                                                 </tr>
@@ -43,14 +43,15 @@
                                                                     <td>{{$m->marca}}</td>
                                                                     <td>{{$m->data_aquisicao}}</td>
                                                                     <td>{{$m->cor}}</td>
-                                                                    <td>{{$m->departamentos}}</td>
+                                                                    <td>{{$m->pessoal}}</td>
                                                                    
                                                                     <td class="d-flex justify-content-center">
                                                                          <a href="{{url("material-electronico/editar/$m->id")}}" class="btn btn-sm active"><i class="fas fa-edit"></i></a>
                                                                          <a href="{{url("material-electronico/comprovativo/$m->id")}}" target="_blank" class="btn btn-sm  active"><i class="fas fa-file"></i></a> 
                                                                          <a href="#" class="btn btn-sm  active" data-toggle="modal" data-target="#exampleModal" onclick="retornaid({{$m->id}})">Registar Ocorrencia</a>
                                                                          <a href="{{url("historico-ocorrencia-materia/listar/$m->id")}}" class="btn btn-sm  active">Listar Ocorrencia</a>
-                                                                         <a class="btn btn-sm  active" data-toggle="modal" data-target="#ModalTransferir" href="#" onclick="retornaidTranferir({{$m->id}})">Tranferir</a>
+                                                                         <a class="btn btn-sm  active" data-toggle="modal" data-target="#ModalTransferir" href="#" onclick="retornaidTranferir({{$m->id}})">Atribuir</a>
+                                                                         <a class="btn btn-sm  active" href="{{url("material-eletronico/historico/$m->id")}}">Histórico <br> Atribuições</a>
                                                                      </td>
                                                                 </tr>
                                                                 @endforeach
@@ -107,7 +108,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Transferir Veículo</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Atribuir Móvel</h5>
                 <a href="#" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </a>
@@ -120,13 +121,13 @@
                     {{ method_field('PUT') }}
                     <div class="form-group col-lg-12 margin-input">
 
-                        <label for="input-select">Departamento Beneficiário</label>
-                        <select id="departamento" class="form-control" name="departamento" id="input-select">
+                        <label for="input-select">Atribuir ao</label>
+                        <select id="pessoal_id" class="form-control" name="pessoal_id" id="input-select">
                             <option value="Selecione">Selecione</option>
-                            @if(isset($dep))
+                            @if(isset($pessoal))
                            
-                            @foreach($dep as $d)
-                            <option value="{{$d->id}}">{{$d->descricao}}</option>
+                            @foreach($pessoal as $p)
+                            <option value="{{$p->id}}">{{$p->nome}}</option>
                             @endforeach
                     
                          @endif
@@ -135,7 +136,7 @@
 
                 <div class="text-right">
                     <input type="hidden" name="material_id" id="material_ele_id">
-                    <button class="btn btn-success" id="btn-transferir">Transferir</button>
+                    <button class="btn btn-success" id="btn-transferir">Atribuir</button>
                     <button class="btn btn-danger" type="reset" ><a href="#" class="closebutton" data-dismiss="modal" aria-label="Close">Cancelar</a></button>
                 </div>
 
@@ -204,13 +205,13 @@
                         event.preventDefault();
 
                         var form_transferir=document.getElementById("form-transferir");
-                        var departamento=document.getElementById("departamento");
+                        var pessoal_id=document.getElementById("pessoal_id");
                         var erro_transferir= document.getElementById("erro-transferir");
 
-                        if(departamento.value == 'Selecione'){
-                            erro_transferir.innerHTML="Por favor Selecione um Departamento";
+                        if(pessoal_id.value == 'Selecione'){
+                            erro_transferir.innerHTML="Por favor Selecione um pessoal";
                             erro_transferir.removeAttribute('hidden');
-                            departamento.focus();
+                            pessoal_id.focus();
                             return false;
                         }else{
                             erro_transferir.setAttribute('hidden', true);

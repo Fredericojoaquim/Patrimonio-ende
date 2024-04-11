@@ -21,6 +21,10 @@ use App\Http\Controllers\TipoSeguro;
 use App\Http\Controllers\Predifinicoes;
 use App\Http\Controllers\Pessoal;
 use App\Http\Controllers\testePdfController;
+use App\Models\MaterialEscritorioModel;
+use App\Http\Controllers\Helper;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -38,7 +42,13 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('home');
+    $mat=MaterialEscritorioModel::all();
+    //$teste=new Helper();
+    //dd($teste->calcularPeriodosDepreciacao(3, '01/01/2021'));
+
+  
+
+    return view('home',['mat'=>$mat]);
 })->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';
@@ -185,6 +195,7 @@ Route::get('material-escritorio/comprovativo/{id}', [MaterialEscritorio::class,'
 Route::put('material-escritorio/transferir', [MaterialEscritorio::class,'transferir']);
 Route::get('material-escritorio/vida-util-vencido/{id}', [MaterialEscritorio::class,'movel_vencido']);
 Route::get('material-escritorio/historico/{id}', [MaterialEscritorio::class,'historicoAtribuicoes']);
+Route::get('material-escritorio/historico-depreciacao/{id}', [MaterialEscritorio::class,'historicoDepreciacao']);
 //material electronico
 Route::get('material-electronico/registar', [MaterialElectronicoController ::class,'create'])->name('material-eletronico.registar');
 Route::post('material-electronico/salvar', [MaterialElectronicoController ::class,'store'])->name('material-eletronico.salvar');
@@ -197,7 +208,7 @@ Route::get('historico-ocorrencia-materia/listar/{id}', [OcorrenciaEletronico ::c
 Route::get('historico-ocorrencia-materia/editar/{id}', [OcorrenciaEletronico ::class,'edit'])->name('ocorrencia-eletronico.editar');
 Route::put('historico-ocorrencia-materia/update', [OcorrenciaEletronico::class,'update'])->name('ocorrencia-eletronico.update');
 Route::get('material-electronico/comprovativo/{id}', [MaterialElectronicoController::class,'comprovativo']);
-
+Route::get('material-eletronico/historico/{id}', [MaterialElectronicoController::class,'historicoAtribuicoes']);
 Route::get('material-electronico/movel-vencido/{id}', [MaterialElectronicoController::class,'movel_vencido']);
 
 
