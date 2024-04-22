@@ -178,6 +178,7 @@ Route::put('imoveis/edificio/update', [EdificioController::class,'update']);
 Route::get('imoveis/edificio/pesquisar', [EdificioController::class,'pesquisar']);
 Route::get('imoveis/edificio/comprovativo/{id}', [EdificioController::class,'comprovativo']);
 Route::get('edificio/edificio-vencida/{id}', [EdificioController::class,'Edificio_vencido']);
+Route::get('edificio/historico-depreciacao/{id}', [EdificioController::class,'historicoDepreciacao']);
 });
 
 Route::get('user/perfil', [UserController::class,'perfil'])->middleware('auth');

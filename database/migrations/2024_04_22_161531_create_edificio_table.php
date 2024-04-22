@@ -27,8 +27,10 @@ class CreateEdificioTable extends Migration
             $table->bigInteger('num_andar');
             $table->bigInteger('num_apartamento');
             $table->string('estado')->nullable();  
+            $table->double('valor_residual')->nullable();
+            $table->bigInteger('vida_util')->nullable();
+            $table->date('data_utilizacao');
             $table->foreign('endereco_id')->references('id')->on('endereco');
-        
             $table->timestamps();
         });
     }

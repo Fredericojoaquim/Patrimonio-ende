@@ -325,6 +325,16 @@ class VeiculoController extends Controller
 
         $v=Veiculo::findOrFail(addslashes($request->id));
         $v->update($s);
+
+        //actualizar dados de depreciação
+         //atualizar dados da depreciação
+         $dep=DepreciacaoVeiculo::where('veiculo_id', $v->id)->first();
+         $depAnual=($v->custo_aquisicao_kz-$v->valor_residual)/$v->vida_util;
+         $s=['veiculo_id'=>$v->id,
+         'dp_anual'=>$depAnual,
+         ];
+ 
+        DepreciacaoResidencia::findOrFail($dep->id)->update($s);
         $ve=$this->veiculos();
         return view('veiculo.consultar',['ve'=>$ve,'sms'=>'Veículo alterado com sucesso']);
         

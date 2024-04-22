@@ -50,13 +50,14 @@
                                                                     <td>{{$e->codigo}}</td>
                                                                     <td>{{$e->num_imobilizado}}</td>
                                                                     <td>{{$e->descricao}}</td>
-                                                                    <td>{{$e->valor_aquisicao}}</td>
+                                                                    <td>{{number_format($e->valor_aquisicao, 2,",",".")}}</td>
                                                                     <td>{{$e->desctipo}}</td>
                                                                     <td>{{$e->data_aquisicao}}</td>
                                                                     <td>{{$e->num_andar}}</td>
                                                                     <td class="d-flex justify-content-center">
                                                                          <a href="{{url("imoveis/edificio/editar/$e->codigo")}}" class="btn btn-sm active"><i class="fas fa-edit"></i></a>
-                                                                         <a href="{{url("imoveis/edificio/comprovativo/$e->codigo")}}" target="_blank" class="btn btn-sm  active"><i class="fas fa-file"></i></a> 
+                                                                         <a href="{{url("imoveis/edificio/comprovativo/$e->codigo")}}" target="_blank" class="btn btn-sm  active"><i class="fas fa-file"></i></a>
+                                                                         <a class="btn btn-sm  active" href="{{url("edificio/historico-depreciacao/$e->codigo")}}">Histórico <br> Depreciações</a> 
                                                                      </td>
                                                                 </tr>
                                                                 @endforeach

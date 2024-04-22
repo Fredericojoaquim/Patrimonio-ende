@@ -35,6 +35,9 @@
                                                                     <th>Vida útil</th>
                                                                     <th>Depreciação Anual</th>
                                                                     <th>Data Inicio Utilização</th>
+                                                                    
+                                                                    
+                                                                    
                                                                 </tr>
                                                             </thead>
                                                             <tbody>

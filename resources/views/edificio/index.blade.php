@@ -100,6 +100,16 @@
                                                     <label for="vidautil" class="col-form-label">Vida útil (em Ano)</label>
                                                     <input id="vidautil"  onkeypress="return somenteNumeros(event)" name="vidautil" type="text" class="form-control" placeholder="">
                                                 </div>
+
+                                                <div class="form-group col-lg-6">
+                                                    <label for="datautilizacao" class="col-form-label">Data início utilização</label>
+                                                    <input id="datautilizacao"  onkeypress="return somenteNumeros(event)" name="datautilizacao" type="date" class="form-control">
+                                                </div>
+
+                                                <div class="form-group col-lg-6">
+                                                    <label for="vresidual" class="col-form-label">Valor Residual</label>
+                                                    <input id="vresidual" onkeyup="changeValue(this)"  onkeypress="return somenteNumeros(event)" name="vresidual" type="text" class="form-control">
+                                                </div>
                                             </div>  
                                             <h4 class="card-header myh4">Endereço</h3>  
                                             <div class="row">
@@ -215,6 +225,8 @@ $(document).ready(function(){
         var rua=document.getElementById("rua");
         var vidautil=document.getElementById("vidautil");
         var erro= document.getElementById("erro-registar");
+        var datautilizacao=document.getElementById("datautilizacao");
+        var vresidual=document.getElementById("vresidual");
 
         if(numimobilizado.value == ''){
             
@@ -326,6 +338,27 @@ $(document).ready(function(){
         erro.innerHTML="Por favor preencha o campo Vida Util";
         erro.removeAttribute('hidden');
         vidautil.focus();
+            return false;
+        }else{
+     erro.setAttribute('hidden', true);
+             
+     }
+
+     if(datautilizacao.value == ''){
+        erro.innerHTML="Por favor preencha o campo data inicio de utilização";
+        erro.removeAttribute('hidden');
+        datautilizacao.focus();
+            return false;
+        }else{
+     erro.setAttribute('hidden', true);
+             
+     }
+
+
+     if(vresidual.value == ''){
+        erro.innerHTML="Por favor preencha o campo valor residual";
+        erro.removeAttribute('hidden');
+        vresidual.focus();
             return false;
         }else{
      erro.setAttribute('hidden', true);

@@ -12,6 +12,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\MotivoAbate;
 use App\Models\NotificacaoEdificio as Notificacao;
 use DateTime;
+use App\Models\DepreciacaoEdificio;
 
 
 
@@ -25,7 +26,7 @@ class EdificioController extends Controller
      */
 
      function __construct() {
-        $this->calcularData();
+        //$this->calcularData();
     }
 
      public function edificios()
@@ -163,8 +164,16 @@ class EdificioController extends Controller
         $ed->endereco_id=addslashes($e->id);
         $ed->vida_util=addslashes($request->vidautil);
         $ed->estado='ativo';
-        
+        $ed->valor_residual=$h->moeda(addslashes($request->vresidual));
+        $ed->data_utilizacao=addslashes($request->datautilizacao);
         $ed->save();
+        //salvar dados da depreciação
+        $depedificio=new DepreciacaoEdificio();
+        $depedificio->edificio_id=$ed->id;
+        $depAnual=($ed->valor_aquisicao-$ed->valor_residual)/$ed->vida_util;
+        $depedificio->dp_anual=$depAnual;
+        $depedificio->save();
+
         return view('edificio.index',['sms'=>'Edificio registada com sucesso']);
     }
 
@@ -252,10 +261,22 @@ class EdificioController extends Controller
         'num_apartamento'=>addslashes($request->numapartamento),
         'num_andar'=>addslashes($request->numandar),
         'endereco_id'=>addslashes($e->id),
-        'vida_util'=>addslashes($request->vidautil)
+        'vida_util'=>addslashes($request->vidautil),
+        'valor_residual'=>$h->moeda(addslashes($request->vresidual)),
+        'data_utilizacao'=>addslashes($request->datautilizacao)
+
         ];
 
         $ed->update($auxed);
+
+         //atualizar dados da depreciação
+         $depedificio=DepreciacaoVeiculo::where('edificio_id', $ed->id)->first();
+         $depAnual=($ed->valor_aquisicao-$ed->valor_residual)/$ed->vida_util;
+         $s=['edificio_id'=>$ed->id,
+         'dp_anual'=>$depAnual,
+         ];
+ 
+        DepreciacaoResidencia::findOrFail($depedificio->id)->update($s);
 
         return view('edificio.consultar',['edificio'=>$this->edificios(),'sms'=>'registo alterado com sucesso']);
 
@@ -410,6 +431,25 @@ class EdificioController extends Controller
             }
         }   
     }
+
+
+
+    public function historicoDepreciacao($id)
+    {
+    $dep=DB::table('depreciacao_edificio')
+                ->join('edificio','edificio.id','=','depreciacao_edificio.edificio_id')
+                ->where('edificio.id','=',addslashes($id))
+                ->select('depreciacao_edificio.*','edificio.valor_aquisicao as valoraquisicao','edificio.valor_residual as valorresidual','edificio.vida_util as vidautil','edificio.data_utilizacao as datainicio','edificio.num_imobilizado as numeroimovel') 
+                ->get();
+
+    $dados= $dep->first();
+    $h=new Helper();
+    $vidautilRestante=$h->calcularVidaUtilRestante($dados-> datainicio, $dados->vidautil);
+    $dado=$h->calcularDepreciacaoAcumuladaEValorContabil($dados->vidautil, $dados-> datainicio, $dados->valorresidual, $dados->dp_anual, $dados->valoraquisicao);  
+   
+    return view('edificio.historicoDepreciacao',['dep'=>$dep,'vidautilRestante'=>$vidautilRestante,'dado'=>$dado]);
+    
+}
 
 
 

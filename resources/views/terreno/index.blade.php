@@ -89,10 +89,7 @@
                                                     <input id="dimensao" name="dimensao" type="text" placeholder="" class="form-control">  
                                                 </div>
 
-                                                <div class="form-group col-lg-6">
-                                                    <label for="inputText7" class="col-form-label">Vida útil (em Ano)</label>
-                                                    <input id="vidautil"  onkeypress="return somenteNumeros(event)" name="vidautil" type="text" class="form-control" placeholder="">
-                                                </div>
+                                               
 
                                                
 
@@ -211,7 +208,7 @@ var provincia=document.getElementById("provincia");
 var municipio=document.getElementById("municipio");
 var bairro=document.getElementById("bairro");
 var rua=document.getElementById("rua");
-var vidautil=document.getElementById("vidautil");
+
 
 var erro= document.getElementById("erro-registar");
 
@@ -324,15 +321,7 @@ if(numimobilizado.value == ''){
             erro.setAttribute('hidden', true);
     }
 
-     if(vidautil.value == ''){
-        erro.innerHTML="Por favor preencha o campo Vida Util";
-        erro.removeAttribute('hidden');
-        vidautil.focus();
-            return false;
-        }else{
-     erro.setAttribute('hidden', true);
-             
-     }
+     
      
     if(provincia.value == 'Selecione'){
             
