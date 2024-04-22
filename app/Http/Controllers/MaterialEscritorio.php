@@ -251,10 +251,6 @@ class MaterialEscritorio extends Controller
         $Custo_aquisição_euro=null;
         $h=new HelperController();
 
-
-       // dd($request->valor);
-
-
         if(!is_null($request->valor))
        {
         $valor_aquisicao=$h->moeda(addslashes($request->valor));
@@ -299,10 +295,22 @@ class MaterialEscritorio extends Controller
 
         //
 
-        $m=matescritorio_pessoal::where('estado', 'ativo')->where('material_id', $m->id)->first();
+        $mat=matescritorio_pessoal::where('estado', 'ativo')->where('material_id', $m->id)->first();
         $s=['pessoal_id'=>addslashes($request->pessoal)];
-        matescritorio_pessoal::findOrFail($m->id)->update($s);
+        matescritorio_pessoal::findOrFail($mat->id)->update($s);
+        //atualizar dados da depreciação
+        $dep=new DepreciacaoMatEscritorio();
+       
+        $dep=DepreciacaoMatEscritorio::where('material_id', $m->id)->first();
+        $depAnual=($m->valor_aquisicao-$m->valor_residual)/$m->vida_util;
+        $s=['material_id'=>$m->id,
+        'dp_anual'=>$depAnual,
+        ];
+
+        DepreciacaoMatEscritorio::findOrFail($dep->id)->update($s);
+        //carregar os dados actualizados
         $material=$this->material_escritorios();
+
         return view('material_escritorio.consultar',['mat'=>$material,'sms'=>'Registo alterado com sucesso']);
     }
 
@@ -438,8 +446,6 @@ class MaterialEscritorio extends Controller
 
     public function MaterialNotificado($id)
     {
-        
-
             $p=DB::table('notificacao_mat_escritorio')
             ->join('materialescritorio','materialescritorio.id','=','notificacao_mat_escritorio.material_escritorio_id')
             ->where('materialescritorio.id','=',$id)
@@ -485,25 +491,17 @@ class MaterialEscritorio extends Controller
         public function calcularData()
         {
             $mat=MaterialEscritorioModel::all();
+            $h=new Helper();
            // $v=Veiculo::findOrFail(8);
             foreach($mat as $m)
-            {
-                $dataAquisicao = $m->dataAquisicao;
-                $hoje=new DateTime();
-                $dateaquisicao=new DateTime($m->data_aquisicao);
-                $diferenca=$hoje->diff($dateaquisicao);
-                $vida_util=$m->vida_util;
-                $dif_em_ano=$this->diasEmAno($vida_util, $diferenca->days);
-                
+            {  
                 if(!$this->MaterialNotificado($m->id))
                 {
-                   
-                    if($dif_em_ano-$vida_util>=0)
-                    {
-                        $this->inserirNotificao($m->id);
-
-                    }
-
+                   if($h->verificarVidaUtilExpirada($m->data_utilizacao, $m->vida_util))
+                   {
+                    $this->inserirNotificao($m->id);
+                   }
+                    
                 }
             }   
         }
@@ -514,7 +512,7 @@ public function historicoDepreciacao($id)
     $dep=DB::table('depreciacao__mat__escritorio')
                 ->join('materialescritorio','materialescritorio.id','=','depreciacao__mat__escritorio.material_id')
                 ->where('materialescritorio.id','=',$id)
-                ->select('depreciacao__mat__escritorio.*','materialescritorio.valor_aquisicao as valoraquisicao','materialescritorio.valor_residual as valorresidual','materialescritorio.vida_util as vidautil','materialescritorio.data_utilizacao as datainicio') 
+                ->select('depreciacao__mat__escritorio.*','materialescritorio.valor_aquisicao as valoraquisicao','materialescritorio.valor_residual as valorresidual','materialescritorio.vida_util as vidautil','materialescritorio.data_utilizacao as datainicio','materialescritorio.num_mobilizado as numeroimovel') 
                 ->get();
     $dados= $dep->first();
 

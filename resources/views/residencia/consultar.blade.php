@@ -69,8 +69,9 @@
                                                                     <td>{{$r->tipo_desc}}</td>
                                                                     <td>{{$r->data_aquisicao}}</td>
                                                                     <td class="d-flex justify-content-center">
-                                                                         <a href="{{url("residencia/editar/$r->codigo")}}" class=""><i class="fas fa-edit"></i></a>
-                                                                         <a href="{{url("imoveis/residencia/comprovativo/$r->codigo}")}}" target="_blank" class="btn btn-sm  active"><i class="fas fa-file"></i></a> 
+                                                                         <a class="btn btn-sm  active" href="{{url("residencia/editar/$r->codigo")}}" class=""><i class="fas fa-edit"></i></a>
+                                                                         <a class="btn btn-sm  active" href="{{url("imoveis/residencia/comprovativo/$r->codigo}")}}" target="_blank" class="btn btn-sm  active"><i class="fas fa-file"></i></a> 
+                                                                         <a class="btn btn-sm  active" href="{{url("residencia/historico-depreciacao/$r->codigo")}}">Histórico <br> Depreciações</a>
                                                                      </td>
                                                                 </tr>
                                                                 @endforeach

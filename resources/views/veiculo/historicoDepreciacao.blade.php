@@ -29,7 +29,7 @@
                                                         <table id="example" class="table table-striped table-bordered second" style="width:100%">
                                                             <thead>
                                                                 <tr>
-                                                                    <th>Nº Imobilizado</th>
+                                                                    <th>Codigo Veiculo</th>
                                                                     <th>Valor do Ativo</th>
                                                                     <th>Valor Residual</th>
                                                                     <th>Vida útil</th>

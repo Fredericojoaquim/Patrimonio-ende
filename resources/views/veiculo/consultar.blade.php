@@ -22,7 +22,7 @@
                                                 
                                                 
                                                     <div class="table-responsive">
-                                                        <table id="datatable" class="table table-striped table-bordered second" style="width:100%">
+                                                        <table id="datatable" class="table table-striped table-bordered second" style="width:100%" class="display">
                                                             <thead>
                                                                 <tr>
                                                                     <th>#</th>
@@ -31,7 +31,7 @@
                                                                     <th>Matrícula</th>
                                                                     <th>Nº Motor</th>
                                                                     <th>Cor</th>
-                                                                    <th>Departamento</th>
+                                                                    <th>Atribuido ao</th>
                                                                     <th>Acções</th>
                                                                     
                                                                 </tr>
@@ -46,7 +46,7 @@
                                                                     <td>{{$v->matricula}}</td>
                                                                     <td>{{$v->num_motor}}</td>
                                                                     <td>{{$v->cor}}</td>
-                                                                    <td>{{$v->departamentos}}</td>
+                                                                    <td>{{$v->pessoal}}</td>
                                                                     <td class="d-flex justify-content-center">
                                                                          <a href="{{url("veiculo/editar/$v->id")}}" class="btn btn-sm active"><i class="fas fa-edit"></i></a>
                                                                          
@@ -54,9 +54,10 @@
                                                                          <a href="#" class="btn btn-sm  active"><i class="fas fa-eye"></i></a>-->
                                                                          <a href="{{url("veiculo/comprovativo/$v->id")}}" target="_blank" class="btn btn-sm  active"><i class="fas fa-file"></i></a> 
                                                                          <a class="btn btn-sm  active" data-toggle="modal" data-target="#ModalTransferir" href="#" onclick="retornaidTranferir({{$v->id}})">Atribuir</a>
-                                                                         <a class="btn btn-sm  active" data-toggle="modal" data-target="#ModalTransferir" href="#" onclick="retornaidTranferir({{$v->id}})">Tranferir</a>
                                                                          <a href="#" class="btn btn-sm  active" data-toggle="modal" data-target="#exampleModal" onclick="retornaid({{$v->id}})">Registar Ocorrencia</a>
+                                                                         <a class="btn btn-sm  active" href="{{url("veiculo/historico-atribuicoes/$v->id")}}">Histórico <br> Atribuições</a>
                                                                          <a href="{{url("historico-ocorrencia-veiculo/$v->id")}}" class="btn btn-sm  active">Listar Ocorrencia</a>
+                                                                         <a class="btn btn-sm  active" href="{{url("veiculo/historico-depreciacao/$v->id")}}">Histórico <br> Depreciações</a>
                                                                      </td>
                                                                 </tr>
                                                                 @endforeach
@@ -114,7 +115,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Transferir Veículo</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Atribuir Veículo</h5>
                 <a href="#" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </a>
@@ -127,13 +128,13 @@
                     {{ method_field('PUT') }}
                     <div class="form-group col-lg-12 margin-input">
 
-                        <label for="input-select">Departamento Beneficiário</label>
-                        <select id="departamento" class="form-control" name="departamento" id="input-select">
+                        <label for="input-select">Atribuir para</label>
+                        <select id="pessoal" class="form-control" name="pessoal" id="input-select">
                             <option value="Selecione">Selecione</option>
-                            @if(isset($dep))
+                            @if(isset($pessoal))
                            
-                            @foreach($dep as $d)
-                            <option value="{{$d->id}}">{{$d->descricao}}</option>
+                            @foreach($pessoal as $p)
+                            <option value="{{$p->id}}">{{$p->nome}}</option>
                             @endforeach
                     
                          @endif
@@ -142,7 +143,7 @@
 
                 <div class="text-right">
                     <input type="hidden" name="id_veiculo" id="id_veiculo">
-                    <button class="btn btn-success" id="btn-transferir">Transferir</button>
+                    <button class="btn btn-success" id="btn-transferir">Atribuir</button>
                     <button class="btn btn-danger" type="reset" ><a href="#" class="closebutton" data-dismiss="modal" aria-label="Close">Cancelar</a></button>
                 </div>
 
@@ -158,13 +159,18 @@
                     </div>
 
 
- <script src="{{asset('assets/vendor/jquery/jquery-3.3.1.min.js')}}"></script>       
+ <script src="{{asset('assets/vendor/jquery/jquery-3.3.1.min.js')}}"></script>    
+ 
         <script>
 
 $(document).ready(function(){
-
+    $('#datatable').DataTable({
+            fixedHeader: true
+        });
+   
 //codigo para inicializar a data table
  var table=$('#datatable').DataTable(); 
+
 });
                         
                          function retornaid(id){
@@ -210,13 +216,13 @@ $(document).ready(function(){
                         event.preventDefault();
 
                         var form_transferir=document.getElementById("form-transferir");
-                        var departamento=document.getElementById("departamento");
+                        var pessoal=document.getElementById("pessoal");
                         var erro_transferir= document.getElementById("erro-transferir");
 
-                        if(departamento.value == 'Selecione'){
-                            erro_transferir.innerHTML="Por favor Selecione um Departamento";
+                        if(pessoal.value == 'Selecione'){
+                            erro_transferir.innerHTML="Por favor Selecione uma pessoa para atribuir este veiculo";
                             erro_transferir.removeAttribute('hidden');
-                            departamento.focus();
+                            pessoal.focus();
                             return false;
                         }else{
                             erro_transferir.setAttribute('hidden', true);

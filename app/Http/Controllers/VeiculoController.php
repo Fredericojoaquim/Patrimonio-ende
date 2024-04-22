@@ -12,6 +12,9 @@ use App\Models\MotivoAbate;
 use App\Models\NotificacaoVeiculo as Notificao;
 use DateTime;
 use App\Models\TipoSeguro;
+use App\Models\VeiculoPessoal;
+use App\Models\Pessoal;
+use App\Models\DepreciacaoVeiculo;
 
 
 class VeiculoController extends Controller
@@ -22,13 +25,12 @@ class VeiculoController extends Controller
      * @return \Illuminate\Http\Response
      */
     function __construct() {
-        $this->calcularData();
+        //$this->calcularData();
     }
 
     public function pessoal()
     {
         $p=DB::table('pessoal')
-       
          ->where('pessoal.departamento_id','=','')
         ->select('veiculos.*','tipoaquisicao.descricao as tipoaquisicao_desc','departamentos.descricao as departamentos' )
         ->get();
@@ -37,13 +39,14 @@ class VeiculoController extends Controller
      public function veiculos(){
 
         $p=DB::table('veiculos')
-        ->join('departamentos','departamentos.id','=','veiculos.departamento_id')
+        ->join('veiculo_pessoal','veiculo_pessoal.veiculo_id','=','veiculos.id')
+        ->join('pessoal','pessoal.id','=','veiculo_pessoal.pessoal_id')
         ->join('tipoaquisicao','tipoaquisicao.id','=','veiculos.tipo_aquisicao')
          ->where('veiculos.estado','=','ativo')
-        ->select('veiculos.*','tipoaquisicao.descricao as tipoaquisicao_desc','departamentos.descricao as departamentos' )
+         ->where('veiculo_pessoal.estado','=','ativo')
+         ->orderBy('veiculos.id', 'asc')
+        ->select('veiculos.*','tipoaquisicao.descricao as tipoaquisicao_desc','pessoal.nome as pessoal' )
         ->get();
-       
-
         return $p;
 
      }
@@ -55,9 +58,10 @@ class VeiculoController extends Controller
         $not_veiculo=$this->Notificacoes();
        
         $total_notificao=$not_veiculo->count();
+        $pessoal=Pessoal::all();
 
         $ve=$this->veiculos();
-        return view('veiculo.consultar',['ve'=>$ve,'dep'=>$dep,'not_veiculo'=>$not_veiculo,'total_notificacao'=>$total_notificao]);
+        return view('veiculo.consultar',['ve'=>$ve,'dep'=>$dep,'not_veiculo'=>$not_veiculo,'total_notificacao'=>$total_notificao,'pessoal'=>$pessoal]);
 
     }
 
@@ -70,10 +74,11 @@ class VeiculoController extends Controller
     {
         $tiposeguro=TipoSeguro::all();
         $dep=Departamento::all();
+        $pessoal=Pessoal::all();
         $t= TipoAquisicaoModel::all();
         $not_veiculo=$this->Notificacoes();
         $total_notificao=$not_veiculo->count();
-        return view('veiculo.index',['tipo'=>$t, 'dep'=>$dep,'not_veiculo'=>$not_veiculo,'total_notificacao'=>$total_notificao,'tiposeguro'=> $tiposeguro]);
+        return view('veiculo.index',['tipo'=>$t, 'dep'=>$dep,'not_veiculo'=>$not_veiculo,'total_notificacao'=>$total_notificao,'tiposeguro'=> $tiposeguro,'pessoal'=>$pessoal]);
     }
 
     /**
@@ -154,17 +159,35 @@ class VeiculoController extends Controller
         $v->custo_aquisicao_kz=$Custo_aquisição_kz;
         $v->custo_aquisicao_usd=$Custo_aquisição_usd;
         $v->custo_aquisicao_euro=$Custo_aquisição_euro;
-        $v->vida_util=addslashes($request->vidautil);
+        
         $v->dataAquisicao=addslashes($request->dataAquisicao);
         $v->nome_segurador= $nome_seguradora;
         $v->valor_seguro=$valor_seguro;
         $v->apolice=$apolice;
         $v->data_inicio= $datainicio;
         $v->data_fim=$datafim;
-        $v->departamento_id=addslashes($request->departamento);
+        
         $v->estado='ativo';
         $v->tiposguro_id=$tiposeguro;
+        $v->valor_residual=$request->vresidual;
+        $v->vida_util=addslashes($request->vidautil);
+        $v->data_utilizacao=$request->datautilizacao;
         $v->save();
+
+        $vp=new VeiculoPessoal();
+        $vp->veiculo_id=$v->id;
+        $vp->pessoal_id=$request->pessoal;
+        $vp->estado='Ativo';
+        $vp->save();
+
+        //
+        $depveiculo=new DepreciacaoVeiculo();
+        $depveiculo->veiculo_id=$v->id;
+        $depAnual=($v->custo_aquisicao_kz-$v->valor_residual)/$v->vida_util;
+        $depveiculo->dp_anual=$depAnual;
+        $depveiculo->save();
+
+       
 
         /*if($this->compararData($request->dataAquisicao))
         {
@@ -340,11 +363,16 @@ class VeiculoController extends Controller
 
     public function veiculo($id)
     {
+      
         $p=DB::table('veiculos')
-        ->join('departamentos','departamentos.id','=','veiculos.departamento_id')
+        ->join('veiculo_pessoal','veiculo_pessoal.veiculo_id','=','veiculos.id')
+        ->join('pessoal','pessoal.id','=','veiculo_pessoal.pessoal_id')
         ->join('tipoaquisicao','tipoaquisicao.id','=','veiculos.tipo_aquisicao')
-        ->where('veiculos.id','=',addslashes($id))
-        ->select('veiculos.*','tipoaquisicao.descricao as tipoaquisicao_desc','departamentos.descricao as departamentos' )
+         ->where('veiculos.estado','=','ativo')
+         ->where('veiculo_pessoal.estado','=','ativo')
+         ->where('veiculos.id','=',addslashes($id))
+         ->orderBy('veiculos.id', 'asc')
+        ->select('veiculos.*','tipoaquisicao.descricao as tipoaquisicao_desc','pessoal.nome as pessoal' )
         ->get();
         return $p;
     }
@@ -488,14 +516,25 @@ class VeiculoController extends Controller
 
         public function transferir(Request $request)
         {
-            $s=['departamento_id'=>addslashes($request->departamento)];
-            $v=Veiculo::findOrFail(addslashes($request->id_veiculo));
-            $v->update($s);
 
-            $dep=Departamento::all();
+            $vp=VeiculoPessoal::where('estado', 'Ativo')->where('veiculo_id', $request->id_veiculo)->first();
+            $s=['estado'=>'cessado'];
+            VeiculoPessoal::findOrFail($vp->id)->update($s);
+       
+            //salvando o historico da atribuição do material ao pessoal
+               $new_veiculo_pessoal=new VeiculoPessoal();
+               $new_veiculo_pessoal->pessoal_id=$request->pessoal;
+               $new_veiculo_pessoal->veiculo_id=$request->id_veiculo;
+               $new_veiculo_pessoal->estado='Ativo';
+               $new_veiculo_pessoal->save();
+       
 
+
+            //
+
+            $pessoal=Pessoal::all();
             $ve=$this->veiculos();
-            return view('veiculo.consultar',['ve'=>$ve,'dep'=>$dep, 'sms'=>'Veiculo transferido com sucesso']);
+            return view('veiculo.consultar',['ve'=>$ve,'pessoal'=>$pessoal, 'sms'=>'Veiculo Atribuído com sucesso']);
 
 
         }
@@ -614,7 +653,44 @@ class VeiculoController extends Controller
         }
 
 
-        
+        public function historicoAtribuicoes($id)
+        {
+           $mat=DB::table('veiculo_pessoal')
+           ->join('pessoal','pessoal.id','=','veiculo_pessoal.pessoal_id')
+           ->join('departamentos','departamentos.id','=','pessoal.departamento_id')
+           ->where('veiculo_pessoal.veiculo_id','=',addslashes($id))
+           ->select('veiculo_pessoal.*','pessoal.nome as pessoal','veiculo_pessoal.created_at as dataregisto','departamentos.descricao as departamento','pessoal.funcao')
+           ->orderBy('veiculo_pessoal.created_at', 'asc')
+           ->get();
+   
+           return view('veiculo.detalhes',['mat'=>$mat]);
+   
+   
+        }
+
+
+
+
+    public function historicoDepreciacao($id)
+    {
+    $dep=DB::table('depreciacao_veiculo')
+                ->join('veiculos','veiculos.id','=','depreciacao_veiculo.veiculo_id')
+                ->where('veiculos.id','=',$id)
+                ->select('depreciacao_veiculo.*','veiculos.custo_aquisicao_kz as valoraquisicao','veiculos.valor_residual as valorresidual','veiculos.vida_util as vidautil','veiculos.data_utilizacao as datainicio','veiculos.id as numeroimovel') 
+                ->get();
+    $dados= $dep->first();
+
+    $h=new Helper();
+    $vidautilRestante=$h->calcularVidaUtilRestante($dados-> datainicio, $dados->vidautil);
+    $dado=$h->calcularDepreciacaoAcumuladaEValorContabil($dados->vidautil, $dados-> datainicio, $dados->valorresidual, $dados->dp_anual, $dados->valoraquisicao);
+
+
+              
+   
+    return view('veiculo.historicoDepreciacao',['dep'=>$dep,'vidautilRestante'=>$vidautilRestante,'dado'=>$dado]);
+    
+}
+   
 
 
     

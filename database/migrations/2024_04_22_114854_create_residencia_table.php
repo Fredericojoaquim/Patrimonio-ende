@@ -27,6 +27,9 @@ class CreateResidenciaTable extends Migration
             $table->string('dimensao');
             $table->string('estado');
             $table->bigInteger('num_compartimento');
+            $table->double('valor_residual')->nullable();
+            $table->bigInteger('vida_util')->nullable();
+            $table->date('data_utilizacao');
             $table->foreign('endereco_id')->references('id')->on('endereco');
             $table->timestamps();
         });

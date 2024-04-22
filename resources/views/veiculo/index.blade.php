@@ -102,13 +102,13 @@
 
                                                    <div class="form-group col-lg-6 margin-input">
 
-                                                        <label for="input-select">Departamento Beneficiário</label>
-                                                        <select id="departamento" class="form-control" name="departamento" id="input-select">
+                                                        <label for="input-select">Atribuir ao</label>
+                                                        <select id="pessoal" class="form-control" name="pessoal" id="input-select">
                                                             <option value="Selecione">Selecione</option>
-                                                            @if(isset($dep))
+                                                            @if(isset($pessoal))
                                                            
-                                                            @foreach($dep as $d)
-                                                            <option value="{{$d->id}}">{{$d->descricao}}</option>
+                                                            @foreach($pessoal as $p)
+                                                            <option value="{{$p->id}}">{{$p->nome}}</option>
                                                             @endforeach
                                                     
                                                          @endif
@@ -146,10 +146,22 @@
                                                         <input id="Custo_aquisição_euro" onkeyup="changeValue(this)" type="text" name="Custo_aquisição_euro"   class="form-control" placeholder="">
                                                 </div>
 
-                                                <div class="form-group col-lg-12">
+                                                <div class="form-group col-lg-6">
                                                     <label for="inputText12" class="col-form-label">Data aquisição</label>
                                                     <input id="dataAquisicao" type="date" name="dataAquisicao"   class="form-control" placeholder="">
-                                                </div><br><br>
+                                                </div>
+
+                                                <div class="form-group col-lg-6 margin-input">
+                                                    <label for="datautilizacao">Data início utilização</label>
+                                                    <input id="datautilizacao"  name="datautilizacao" type="date"  class="form-control">
+                                                </div>
+
+                                                <div class="form-group col-lg-6">
+                                                    <label for="vresidual"  class="col-form-label">Valor residual</label>
+                                                    <input id="vresidual" name="vresidual" onkeypress="return somenteNumeros(event)"   type="text" class="form-control" >
+                                                </div>
+
+                                                <br><br>
 
                                                 <div class="form-group col-lg-12 my_margin text-center">
                                                 <h3 class="text-center">INFORMAÇÕES DO SEGURO</h3>
@@ -197,7 +209,7 @@
 
                                             <div class="form-group col-lg-6 margin-input">
                                                     <label for="valor_seguro">Valor</label>
-                                                    <input id="valor_seguro" type="text"   name="valor_seguro"  placeholder="" class="form-control">
+                                                    <input id="valor_seguro" type="text"  onkeyup="changeValue(this)" name="valor_seguro"  placeholder="" class="form-control">
                                             </div>
 
                                             <div class="form-group col-lg-6">
@@ -221,7 +233,7 @@
                                             
                                             <div class="text-right">
                                                 <button class="btn btn-success" id="btn-registar">Registar</button>
-                                                <button class="btn btn-danger" type="reset">Cancelar</button>
+                                                
                                             </div>
                                             
                                         </form>
@@ -295,7 +307,7 @@ $(document).ready(function(){
             var caixa_velocidade=document.getElementById("caixa_velocidade");
             var data_fabrico=document.getElementById("data_fabrico");
             var tipocombustivel=document.getElementById("tipocombustivel");
-            var departamento=document.getElementById("departamento");
+            var pessoal=document.getElementById("pessoal");
             var tipoaquisicao=document.getElementById("tipoaquisicao");
             var Custo_aquisição_kz=document.getElementById("Custo_aquisição_kz");
             var Custo_aquisição_usd=document.getElementById("Custo_aquisição_usd");
@@ -412,10 +424,10 @@ $(document).ready(function(){
                 erro.setAttribute('hidden', true);
              
             }
-            if(departamento.value == 'Selecione'){
-                erro.innerHTML="Por favor preencha o campo Departamento";
+            if(pessoal.value == 'Selecione'){
+                erro.innerHTML="Por favor selecione um pessoal para atribuir a este veículo";
                 erro.removeAttribute('hidden');
-                departamento.focus();
+                pessoal.focus();
                 return false;
             }else{
                 erro.setAttribute('hidden', true);

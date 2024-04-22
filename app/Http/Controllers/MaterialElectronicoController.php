@@ -12,9 +12,11 @@ use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\HelperController;
 use App\Models\MotivoAbate;
+use App\Models\DepreciacaoMatEletronico;
 use App\Models\MatEletronico_pessoal ;
 use App\Models\NotificacaoMat_eletronico as Notificacao;
 use DateTime;
+use App\Http\Controllers\Helper;
 
 
 
@@ -140,14 +142,21 @@ class MaterialElectronicoController extends Controller
         $m->vida_util=addslashes($request->vidautil);
         $m->valor_residual=addslashes($request->vresidual);
         $m->data_utilizacao=addslashes($request->datautilizacao);
-
+       
         $m->save();
+        
         //
         $mat=new MatEletronico_pessoal();
         $mat->pessoal_id=addslashes($request->pessoal);
         $mat->material_id=$m->id;
         $mat->estado='ativo';
         $mat->save();
+        //
+        $dep=new DepreciacaoMatEletronico();
+        $depAnual=($m->valor_aquisicao-$m->valor_residual)/$m->vida_util;
+        $dep->material_id=$m->id;
+        $dep->dp_anual=$depAnual;
+        $dep->save();
 
 
         return view('material_eletronico.registar',['sms'=>'Material Registado com sucesso']);
@@ -459,6 +468,27 @@ class MaterialElectronicoController extends Controller
            return view('material_eletronico.detalhes',['mat'=>$mat]);
    
    
+        }
+
+        public function historicoDepreciacao($id)
+        {
+ 
+            $dep=DB::table('depreciacao__mat__eletronico')
+            ->join('materiaeletronico','materiaeletronico.id','=','depreciacao__mat__eletronico.material_id')
+            ->where('materiaeletronico.id','=',$id)
+            ->select('depreciacao__mat__eletronico.*','materiaeletronico.valor_aquisicao as valoraquisicao','materiaeletronico.valor_residual as valorresidual','materiaeletronico.vida_util as vidautil','materiaeletronico.data_utilizacao as datainicio','materiaeletronico.num_mobilizado as numeroimovel') 
+            ->get();
+            $dados= $dep->first();
+     
+            $h=new Helper();
+            $vidautilRestante=$h->calcularVidaUtilRestante($dados-> datainicio, $dados->vidautil);
+            $dado=$h->calcularDepreciacaoAcumuladaEValorContabil($dados->vidautil, $dados-> datainicio, $dados->valorresidual, $dados->dp_anual, $dados->valoraquisicao);
+
+
+                    
+        
+            return view('material_eletronico.historicoDepreciacao',['dep'=>$dep,'vidautilRestante'=>$vidautilRestante,'dado'=>$dado]);
+    
         }
 
 

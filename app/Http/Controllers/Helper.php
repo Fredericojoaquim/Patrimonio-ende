@@ -83,4 +83,18 @@ function calcularDepreciacaoAcumuladaEValorContabil($vidaUtil, $dataInicio, $val
     ];
 }
 
+
+
+function verificarVidaUtilExpirada($dataInicio, $vidaUtil)
+{
+    $dataInicio = Carbon::createFromFormat('Y-m-d', $dataInicio);
+    $dataAtual = Carbon::now();
+
+    // Adiciona a vida útil em anos à data de início
+    $dataFimVidaUtil = $dataInicio->addYears($vidaUtil);
+
+    // Verifica se a data atual é posterior à data de término da vida útil
+    return $dataAtual->greaterThanOrEqualTo($dataFimVidaUtil);
+}
+
 }

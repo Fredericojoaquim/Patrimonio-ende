@@ -61,3 +61,44 @@ border: black 1px;
     padding-top: 10px;
 
 }
+
+
+
+
+/* Estilos Gerais da Tabela */
+.dataTables_wrapper {
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+/* Estilos do Cabeçalho da Tabela */
+.dataTables_wrapper thead th {
+    background-color: #061C80;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+/* Estilos das Linhas Alternadas */
+.dataTables_wrapper tbody tr:nth-child(odd) {
+    background-color: #f2f2f2;
+}
+
+/* Estilos para o Hover nas Linhas */
+.dataTables_wrapper tbody tr:hover {
+    background-color: #e2e6ea;
+}
+
+/* Ajustes adicionais para uma melhor integração */
+.dataTables_length select,
+.dataTables_filter input {
+    padding: 5px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding: 5px;
+}
+
+.dataTables_wrapper .dataTables_info {
+    padding-top: 5px;
+}

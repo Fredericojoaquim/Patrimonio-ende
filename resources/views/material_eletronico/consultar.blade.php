@@ -52,6 +52,7 @@
                                                                          <a href="{{url("historico-ocorrencia-materia/listar/$m->id")}}" class="btn btn-sm  active">Listar Ocorrencia</a>
                                                                          <a class="btn btn-sm  active" data-toggle="modal" data-target="#ModalTransferir" href="#" onclick="retornaidTranferir({{$m->id}})">Atribuir</a>
                                                                          <a class="btn btn-sm  active" href="{{url("material-eletronico/historico/$m->id")}}">Histórico <br> Atribuições</a>
+                                                                         <a class="btn btn-sm  active" href="{{url("material-electronico/historico-depreciacao/$m->id")}}">Histórico <br> Depreciações</a>
                                                                      </td>
                                                                 </tr>
                                                                 @endforeach

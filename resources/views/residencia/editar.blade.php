@@ -60,18 +60,18 @@
                                                 <div class="form-group col-lg-6 col-md-12">
 
                                                     <label for="valoraquisicao" class="col-form-label">Valor aquisição</label>
-                                                    <input id="valoraquisicao" value="{{$r->valor_aquisicao}}" onkeyup="changeValue(this)" name="valoraquisicao" type="text" class="form-control">
+                                                    <input id="valoraquisicao" value="{{number_format($r->valor_aquisicao, 2,",",".")}}" onkeyup="changeValue(this)" name="valoraquisicao" type="text" class="form-control">
                                                 </div>
 
 
                                                 <div class="form-group col-lg-6 margin-input">
                                                     <label for="Custo_aquisição_usd">Custo aquisição (USD)</label>
-                                                    <input id="Custo_aquisição_usd" value="{{$r->custo_aquisicao_usd}}"  onkeyup="changeValue(this)" type="text" name="Custo_aquisiçao_usd" placeholder="" class="form-control">
+                                                    <input id="Custo_aquisição_usd" value="{{number_format($r->custo_aquisicao_usd, 2,",",".")}}"  onkeyup="changeValue(this)"  onkeypress="return somenteNumeros(event)" type="text" name="Custo_aquisiçao_usd" placeholder="" class="form-control">
                                                  </div>
 
                                                  <div class="form-group col-lg-6">
                                                     <label for="Custo_aquisição_euro" class="col-form-label">Custo aquisição (euro)</label>
-                                                    <input id="Custo_aquisição_euro"  value="{{$r->custo_aquisicao_euro}}"  onkeyup="changeValue(this)" type="text" name="Custo_aquisiçao_euro"   class="form-control" placeholder="">
+                                                    <input id="Custo_aquisição_euro"  value="{{number_format($r->custo_aquisicao_euro, 2,",",".")}}"  onkeyup="changeValue(this)" type="text" name="Custo_aquisiçao_euro"   class="form-control" placeholder="">
                                                 </div>
 
 
@@ -104,6 +104,16 @@
                                                 <div class="form-group col-lg-12">
                                                     <label for="vidautil" class="col-form-label">Vida útil (em Ano)</label>
                                                     <input id="vidautil"  onkeypress="return somenteNumeros(event)"  value="{{$r->vida_util}}" name="vidautil" type="text" class="form-control" placeholder="">
+                                                </div>
+
+                                                <div class="form-group col-lg-6">
+                                                    <label for="datautilizacao" class="col-form-label">Data início utilização</label>
+                                                    <input id="datautilizacao"  onkeypress="return somenteNumeros(event)" value="{{$r->data_utilizacao}}" name="datautilizacao" type="date" class="form-control">
+                                                </div>
+
+                                                <div class="form-group col-lg-6">
+                                                    <label for="vresidual" class="col-form-label">Valor Residual</label>
+                                                    <input id="vresidual" onkeyup="changeValue(this)" value="{{number_format($r->valor_residual, 2,",",".")}}" onkeypress="return somenteNumeros(event)" name="vresidual" type="text" class="form-control">
                                                 </div>
 
                                             </div>  
@@ -226,6 +236,8 @@ $(document).ready(function(){
         var bairro=document.getElementById("bairro");
         var rua=document.getElementById("rua");
         var vidautil=document.getElementById("vidautil");
+        var datautilizacao=document.getElementById("datautilizacao");
+        var vresidual=document.getElementById("vresidual");
  
 
         
@@ -354,6 +366,27 @@ $(document).ready(function(){
         erro.innerHTML="Por favor preencha o campo Vida Util";
         erro.removeAttribute('hidden');
         vidautil.focus();
+            return false;
+        }else{
+     erro.setAttribute('hidden', true);
+             
+     }
+
+     if(datautilizacao.value == ''){
+        erro.innerHTML="Por favor preencha o campo data inicio de utilização";
+        erro.removeAttribute('hidden');
+        datautilizacao.focus();
+            return false;
+        }else{
+     erro.setAttribute('hidden', true);
+             
+     }
+
+
+     if(vresidual.value == ''){
+        erro.innerHTML="Por favor preencha o campo valor residual";
+        erro.removeAttribute('hidden');
+        vresidual.focus();
             return false;
         }else{
      erro.setAttribute('hidden', true);

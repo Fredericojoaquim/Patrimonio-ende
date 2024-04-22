@@ -23,6 +23,7 @@ use App\Http\Controllers\Pessoal;
 use App\Http\Controllers\testePdfController;
 use App\Models\MaterialEscritorioModel;
 use App\Http\Controllers\Helper;
+use App\Models\MaterialElectronico ;
 
 
 /*
@@ -43,12 +44,13 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     $mat=MaterialEscritorioModel::all();
+    $mateletronico=MaterialElectronico ::all();
     //$teste=new Helper();
     //dd($teste->calcularPeriodosDepreciacao(3, '01/01/2021'));
 
   
 
-    return view('home',['mat'=>$mat]);
+    return view('home',['mat'=>$mat,'mateletronico'=>$mateletronico]);
 })->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';
@@ -129,6 +131,8 @@ Route::get('veiculo/pesquisar', [VeiculoController::class,'pesquisar']);
 Route::get('veiculo/comprovativo/{id}', [VeiculoController::class,'comprovativo']);
 Route::put('veiculo/transferir', [VeiculoController::class,'transferir']);
 Route::get('veiculo/vida-util-vencido/{id}', [VeiculoController::class,'veiculo_vencido']);
+Route::get('veiculo/historico-atribuicoes/{id}', [VeiculoController::class,'historicoAtribuicoes']);
+Route::get('veiculo/historico-depreciacao/{id}', [VeiculoController::class,'historicoDepreciacao']);
 
 //ocorrencias de veiculos
 Route::post('veiculo-ocorrencia/registar', [OcorrenciaVeiculo::class,'store']);
@@ -164,6 +168,7 @@ Route::put('residencia/update', [ResidenciaController::class,'update']);
 Route::get('residencia/pesquisar', [ResidenciaController::class,'pesquisar']);
 Route::get('imoveis/residencia/comprovativo/{id}', [ResidenciaController::class,'comprovativo']);
 Route::get('terreno/residencia-vencida/{id}', [ResidenciaController::class,'Residencia_vencida']);
+Route::get('residencia/historico-depreciacao/{id}', [ResidenciaController::class,'historicoDepreciacao']);
 //Edifício
 Route::get('imoveis/edificio/create', [EdificioController::class,'create']);
 Route::get('imoveis/edificio/consultar', [EdificioController::class,'index']);
@@ -210,7 +215,7 @@ Route::put('historico-ocorrencia-materia/update', [OcorrenciaEletronico::class,'
 Route::get('material-electronico/comprovativo/{id}', [MaterialElectronicoController::class,'comprovativo']);
 Route::get('material-eletronico/historico/{id}', [MaterialElectronicoController::class,'historicoAtribuicoes']);
 Route::get('material-electronico/movel-vencido/{id}', [MaterialElectronicoController::class,'movel_vencido']);
-
+Route::get('material-electronico/historico-depreciacao/{id}', [MaterialElectronicoController::class,'historicoDepreciacao']);
 
 });
 
@@ -235,6 +240,7 @@ Route::post('abate/terrenos/registar', [ AbateController::class,'AbateTerreno'])
 //residencia
 Route::get('abate/residencia/consultar', [ResidenciaController::class,'consultar']);
 Route::post('abate/residencia/registar', [AbateController::class,'AbateResidencia']);
+
 
 });
 

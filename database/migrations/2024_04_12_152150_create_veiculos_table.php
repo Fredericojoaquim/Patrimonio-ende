@@ -22,6 +22,7 @@ class CreateVeiculosTable extends Migration
             $table->string('num_motor');
             $table->string('tipo_caixavelocidade');
             $table->date('data_fabrico');
+            $table->date('dataAquisicao');
             $table->string('tipo_aquisicao');
             $table->string('tipo_combustivel');
             $table->string('cor');
@@ -36,8 +37,11 @@ class CreateVeiculosTable extends Migration
             $table->date('data_inicio')->nullable();
             $table->date('data_fim')->nullable();
             $table->string('estado'); 
-            $table->bigInteger('departamento_id')->unsigned();
-            $table->foreign('departamento_id')->references('id')->on('departamentos');
+            $table->double('valor_residual')->nullable();
+            $table->bigInteger('vida_util')->nullable();
+            $table->bigInteger('tiposguro_id')->nullable();
+            $table->date('data_utilizacao');
+            $table->foreign('tiposguro_id')->references('id')->on('tiposeguro');
             $table->timestamps();
         });
     }

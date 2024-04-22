@@ -56,7 +56,7 @@
 
             <tr style="border: 1px solid black;">
                 <td style="border: 1px solid black; ">Tipo aquisição: {{$v->tipoaquisicao_desc}}</td>
-                <td style="border: 1px solid black;">Departamento Benficiario:{{$v->departamentos}}</td>
+                <td style="border: 1px solid black;">Atribuido ao:{{$v->pessoal}}</td>
                 <td style="border: 1px solid black;">Custo aquisição kz:{{number_format($v->custo_aquisicao_kz, 2,",",".")}}</td>
             </tr>
 

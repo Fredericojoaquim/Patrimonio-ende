@@ -12,7 +12,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\MotivoAbate;
 use App\Models\NotificacaoResidencia as Notificacao;
 use DateTime;
-
+use App\Models\DepreciacaoResidencia;
 
 class ResidenciaController extends Controller
 {
@@ -23,7 +23,7 @@ class ResidenciaController extends Controller
      */
 
      function __construct() {
-        $this->calcularData();
+       // $this->calcularData();
     }
 
      public function residencias()
@@ -157,7 +157,16 @@ class ResidenciaController extends Controller
         $r->endereco_id=addslashes($e->id);
         $r->estado='ativo';
         $r->vida_util=addslashes($request->vidautil);
+        $r->valor_residual=$h->moeda(addslashes($request->vresidual));
+        $r->data_utilizacao=addslashes($request->datautilizacao);
+       
         $r->save();
+
+        $depresidencia=new DepreciacaoResidencia();
+        $depresidencia->residencia_id=$r->id;
+        $depAnual=($r->valor_aquisicao-$r->valor_residual)/$r->vida_util;
+        $depresidencia->dp_anual=$depAnual;
+        $depresidencia->save();
 
         return view('residencia.index',['sms'=>'Residencia registada com sucesso']);
 
@@ -244,9 +253,9 @@ class ResidenciaController extends Controller
         $aux_res=[
             'num_imobilizado'=>addslashes($request->numimobilizado),
             'descricao'=>addslashes($request->descricao),
-            'valor_aquisicao'=>$valoraquisicao,
-            'custo_aquisicao_usd'=>$Custo_aquisiçao_usd,
-            'custo_aquisicao_euro'=>$Custo_aquisiçao_euro,
+            'valor_aquisicao'=>$h->moeda($valoraquisicao),
+            'custo_aquisicao_usd'=>$h->moeda($Custo_aquisiçao_usd),
+            'custo_aquisicao_euro'=>$h->moeda($Custo_aquisiçao_euro),
             'finalidade'=>addslashes($request->finalidade),
             'tipo_aquisicao'=>addslashes($request->tipoaquisicao),
             'data_aquisicao'=>addslashes($request->dataaquisicao),
@@ -254,9 +263,22 @@ class ResidenciaController extends Controller
             'num_compartimento'=>addslashes($request->numcompartimento),
             'endereco_id'=>addslashes($e->id),
             'vida_util'=>addslashes($request->vidautil),
+            'valor_residual'=>$h->moeda(addslashes($request->vresidual)),
+            'data_utilizacao'=>addslashes($request->datautilizacao)
         ];
+      
+      
         $res->update($aux_res);
 
+        //atualizar dados da depreciação
+        $dep=DepreciacaoResidencia::where('residencia_id', $res->id)->first();
+        $depAnual=($res->valor_aquisicao-$res->valor_residual)/$res->vida_util;
+        $s=['residencia_id'=>$res->id,
+        'dp_anual'=>$depAnual,
+        ];
+
+        DepreciacaoResidencia::findOrFail($dep->id)->update($s);
+        //carregar os dados actualizados
         $p=$this->residencias();
 
          return view('residencia.consultar',['res'=>$p,'sms'=>'Registo alterado com sucesso']);
@@ -413,6 +435,25 @@ class ResidenciaController extends Controller
             }
         }   
     }
+
+
+
+    public function historicoDepreciacao($id)
+    {
+    $dep=DB::table('depreciacao_residencia')
+                ->join('residencia','residencia.id','=','depreciacao_residencia.residencia_id')
+                ->where('residencia.id','=',addslashes($id))
+                ->select('depreciacao_residencia.*','residencia.valor_aquisicao as valoraquisicao','residencia.valor_residual as valorresidual','residencia.vida_util as vidautil','residencia.data_utilizacao as datainicio','residencia.num_imobilizado as numeroimovel') 
+                ->get();
+
+    $dados= $dep->first();
+    $h=new Helper();
+    $vidautilRestante=$h->calcularVidaUtilRestante($dados-> datainicio, $dados->vidautil);
+    $dado=$h->calcularDepreciacaoAcumuladaEValorContabil($dados->vidautil, $dados-> datainicio, $dados->valorresidual, $dados->dp_anual, $dados->valoraquisicao);  
+   
+    return view('residencia.historicoDepreciacao',['dep'=>$dep,'vidautilRestante'=>$vidautilRestante,'dado'=>$dado]);
+    
+}
 
 
 }
