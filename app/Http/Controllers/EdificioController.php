@@ -252,9 +252,9 @@ class EdificioController extends Controller
         $auxed=[
         'num_imobilizado'=>addslashes($request->numimobilizado),
         'descricao'=>addslashes($request->descricao),
-        'valor_aquisicao'=>$valoraquisicao,
-        'custo_aquisicao_usd'=>$Custo_aquisiçao_usd,
-        'custo_aquisicao_euro'=>$Custo_aquisiçao_euro,
+        'valor_aquisicao'=>$h->moeda($valoraquisicao),
+        'custo_aquisicao_usd'=>$h->moeda($Custo_aquisiçao_usd),
+        'custo_aquisicao_euro'=>$h->moeda($Custo_aquisiçao_euro),
         'finalidade'=>addslashes($request->finalidade),
         'tipo_aquisicao'=>addslashes($request->tipoaquisicao),
         'data_aquisicao'=>addslashes($request->dataaquisicao),
@@ -270,13 +270,13 @@ class EdificioController extends Controller
         $ed->update($auxed);
 
          //atualizar dados da depreciação
-         $depedificio=DepreciacaoVeiculo::where('edificio_id', $ed->id)->first();
+         $depedificio=DepreciacaoEdificio::where('edificio_id', $ed->id)->first();
          $depAnual=($ed->valor_aquisicao-$ed->valor_residual)/$ed->vida_util;
          $s=['edificio_id'=>$ed->id,
          'dp_anual'=>$depAnual,
          ];
  
-        DepreciacaoResidencia::findOrFail($depedificio->id)->update($s);
+         DepreciacaoEdificio::findOrFail($depedificio->id)->update($s);
 
         return view('edificio.consultar',['edificio'=>$this->edificios(),'sms'=>'registo alterado com sucesso']);
 

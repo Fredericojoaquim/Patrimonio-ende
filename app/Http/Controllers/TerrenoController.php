@@ -130,7 +130,6 @@ class TerrenoController extends Controller
         $t->tipo_aquisicao=addslashes($request->tipoaquisicao);
         $t->data_aquisicao=addslashes($request->dataaquisicao);
         $t->endereco_id=addslashes($e->id);
-        $t->vida_util=addslashes($request->vidautil);
         $t->estado='ativo';
 
         $t->save();

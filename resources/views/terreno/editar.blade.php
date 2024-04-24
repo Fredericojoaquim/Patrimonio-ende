@@ -90,12 +90,6 @@
                                                     <input id="dimensao" value="{{$te->dimensao}}" name="dimensao" type="text" placeholder="" class="form-control">
                                                     
                                                 </div>
-
-                                                <div class="form-group col-lg-6">
-                                                    <label for="inputText7" class="col-form-label">Vida útil (em Ano)</label>
-                                                    <input id="vidautil" value="{{$te->vida_util}}"  onkeypress="return somenteNumeros(event)" name="vidautil" type="text" class="form-control" placeholder="">
-                                                </div>
-
                                                
                                             </div>  
                                             <h4 class="card-header myh4">Endereço</h3>  
