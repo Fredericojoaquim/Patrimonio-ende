@@ -24,6 +24,8 @@ use App\Http\Controllers\testePdfController;
 use App\Models\MaterialEscritorioModel;
 use App\Http\Controllers\Helper;
 use App\Models\MaterialElectronico ;
+use App\Models\Veiculo;
+use App\Models\AbateVeiculo as VeiculoAbate;
 
 
 /*
@@ -43,14 +45,22 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
+
+    $veiculo=new Veiculo();
+
     $mat=MaterialEscritorioModel::all();
     $mateletronico=MaterialElectronico ::all();
+    $veiculoAbate=new VeiculoAbate();
+    $QtdVeiculoAbate=$veiculoAbate->quantidadeVeiculosAbatidos();
+    $ve=Veiculo::count();
+
+    $qtdVeiculosAtivos=$veiculo->quantidadeVeiculosAtivos();
     //$teste=new Helper();
     //dd($teste->calcularPeriodosDepreciacao(3, '01/01/2021'));
 
   
 
-    return view('home',['mat'=>$mat,'mateletronico'=>$mateletronico]);
+    return view('home',['mat'=>$mat,'mateletronico'=>$mateletronico,'totalVeiculo'=>$ve,'veiculosabatidos'=>$QtdVeiculoAbate,'veiculosAtivo'=>$qtdVeiculosAtivos]);
 })->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';

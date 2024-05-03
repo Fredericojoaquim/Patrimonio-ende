@@ -1,6 +1,6 @@
 @extends('layout.template')
 @section('title', 'Gestão de Património ENDE-Imóvel')
-
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
 @section('content')
 <div class="row">
@@ -35,18 +35,13 @@
     <div class="col-lg-6 card">
         <canvas id="myChart2" width="400" height="400"></canvas>
     </div>
+
+   
     @endcan
 
     @can('gestor de veiculo')
-    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
-
-        <a data-target="#submenu-3" aria-controls="submenu-3" data-toggle="collapse" aria-expanded="false">
-            <div class="card cor_template">
-                <div class="card-body">
-                    <h5 class="text-muted text-center texto_branco">Veículos</h5>
-                </div>
-            </div>
-        </a> 
+    <div class="col-lg-6 card">
+        <canvas id="myChartveiculo" width="400" height="400"></canvas>
     </div>
     @endcan
 
@@ -99,39 +94,100 @@
 
 </div>
 
+
 <script>
-    /*
-    var ctx = document.getElementById('myChart').getContext('2d');
+    
+   
+
+   //
+   //veiculo
+// Definindo os valores dos veículos registrados e em reparação
+// Definindo os valores dos veículos registrados e em reparação
+
+@can('gestor de veiculo')
+
+    var veiculosRegistrados = {{$totalVeiculo}};
+    var veiculosAbatidos = {{$veiculosabatidos}};
+    var veiculosAtivos = {{$veiculosAtivo}};
+
+    // Calculando o total de veículos
+    //var totalVeiculos = veiculosRegistrados + veiculosAbatidos + veiculosAtivos;
+
+    // Obtendo o contexto do elemento canvas
+    var ctx = document.getElementById('myChartveiculo').getContext('2d');
+
+    // Criando o gráfico de barra
     var myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: [
-                @foreach($mat as $m)
-                    '{{ $m->descricao }}',
-                @endforeach
-            ],
+            labels: ['Veiculos registados', 'Veiculos abatidos', 'Veiculos Ativos'],
             datasets: [{
                 label: 'Valores',
-                data: [
-                    @foreach($mat as $m)
-                        {{ $m->valor_aquisicao }},
-                    @endforeach
+                data: [veiculosRegistrados, veiculosAbatidos, veiculosAtivos],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)', // Cor da primeira barra
+                    'rgba(54, 162, 235, 0.6)', // Cor da segunda barra
+                    'rgba(255, 206, 86, 0.6)' // Cor da terceira barra
                 ],
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgba(255, 99, 132, 1)',
+                borderColor: [
+                    'rgba(255, 99, 132, 1)', // Cor da borda da primeira barra
+                    'rgba(54, 162, 235, 1)', // Cor da borda da segunda barra
+                    'rgba(255, 206, 86, 1)' // Cor da borda da terceira barra
+                ],
                 borderWidth: 1
             }]
         },
         options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Veículos',
+                    font: {
+                        size: 14,
+                        weight: 'bold'
+                    }
+                },
+                legend: {
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        font: {
+                            size: 14
+                        }
+                    }
+                }
+            },
+            layout: {
+                padding: {
+                    left: 50,
+                    right: 50,
+                    top: 50,
+                    bottom: 50
+                }
+            },
             scales: {
+                x: {
+                    grid: {
+                        display: false // Remover as linhas de grade internas do eixo x
+                    }
+                },
                 y: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    grid: {
+                        display: false // Remover as linhas de grade internas do eixo y
+                    }
                 }
             }
         }
-    });*/
+    });
 
-   //
+
+@endcan
+
+
+
+@can('gestor movel')
+   //________________
    var ctx = document.getElementById('myChart').getContext('2d');
    var chartMatEletronico = document.getElementById('myChart2').getContext('2d');
 
@@ -289,5 +345,12 @@ var myCh = new Chart(chartMatEletronico, {
     }
 
 });
+
+@endcan
+
+
+
+
+
 </script>
 @endsection
