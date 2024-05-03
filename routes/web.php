@@ -26,6 +26,9 @@ use App\Http\Controllers\Helper;
 use App\Models\MaterialElectronico ;
 use App\Models\Veiculo;
 use App\Models\AbateVeiculo as VeiculoAbate;
+use App\Models\Edificio;
+use App\Models\Terreno;
+use App\Models\Residencia;
 
 
 /*
@@ -54,13 +57,17 @@ Route::get('/dashboard', function () {
     $QtdVeiculoAbate=$veiculoAbate->quantidadeVeiculosAbatidos();
     $ve=Veiculo::count();
 
+    $TotalEdificios=Edificio::count();
+    $TotalTerrenos=Terreno::count();
+    $TotalResidencias=Residencia::count();
+
     $qtdVeiculosAtivos=$veiculo->quantidadeVeiculosAtivos();
     //$teste=new Helper();
     //dd($teste->calcularPeriodosDepreciacao(3, '01/01/2021'));
 
   
 
-    return view('home',['mat'=>$mat,'mateletronico'=>$mateletronico,'totalVeiculo'=>$ve,'veiculosabatidos'=>$QtdVeiculoAbate,'veiculosAtivo'=>$qtdVeiculosAtivos]);
+    return view('home',['mat'=>$mat,'mateletronico'=>$mateletronico,'totalVeiculo'=>$ve,'veiculosabatidos'=>$QtdVeiculoAbate,'veiculosAtivo'=>$qtdVeiculosAtivos,'TotalEdificios'=> $TotalEdificios,'TotalTerrenos'=>$TotalTerrenos,'TotalResidencias'=>$TotalResidencias]);
 })->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';

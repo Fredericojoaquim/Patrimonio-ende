@@ -207,9 +207,10 @@ class UserController extends Controller
                 $id=addslashes($request->user_id);
                 $u=User::findOrFail($id);
                 $u->update($s);
-                $file=User::findOrFail($id)->img;;
+                $file=User::findOrFail($id)->img;
+                $u=User::findOrFail($id);
 
-                return view('user.perfil',['sms'=>'Foto alterada com sucesso','file'=>$file]);
+                return view('user.perfil',['sms'=>'Foto alterada com sucesso','file'=>$file,'user'=>$u]);
             }
         }
     }

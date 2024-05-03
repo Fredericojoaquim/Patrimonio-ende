@@ -118,7 +118,7 @@ $(document).ready(function(){
             var senha=document.getElementById("senha");
             var confsenha=document.getElementById("confirmarsenha");
             var check=document.querySelector('input[name="check_password"]:checked').value;
-           alert(check);
+          
             var erro= document.getElementById("erro-registar");
 
        
@@ -134,7 +134,6 @@ $(document).ready(function(){
             }
 
             if(telefone.value == ''){
-             
                 erro.innerHTML="Por favor preencha o campo telefone";
                 erro.removeAttribute('hidden');
                 telefone.focus();
@@ -157,7 +156,7 @@ $(document).ready(function(){
 
                     if(confsenha.value == ''){
                         
-                        erro.innerHTML="Por favor preencha o campo Confirmar Seanha";
+                        erro.innerHTML="Por favor preencha o campo Confirmar Senha";
                         erro.removeAttribute('hidden');
                         confsenha.focus();
                         return false;

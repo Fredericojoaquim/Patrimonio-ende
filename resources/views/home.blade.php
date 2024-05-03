@@ -8,19 +8,9 @@
 </div>
 <div class="row">
     @can('gestor imovel')
-    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
-
-        <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-1" aria-controls="submenu-1">
-            <div class="card cor_template">
-                <div class="card-body">
-                    <h5 class="text-muted text-center texto_branco"> Imóveis</h5>
-
-                    
-                </div>
-            </div>
-        </a> 
+    <div class="col-lg-6 card">
+        <canvas id="ChartImovel" width="400" height="400"></canvas>
     </div>
-
    
     @endcan
 
@@ -103,6 +93,89 @@
    //veiculo
 // Definindo os valores dos veículos registrados e em reparação
 // Definindo os valores dos veículos registrados e em reparação
+@can('gestor imovel')
+
+
+  
+    var TotalTerreno = {{$TotalTerrenos}};
+    var Totalresidencia = {{$TotalResidencias}};
+    var TotalEdificios={{$TotalEdificios}}
+    var imoveisRegistrados=TotalTerreno+Totalresidencia+TotalEdificios;
+
+    // Calculando o total de veículos
+    //var totalVeiculos = veiculosRegistrados + veiculosAbatidos + veiculosAtivos;
+
+    // Obtendo o contexto do elemento canvas
+    var chartImovel = document.getElementById('ChartImovel').getContext('2d');
+
+    // Criando o gráfico de barra
+    var myChart = new Chart(chartImovel, {
+        type: 'bar',
+        data: {
+            labels: ['Imóveis registados', 'Terrenos', 'Edifícios', 'Residencias'],
+            datasets: [{
+                label: 'Valores',
+                data: [imoveisRegistrados,TotalTerreno , TotalEdificios, Totalresidencia],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)', // Cor da primeira barra
+                    'rgba(54, 162, 235, 0.6)', // Cor da segunda barra
+                    'rgba(255, 206, 86, 0.6)' // Cor da terceira barra
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)', // Cor da borda da primeira barra
+                    'rgba(54, 162, 235, 1)', // Cor da borda da segunda barra
+                    'rgba(255, 206, 86, 1)' // Cor da borda da terceira barra
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Imóveis',
+                    font: {
+                        size: 14,
+                        weight: 'bold'
+                    }
+                },
+                legend: {
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        font: {
+                            size: 14
+                        }
+                    }
+                }
+            },
+            layout: {
+                padding: {
+                    left: 50,
+                    right: 50,
+                    top: 50,
+                    bottom: 50
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        display: false // Remover as linhas de grade internas do eixo x
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        display: false // Remover as linhas de grade internas do eixo y
+                    }
+                }
+            }
+        }
+    });
+
+
+
+@endcan
 
 @can('gestor de veiculo')
 
