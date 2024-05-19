@@ -17,7 +17,7 @@ class CheckDirector
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->getPermissionNames()->first()=='gestor imovel') {
+        if (Auth::check() && Auth::user()->getPermissionNames()->first()=='Director') {
            
             return $next($request);
         }

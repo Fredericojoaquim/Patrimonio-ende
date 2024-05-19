@@ -3,12 +3,7 @@
 
 
 @section('content')
-<div class="input-group rounded">
-    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
-    <button type="button" class="btn btn-primary">
-        <i class="fas fa-search"></i>
-      </button>
-</div>
+
                     <div class="card">
                                     <h3 class="card-header">Listar Material Electronico</h3>
                                     @if (@isset($sms))
@@ -22,7 +17,7 @@
                                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                             <div class="card">
                                                     <div class="table-responsive">
-                                                        <table id="example" class="table table-striped table-bordered second" style="width:100%">
+                                                        <table id="datatable" class="table table-striped table-bordered second" style="width:100%">
                                                             <thead>
                                                                 <tr>
                                                                     <th>#</th>
@@ -32,7 +27,7 @@
                                                                     <th>Marca</th>
                                                                     <th>Data Aquisição</th>
                                                                     <th>Cor</th>
-                                                                    <th>Departamento</th>  
+                                                                    <th>Atribuído ao</th>  
                                                                     <th>Estado</th>
                                                                     <th>Acções</th>
                                                                     
@@ -49,7 +44,7 @@
                                                                     <td>{{$m->marca}}</td>
                                                                     <td>{{$m->data_aquisicao}}</td>
                                                                     <td>{{$m->cor}}</td>
-                                                                    <td>{{$m->departamentos}}</td>
+                                                                    <td>{{$m->pessoal}}</td>
                                                                     
                                                                     @if($m->estado=='ativo')
                                                                     <td class="status-success">{{$m->estado}}</td>
@@ -76,16 +71,7 @@
                                                     </div><br><br>
                                     </div>
 
-                                    @if(isset($mat))
-                                    <div class="container">
-
-                                        <div class="">
-                                         {{$mat->links()}}
-                                        </div>
-                                         
-                                     </div>
-                                        
-                                    @endif
+                                    
                     </div>
 
  
@@ -140,6 +126,19 @@
 
  <script src="{{asset('assets/vendor/jquery/jquery-3.3.1.min.js')}}"></script>       
  <script>
+
+$(document).ready(function(){
+             $('#datatable').DataTable({
+            fixedHeader: true
+               });
+
+              //codigo para inicializar a data table
+            var table=$('#datatable').DataTable();
+
+s});
+
+
+
                  
                   function retornaid(id){
                     // alert(id);

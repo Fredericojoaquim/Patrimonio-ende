@@ -22,7 +22,7 @@
                                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                             <div class="card">
                                                     <div class="table-responsive">
-                                                        <table id="example" class="table table-striped table-bordered second" style="width:100%">
+                                                        <table id="datatable" class="table table-striped table-bordered second" style="width:100%">
                                                             <thead>
                                                                 <tr>
                                                                     <th>#</th>
@@ -32,7 +32,7 @@
                                                                     <th>Marca</th>
                                                                     <th>Data Aquisição</th>
                                                                     <th>Cor</th>
-                                                                    <th>Departamento</th>
+                                                                    <th>Atribuído ao</th>
                                                                     <th>Estado</th>
 
                                                                     <th>Acções</th>
@@ -50,7 +50,7 @@
                                                                     <td>{{$m->marca}}</td>
                                                                     <td>{{$m->data_aquisicao}}</td>
                                                                     <td>{{$m->cor}}</td>
-                                                                    <td>{{$m->departamentos}}</td>
+                                                                    <td>{{$m->pessoal}}</td>
                                                                     
                                                                     @if($m->estado=='ativo')
                                                                     <td class="status-success">{{$m->estado}}</td>
@@ -77,16 +77,7 @@
                                                     </div><br><br>
                                     </div>
 
-                                    @if(isset($mat))
-                                    <div class="container">
-
-                                        <div class="d-flex justify-content-center">
-                                         {{$mat->links()}}
-                                        </div>
-                                         
-                                     </div>
-                                        
-                                    @endif
+                                   
                     </div>
 
   <!-- Modal -->
@@ -141,6 +132,16 @@
 
  <script src="{{asset('assets/vendor/jquery/jquery-3.3.1.min.js')}}"></script>       
  <script>
+
+     $(document).ready(function(){
+             $('#datatable').DataTable({
+            fixedHeader: true
+               });
+
+              //codigo para inicializar a data table
+            var table=$('#datatable').DataTable();
+
+    });
                  
                   function retornaid(id){
                     // alert(id);

@@ -5,20 +5,8 @@
 @section('content')
 <form action="{{url('abate/veiculos/pesquisar')}}" >
     @csrf
-    <div class="input-group rounded">
-       
-            
-           <select name="selectbusca" id="selectbusca" class="form-control form-control-sm">
-               <option value="Selecione">Pesquisar Por</option>
-               <option value="Matricula">Matricula</option>
-               <option value="Marca">Marca</option>
-           </select> <br>
-       
-        <input type="search" name="descricao"  class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
-        <button type="button" class="btn btn-primary">
-            <i class="fas fa-search"></i>
-          </button>
-    </div>
+   
+
 </form>
                     <div class="card">
                                     <h3 class="card-header">Listar Veículos</h3>
@@ -48,7 +36,7 @@
                                                 
                                                 
                                                     <div class="table-responsive">
-                                                        <table id="example" class="table table-striped table-bordered second" style="width:100%">
+                                                        <table id="datatable" class="table table-striped table-bordered second" style="width:100%">
                                                             <thead>
                                                                 <tr>
                                                                     <th>#</th>
@@ -57,7 +45,7 @@
                                                                     <th>Matrícula</th>
                                                                     <th>Nº Motor</th>
                                                                     <th>Cor</th>
-                                                                    <th>Departamento</th>
+                                                                    <th>Atribuido ao</th>
                                                                     <th>Estado</th>
                                                                     <th>Acções</th>
                                                                     
@@ -73,7 +61,7 @@
                                                                     <td>{{$v->matricula}}</td>
                                                                     <td>{{$v->num_motor}}</td>
                                                                     <td>{{$v->cor}}</td>
-                                                                    <td>{{$v->departamentos}}</td>
+                                                                    <td>{{$v->pessoal}}</td>
                                                                     @if($v->estado=='ativo')
                                                                     <td class="status-success">{{$v->estado}}</td>
                                                                     @else
@@ -102,17 +90,7 @@
                                                     </div> <br>
                                                   
 
-                                                    @if(isset($ve))
-
-                                                    <div class="container">
-
-                                                        <div class="d-flex justify-content-center">
-                                                         {{$ve->links()}}
-                                                        </div>
-                                                         
-                                                     </div>
-                                                        
-                                                    @endif
+                                                  
                                                     
                                                    
                                                     
@@ -175,6 +153,17 @@
 
  <script src="{{asset('assets/vendor/jquery/jquery-3.3.1.min.js')}}"></script>       
         <script>
+          $(document).ready(function(){
+             $('#datatable').DataTable({
+            fixedHeader: true
+          });
+
+          //codigo para inicializar a data table
+            var table=$('#datatable').DataTable();
+
+        });
+   
+ 
                         
                          function retornaid(id){  
                           $('#id_veiculo').val(id);

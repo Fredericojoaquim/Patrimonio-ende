@@ -326,7 +326,7 @@ class MaterialElectronicoController extends Controller
      public function consultar()
      {
         $abate=MotivoAbate::all();
-        $mat=$this->material_eletronicosConsultar();
+        $mat=$this->material_eletronicos();
    
         return view('abates.materialeletronico',['mat'=>$mat,'abates'=>$abate]);
      }

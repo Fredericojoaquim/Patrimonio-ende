@@ -384,7 +384,7 @@ class MaterialEscritorio extends Controller
 
     public function consultarMaterial()
     {
-        $mat=$this->material_escritoriosConsultar();
+        $mat=$this->material_escritorios();
         $abate=MotivoAbate::all();
         
         return view('abates.materialEscritorio',['mat'=>$mat,'abates'=>$abate]);

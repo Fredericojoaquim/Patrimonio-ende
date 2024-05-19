@@ -50,8 +50,16 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
 
     $veiculo=new Veiculo();
-
+    $m=new MaterialEscritorioModel();
+    $mateletronico=new MaterialElectronico();
+     //material de escritorio
     $mat=MaterialEscritorioModel::all();
+    $totalMaterialEscritorioAtivo=$m->quantidadeMaterialEscritorioAtivos();
+    $TotalMaterialEscritorio=MaterialEscritorioModel::count();
+    //material eletronico
+    $TotalMaterialEletronicoAtivo=$mateletronico->quantidadeMaterialEletronicoAtivos();
+    $TotalMaterialEletronico=MaterialElectronico::count();
+
     $mateletronico=MaterialElectronico ::all();
     $veiculoAbate=new VeiculoAbate();
     $QtdVeiculoAbate=$veiculoAbate->quantidadeVeiculosAbatidos();

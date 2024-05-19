@@ -464,7 +464,7 @@ class VeiculoController extends Controller
     {
 
         $abate=MotivoAbate::all();
-        $ve=$this->veiculosConsultar();
+        $ve=$this->veiculos();
         return view('abates.veiculos',['ve'=>$ve,'abates'=>$abate]);
     }
 
