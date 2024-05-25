@@ -169,7 +169,7 @@ class VeiculoController extends Controller
         
         $v->estado='ativo';
         $v->tiposguro_id=$tiposeguro;
-        $v->valor_residual=$request->vresidual;
+        $v->valor_residual=$h->moeda(addslashes($request->vresidual));
         $v->vida_util=addslashes($request->vidautil);
         $v->data_utilizacao=$request->datautilizacao;
         $v->save();
@@ -378,7 +378,7 @@ class VeiculoController extends Controller
         ->join('veiculo_pessoal','veiculo_pessoal.veiculo_id','=','veiculos.id')
         ->join('pessoal','pessoal.id','=','veiculo_pessoal.pessoal_id')
         ->join('tipoaquisicao','tipoaquisicao.id','=','veiculos.tipo_aquisicao')
-         ->where('veiculos.estado','=','ativo')
+         
          ->where('veiculo_pessoal.estado','=','ativo')
          ->where('veiculos.id','=',addslashes($id))
          ->orderBy('veiculos.id', 'asc')
@@ -445,14 +445,14 @@ class VeiculoController extends Controller
     public function veiculosConsultar(){
 
         $p=DB::table('veiculos')
-        ->join('departamentos','departamentos.id','=','veiculos.departamento_id')
+        ->join('veiculo_pessoal','veiculo_pessoal.veiculo_id','=','veiculos.id')
+        ->join('pessoal','pessoal.id','=','veiculo_pessoal.pessoal_id')
         ->join('tipoaquisicao','tipoaquisicao.id','=','veiculos.tipo_aquisicao')
-       
-       // ->where('trabalhos.tipo','!=','Auto-Arquivamento')
-        ->select('veiculos.*','tipoaquisicao.descricao as tipoaquisicao_desc','departamentos.descricao as departamentos' )
-        ->paginate(3);
-        //->get();
-
+        
+         ->where('veiculo_pessoal.estado','=','ativo')
+         ->orderBy('veiculos.id', 'asc')
+        ->select('veiculos.*','tipoaquisicao.descricao as tipoaquisicao_desc','pessoal.nome as pessoal' )
+        ->get();
         return $p;
 
      }
@@ -464,7 +464,7 @@ class VeiculoController extends Controller
     {
 
         $abate=MotivoAbate::all();
-        $ve=$this->veiculos();
+        $ve=$this->veiculosConsultar();
         return view('abates.veiculos',['ve'=>$ve,'abates'=>$abate]);
     }
 

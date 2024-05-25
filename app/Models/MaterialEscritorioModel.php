@@ -16,4 +16,9 @@ class MaterialEscritorioModel extends Model
         // Use a função count() do Laravel para contar o número de registros na tabela de veículos com estado ativo
         return DB::table('materialescritorio')->where('estado', 'ativo')->count();
     }
+
+    public function quantidadeMaterialEscritorioAbatido() {
+        // Use a função count() do Laravel para contar o número de registros na tabela de veículos com estado ativo
+        return DB::table('materialescritorio')->where('estado', 'abatido')->count();
+    }
 }

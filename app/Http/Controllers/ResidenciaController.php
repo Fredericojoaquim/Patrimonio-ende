@@ -43,8 +43,9 @@ class ResidenciaController extends Controller
         $p=DB::table('residencia')
         ->join('endereco','endereco.id','=','residencia.endereco_id')
         ->join('tipoaquisicao','tipoaquisicao.id','=','residencia.tipo_aquisicao')
+      
         ->select('residencia.*','endereco.*','tipoaquisicao.descricao as tipo_desc','residencia.id as codigo')
-        ->paginate(5);
+        ->get();
 
         return $p;
      }

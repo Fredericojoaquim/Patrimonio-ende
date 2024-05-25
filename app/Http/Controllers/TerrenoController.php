@@ -46,7 +46,7 @@ class TerrenoController extends Controller
          ->join('endereco','terrenos.endereco_id','=','endereco.id')
          ->join('tipoaquisicao','tipoaquisicao.id','=','terrenos.tipo_aquisicao')
          ->where('terrenos.id','=',addslashes($id))
-         ->where('terrenos.estado','=','ativo')
+       
          ->select('terrenos.*','terrenos.id as codigo','endereco.*','tipoaquisicao.descricao as desctipo')
          ->get();
          return $te;

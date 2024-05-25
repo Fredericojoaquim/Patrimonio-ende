@@ -1,11 +1,11 @@
 @extends('layout.template')
-@section('title', 'Terrenos')
+@section('title', 'Residencias')
 
 
 @section('content')
 
                     <div class="card">
-                                    <h3 class="card-header">Listar Terrenos</h3>
+                                    <h3 class="card-header">Listar Residencia</h3>
                                     @if (@isset($sms))
 
                                     <div class="alert alert-success" role="alert">
@@ -53,10 +53,13 @@
                                                                    
                                                                     <td class="d-flex justify-content-center">
                                                                         
-                                                                        <a href="{{url("imoveis/residencia/comprovativo/$r->codigo}")}}" target="_blank" class="btn btn-sm  active"><i class="fas fa-file"></i></a> 
+                                                                        <a href="{{url("Abate-residencia/comprovativo/$r->codigo}")}}" target="_blank" class="btn btn-sm  active"><i class="fas fa-file"></i></a> 
                                                                    @if($r->estado=='ativo')
                                                                          <a href="#" class="btn btn-sm  active" data-toggle="modal" data-target="#exampleModal" onclick="retornaid({{$r->codigo}})">abater</a>
-                                                                   @endif 
+                                                                    @else
+                                                                         <a href="{{url("Abate-residencia/informacao/$r->codigo")}}"  class="btn btn-sm  active"><i class="mdi mdi-information"></i></a> 
+
+                                                                    @endif 
                                                                          
                                                                      </td>
                                                                 </tr>

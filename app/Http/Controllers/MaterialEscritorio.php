@@ -68,12 +68,15 @@ class MaterialEscritorio extends Controller
      public function material_escritoriosConsultar(){
 
         $p=DB::table('materialescritorio')
-        ->join('departamentos','departamentos.id','=','materialescritorio.departamento_id')
+        ->join('matescritorio_pessoal','matescritorio_pessoal.material_id','=','materialescritorio.id')
+        ->join('pessoal','pessoal.id','=','matescritorio_pessoal.pessoal_id')
         ->join('tipoaquisicao','tipoaquisicao.id','=','materialescritorio.tipo_aquisicao')
        
-       // ->where('trabalhos.tipo','!=','Auto-Arquivamento')
-        ->select('materialescritorio.*','tipoaquisicao.descricao as tipoaquisicao_desc','departamentos.descricao as departamentos' )
-        ->paginate(3);
+        ->where('matescritorio_pessoal.estado','=','ativo')
+        ->orderBy('materialescritorio.id', 'asc')
+        ->select('materialescritorio.*','tipoaquisicao.descricao as tipoaquisicao_desc','pessoal.nome as pessoal' )
+        ->get();
+
 
         return $p;
 
@@ -356,7 +359,7 @@ class MaterialEscritorio extends Controller
         ->join('matescritorio_pessoal','matescritorio_pessoal.material_id','=','materialescritorio.id')
         ->join('pessoal','pessoal.id','=','matescritorio_pessoal.pessoal_id')
        
-        ->where('materialescritorio.estado','=','ativo')
+   
         ->where('matescritorio_pessoal.estado','=','ativo')
        
         ->where('materialescritorio.id','=',addslashes($id))
@@ -384,7 +387,7 @@ class MaterialEscritorio extends Controller
 
     public function consultarMaterial()
     {
-        $mat=$this->material_escritorios();
+        $mat=$this-> material_escritoriosConsultar();
         $abate=MotivoAbate::all();
         
         return view('abates.materialEscritorio',['mat'=>$mat,'abates'=>$abate]);

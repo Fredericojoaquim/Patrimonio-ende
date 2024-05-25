@@ -263,22 +263,16 @@
    //________________
    var ctx = document.getElementById('myChart').getContext('2d');
    var chartMatEletronico = document.getElementById('myChart2').getContext('2d');
-
+   var totalMatEscritorio={{$totalMatEscritorio}};
+   var materialEscritorioAtivo={{$materialEscritorioAtivo}};
+   var TotalMaterialEscritorioAbatido={{$TotalMaterialEscritorioAbatido}};
 var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: [
-            @foreach($mat as $m)
-            '{{ $m->tipo }}',
-            @endforeach
-        ],
+        labels: ['Material de escritório Registado','Material de escritorio activo','Material de escritório abatido' ],
         datasets: [{
             label: 'Valores',
-            data: [
-                @foreach($mat as $m)
-                {{ $m->valor_aquisicao }},
-                @endforeach
-            ],
+            data: [totalMatEscritorio,materialEscritorioAtivo,TotalMaterialEscritorioAbatido],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.6)', // Cor da primeira barra
                 'rgba(54, 162, 235, 0.6)', // Cor da segunda barra
@@ -342,21 +336,17 @@ var myChart = new Chart(ctx, {
 });
 
 //mat eletronico
+ var TotalMaterialEletronico={{$TotalMaterialEletronico}};
+ var TotalMaterialEletronicoAtivo={{$TotalMaterialEletronicoAtivo}};
+ var totalMaterialEletronicoAbatido={{$totalMaterialEletronicoAbatido}};
+
 var myCh = new Chart(chartMatEletronico, {
     type: 'bar',
     data: {
-        labels: [
-            @foreach($mateletronico as $m)
-            '{{ $m->tipo }}',
-            @endforeach
-        ],
+        labels: ['material electr+onico registados','material electrónico ativos', 'material electrónico abatidos' ],
         datasets: [{
             label: 'Valores',
-            data: [
-                @foreach($mateletronico as $m)
-                {{ $m->valor_aquisicao }},
-                @endforeach
-            ],
+            data: [TotalMaterialEletronico, TotalMaterialEletronicoAtivo,totalMaterialEletronicoAbatido],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.6)', // Cor da primeira barra
                 'rgba(54, 162, 235, 0.6)', // Cor da segunda barra

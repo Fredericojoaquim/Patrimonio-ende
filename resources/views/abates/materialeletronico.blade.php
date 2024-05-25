@@ -55,9 +55,11 @@
                                                                    
                                                                     <td class="d-flex justify-content-center">
                                                                         
-                                                                         <a href="{{url("material-electronico/comprovativo/$m->id")}}" target="_blank" class="btn btn-sm  active"><i class="fas fa-file"></i></a>
+                                                                         <a href="{{url("Abate-MaterialEletronico/comprovativo/$m->id")}}" target="_blank" class="btn btn-sm  active"><i class="fas fa-file"></i></a>
                                                                          @if($m->estado=='ativo')
                                                                          <a href="#" class="btn btn-sm  active" data-toggle="modal" data-target="#exampleModal" onclick="retornaid({{$m->id}})">abater</a>
+                                                                         @else
+                                                                         <a href="{{url("Abate-MaterialEletronico/informacao/$m->id")}}"  class="btn btn-sm  active"><i class="mdi mdi-information"></i></a> 
                                                                          @endif 
                                                                         
                                                                         

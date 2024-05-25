@@ -20,6 +20,7 @@ use App\Models\AbateTerreno;
 use App\Http\Controllers\ResidenciaController;
 use App\Models\AbateResidencia;
 use App\Models\Residencia;
+use Illuminate\Support\Facades\DB;
 
 class AbateController extends Controller
 {
@@ -30,7 +31,7 @@ class AbateController extends Controller
         $abate=new AbateMatEscritorio();
         $matController=new MaterialEscritorio();
         $h=new HelperController();
-
+        
         $abate->materialescitorio_id=$h->clear($request->id_material);
         $abate->motivoAbate_id=$h->clear($request->abate);
         $abate->dataAbate=date('y-m-d');
@@ -159,6 +160,68 @@ class AbateController extends Controller
     }
 
 
+    public function informacaoAbateMaterialEletronico($id)
+    {
+        $p=DB::table('abate_materialeletronico')
+        ->join('materiaeletronico','materiaeletronico.id','=','abate_materialeletronico.materialeletronico_id')
+        ->join('motivos_abate','motivos_abate.id','=','abate_materialeletronico.motivoAbate_id')
+         ->where('materiaeletronico.id','=',addslashes($id))
+        ->select('abate_materialeletronico.*','motivos_abate.descricao as motivoAbate')
+        ->get();
+        return view('abates.informacao',['dados'=>$p]);
+   
+    }
+
+    public function informacaoAbateMaterialEscritorio($id)
+    {
+        $p=DB::table('abate_material_escritorio')
+        ->join('materialescritorio','materialescritorio.id','=','abate_material_escritorio.materialescitorio_id')
+        ->join('motivos_abate','motivos_abate.id','=','abate_material_escritorio.motivoAbate_id')
+         ->where('materialescritorio.id','=',addslashes($id))
+        ->select('abate_material_escritorio.*','motivos_abate.descricao as motivoAbate')
+        ->get();
+        return view('abates.informacao',['dados'=>$p]);
+   
+    }
+
+
+    public function informacaoAbateEdificio($id)
+    {
+        $p=DB::table('abate_edificio')
+        ->join('edificio','edificio.id','=','abate_edificio.edificio_id')
+        ->join('motivos_abate','motivos_abate.id','=','abate_edificio.motivoAbate_id')
+         ->where('edificio.id','=',addslashes($id))
+        ->select('abate_edificio.*','motivos_abate.descricao as motivoAbate')
+        ->get();
+        return view('abates.informacao',['dados'=>$p]);
+   
+    }
+
+
+    public function informacaoAbateTerreno($id)
+    {
+        $p=DB::table('abate_terreno')
+        ->join('terrenos','terrenos.id','=','abate_terreno.terreno_id')
+        ->join('motivos_abate','motivos_abate.id','=','abate_terreno.motivoAbate_id')
+         ->where('terrenos.id','=',addslashes($id))
+        ->select('abate_terreno.*','motivos_abate.descricao as motivoAbate')
+        ->get();
+        return view('abates.informacao',['dados'=>$p]);
+   
+    }
+
+
+    public function informacaoAbateResidencia($id)
+    {
+        $p=DB::table('abate_residencia')
+        ->join('residencia','residencia.id','=','abate_residencia.residencia_id')
+        ->join('motivos_abate','motivos_abate.id','=','abate_residencia.motivoAbate_id')
+         ->where('residencia.id','=',addslashes($id))
+        ->select('abate_residencia.*','motivos_abate.descricao as motivoAbate')
+        ->get();
+        return view('abates.informacao',['dados'=>$p]);
+   
+    }
 
 
 

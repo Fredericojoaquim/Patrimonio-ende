@@ -26,7 +26,7 @@
         <table   style="border: 1px solid black; margin: 0 auto; width: 100%; text-align:center;">
             <tr style="border: 1px solid black; background-color:black; color:white; height: 40px;">
                 <td style="border: 1px solid black; "> Nº CADASTRO:{{$v->id}} </td>
-                <td style="border: 1px solid black;">COMPROVATIVO DE CADASTRO MATERIAL DE ESCRITÓRIO</td>
+                <td style="border: 1px solid black;">COMPROVATIVO DE CADASTRO MATERIAL ELECTRÓNICO</td>
                 @php
                     $data = new DateTime($v->created_at);
                 @endphp

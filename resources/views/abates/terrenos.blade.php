@@ -54,9 +54,11 @@
                                                                    
                                                                     <td class="d-flex justify-content-center">
                                                                         
-                                                                        <a href="{{url("terreno/comprovativo/$e->codigo")}}" target="_blank" class="btn btn-sm  active"><i class="fas fa-file"></i></a> 
+                                                                        <a href="{{url("Abate-terreno/comprovativo/$e->codigo")}}" target="_blank" class="btn btn-sm  active"><i class="fas fa-file"></i></a> 
                                                                    @if($e->estado=='ativo')
                                                                          <a href="#" class="btn btn-sm  active" data-toggle="modal" data-target="#exampleModal" onclick="retornaid({{$e->codigo}})">abater</a>
+                                                                 @else
+                                                                         <a href="{{url("Abate-terreno/informacao/$e->codigo")}}"  class="btn btn-sm  active"><i class="mdi mdi-information"></i></a> 
                                                                    @endif 
                                                                          
                                                                      </td>

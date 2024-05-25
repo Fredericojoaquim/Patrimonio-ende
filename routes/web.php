@@ -53,12 +53,15 @@ Route::get('/dashboard', function () {
     $m=new MaterialEscritorioModel();
     $mateletronico=new MaterialElectronico();
      //material de escritorio
-    $mat=MaterialEscritorioModel::all();
+ 
     $totalMaterialEscritorioAtivo=$m->quantidadeMaterialEscritorioAtivos();
     $TotalMaterialEscritorio=MaterialEscritorioModel::count();
+    $TotalMaterialEscritorioAbatido=$m->quantidadeMaterialEscritorioAbatido();
     //material eletronico
     $TotalMaterialEletronicoAtivo=$mateletronico->quantidadeMaterialEletronicoAtivos();
     $TotalMaterialEletronico=MaterialElectronico::count();
+   $totalMaterialEletronicoAbatido=$mateletronico->quantidadeMaterialEletronicoAbatido();
+   
 
     $mateletronico=MaterialElectronico ::all();
     $veiculoAbate=new VeiculoAbate();
@@ -75,7 +78,7 @@ Route::get('/dashboard', function () {
 
   
 
-    return view('home',['mat'=>$mat,'mateletronico'=>$mateletronico,'totalVeiculo'=>$ve,'veiculosabatidos'=>$QtdVeiculoAbate,'veiculosAtivo'=>$qtdVeiculosAtivos,'TotalEdificios'=> $TotalEdificios,'TotalTerrenos'=>$TotalTerrenos,'TotalResidencias'=>$TotalResidencias]);
+    return view('home',['TotalMaterialEletronico'=>$TotalMaterialEletronico,'TotalMaterialEletronicoAtivo'=>$TotalMaterialEletronicoAtivo,'totalMaterialEletronicoAbatido'=>$totalMaterialEletronicoAbatido,'totalVeiculo'=>$ve,'veiculosabatidos'=>$QtdVeiculoAbate,'veiculosAtivo'=>$qtdVeiculosAtivos,'TotalEdificios'=> $TotalEdificios,'TotalTerrenos'=>$TotalTerrenos,'TotalResidencias'=>$TotalResidencias, 'materialEscritorioAtivo'=>$totalMaterialEscritorioAtivo,'totalMatEscritorio'=> $TotalMaterialEscritorio,'TotalMaterialEscritorioAbatido'=>$TotalMaterialEscritorioAbatido]);
 })->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';
@@ -251,22 +254,33 @@ Route::middleware(['CheckDirector','auth'])->group(function () {
 Route::get('abate/veiculos/consultar', [VeiculoController::class,'consultarVeiculo']);
 Route::get('abate/veiculos/pesquisar', [VeiculoController::class,'pesquisarVeiculos']);
 Route::post('abate/veiculos/registar', [AbateVeiculo::class,'registarAbate']);
+Route::get('Abate-veiculo/comprovativo/{id}', [VeiculoController::class,'comprovativo']);
+Route::get('Abate-veiculo/informacao/{id}', [AbateVeiculo::class,'informacaoAbate']);
 //abates material escritorio
 Route::get('abate/MaterialEscritorio/consultar', [MaterialEscritorio::class,'consultarMaterial']);
 Route::post('abate/MaterialEscritorio/registar', [ AbateController::class,'abateMatEscritorio']);
+Route::get('Abate-MaterialEscritorio/comprovativo/{id}', [MaterialEscritorio::class,'comprovativo']);
+Route::get('Abate-MaterialEscritorio/informacao/{id}', [AbateController::class,'informacaoAbateMaterialEscritorio']);
 //abates material eletronico
 Route::get('abate/MaterialEletronico/consultar', [MaterialElectronicoController::class,'consultar']);
-Route::post('abate/MaterialEletronico/registar', [ AbateController::class,'abateMatElectronico']);
+Route::post('abate/MaterialEletronico/registar', [AbateController::class,'abateMatElectronico']);
+Route::get('Abate-MaterialEletronico/informacao/{id}', [AbateController::class,'informacaoAbateMaterialEletronico']);
+Route::get('Abate-MaterialEletronico/comprovativo/{id}', [MaterialElectronicoController::class,'comprovativo']);
 //abates edificios
 Route::get('abate/edificio/consultar', [EdificioController::class,'consultar']);
 Route::post('abate/edificio/registar', [ AbateController::class,'AbateEdificio']);
+Route::get('Abate-Edificio/comprovativo/{id}', [EdificioController::class,'comprovativo']);
+Route::get('Abate-Edificio/informacao/{id}', [AbateController::class,'informacaoAbateEdificio']);
 //abates terrenos
 Route::get('abate/terrenos/consultar', [TerrenoController::class,'consultar']);
 Route::post('abate/terrenos/registar', [ AbateController::class,'AbateTerreno']);
+Route::get('Abate-terreno/informacao/{id}', [AbateController::class,'informacaoAbateTerreno']);
+Route::get('Abate-terreno/comprovativo/{id}', [TerrenoController::class,'comprovativo']);
 //residencia
 Route::get('abate/residencia/consultar', [ResidenciaController::class,'consultar']);
 Route::post('abate/residencia/registar', [AbateController::class,'AbateResidencia']);
-
+Route::get('Abate-residencia/comprovativo/{id}', [TerrenoController::class,'comprovativo']);
+Route::get('Abate-residencia/informacao/{id}', [AbateController::class,'informacaoAbateResidencia']);
 
 });
 

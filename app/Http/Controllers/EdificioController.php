@@ -49,10 +49,10 @@ class EdificioController extends Controller
         $ed=DB::table('edificio')
         ->join('endereco','edificio.endereco_id','=','endereco.id')
         ->join('tipoaquisicao','tipoaquisicao.id','=','edificio.tipo_aquisicao')
-      //  ->where('edificio.estado','=','ativo')
+     
         //->where('edificio.estado','!=','ativo')
         ->select('edificio.*','edificio.id as codigo','endereco.*','tipoaquisicao.descricao as desctipo')
-        ->paginate(3);
+        ->get();
 
         
         return $ed;
@@ -65,8 +65,8 @@ class EdificioController extends Controller
         $ed=DB::table('edificio')
         ->join('endereco','edificio.endereco_id','=','endereco.id')
         ->join('tipoaquisicao','tipoaquisicao.id','=','edificio.tipo_aquisicao')
-        ->where('edificio.id','=',$id)
-        ->where('edificio.estado','=','ativo')
+        ->where('edificio.id','=',addslashes($id))
+        
         ->select('edificio.*','edificio.id as codigo','endereco.*','tipoaquisicao.descricao as desctipo')
         ->get();
 

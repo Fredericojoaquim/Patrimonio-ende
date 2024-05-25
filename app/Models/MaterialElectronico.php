@@ -16,5 +16,9 @@ class MaterialElectronico extends Model
         // Use a função count() do Laravel para contar o número de registros na tabela de veículos com estado ativo
         return DB::table('materiaeletronico')->where('estado', 'ativo')->count();
     }
+    public function quantidadeMaterialEletronicoAbatido() {
+        // Use a função count() do Laravel para contar o número de registros na tabela de veículos com estado ativo
+        return DB::table('materiaeletronico')->where('estado', 'abatido')->count();
+    }
     
 }

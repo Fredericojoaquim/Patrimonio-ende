@@ -158,7 +158,7 @@
 
                                                 <div class="form-group col-lg-6">
                                                     <label for="vresidual"  class="col-form-label">Valor residual</label>
-                                                    <input id="vresidual" name="vresidual" onkeypress="return somenteNumeros(event)"   type="text" class="form-control" >
+                                                    <input id="vresidual" name="vresidual" onkeyup="changeValue(this)"   type="text" class="form-control" >
                                                 </div>
 
                                                 <br><br>

@@ -73,11 +73,13 @@
                                                                         
                                                                         <!--  <a href="#" class="btn btn-sm  active"><i class="m-r-10 mdi mdi-delete"></i></a>
                                                                          <a href="#" class="btn btn-sm  active"><i class="fas fa-eye"></i></a>-->
-                                                                         <a href="{{url("veiculo/comprovativo/$v->id")}}" target="_blank" class="btn btn-sm  active"><i class="fas fa-file"></i></a> 
+                                                                         <a href="{{url("Abate-veiculo/comprovativo/$v->id")}}" target="_blank" class="btn btn-sm  active"><i class="fas fa-file"></i></a>
+                                                                         
                                                                         @if($v->estado=='ativo')
                                                                         <a href="#" class="btn btn-sm  active" data-toggle="modal" data-target="#exampleModal" onclick="retornaid({{$v->id}})">abater</a>
                                                                 
-
+                                                                        @else
+                                                                        <a href="{{url("Abate-veiculo/informacao/$v->id")}}"  class="btn btn-sm  active"><i class="mdi mdi-information"></i></a> 
                                                                         @endif
                                                                          
                                                                      </td>

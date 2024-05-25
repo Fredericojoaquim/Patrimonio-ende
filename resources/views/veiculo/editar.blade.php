@@ -5,7 +5,7 @@
 @section('content')
 
                  <div class="card">
-                                    <h3 class="card-header">Registar Veículo</h3>
+                                    <h3 class="card-header">Alterar Veículo</h3>
 
                                     <div class="card-body">
 
@@ -224,7 +224,7 @@
                                             <div class="text-right">
                                                 <input type="hidden" value="{{$v->id}}" name="id" id="id">
                                                 <button class="btn btn-success" id="btn-registar">Alterar</button>
-                                                <button class="btn btn-danger" type="reset">Cancelar</button>
+                                                
                                             </div>
                                             
                                         </form>

@@ -36,6 +36,19 @@ class AbateVeiculo extends Controller
        
     }
 
+    public function informacaoAbate($id)
+    {
+        $p=DB::table('abate_veiculo')
+        ->join('veiculos','veiculos.id','=','abate_veiculo.veiculo_id')
+        ->join('motivos_abate','motivos_abate.id','=','abate_veiculo.motivoAbate_id')
+         ->where('veiculos.id','=',addslashes($id))
+        ->select('abate_veiculo.*','motivos_abate.descricao as motivoAbate')
+        ->get();
+
+        return view('abates.informacao',['dados'=>$p]);
+   
+    }
+
 
 
 }

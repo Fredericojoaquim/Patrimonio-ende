@@ -284,7 +284,7 @@ class MaterialElectronicoController extends Controller
         ->join('pessoal','pessoal.id','=','mateletronico_pessoal.pessoal_id')
         ->join('tipoaquisicao','tipoaquisicao.id','=','materiaeletronico.tipoaquisicao_id')
         ->join('fornecedor','fornecedor.id','=','materiaeletronico.fornecedor_id')
-        ->where('materiaeletronico.estado','=','ativo')
+       
         ->where('mateletronico_pessoal.estado','=','ativo')
         ->where('materiaeletronico.id','=',addslashes($id))
         ->select('materiaeletronico.*','tipoaquisicao.descricao as tipoaquisicao_desc','pessoal.nome as pessoal' , 'fornecedor.nome as fornecedor' )
@@ -311,12 +311,14 @@ class MaterialElectronicoController extends Controller
     public function material_eletronicosConsultar(){
 
         $p=DB::table('materiaeletronico')
-        ->join('departamentos','departamentos.id','=','materiaeletronico.departamento_id')
+        ->join('mateletronico_pessoal','mateletronico_pessoal.material_id','=','materiaeletronico.id')
+        ->join('pessoal','pessoal.id','=','mateletronico_pessoal.pessoal_id')
         ->join('tipoaquisicao','tipoaquisicao.id','=','materiaeletronico.tipoaquisicao_id')
         ->join('fornecedor','fornecedor.id','=','materiaeletronico.fornecedor_id')
-      
-        ->select('materiaeletronico.*','tipoaquisicao.descricao as tipoaquisicao_desc','departamentos.descricao as departamentos', 'fornecedor.nome as fornecedor' )
-        ->paginate(3);;
+       
+        ->where('mateletronico_pessoal.estado','=','ativo')
+        ->select('materiaeletronico.*','tipoaquisicao.descricao as tipoaquisicao_desc','pessoal.nome as pessoal' , 'fornecedor.nome as fornecedor' )
+        ->get();
 
         return $p;
 
@@ -326,7 +328,7 @@ class MaterialElectronicoController extends Controller
      public function consultar()
      {
         $abate=MotivoAbate::all();
-        $mat=$this->material_eletronicos();
+        $mat=$this->material_eletronicosConsultar();
    
         return view('abates.materialeletronico',['mat'=>$mat,'abates'=>$abate]);
      }

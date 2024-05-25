@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class AbateMatEscritorio extends Model
 {
     use HasFactory;
-    protected $table='abate_materialescritoio';
+    protected $table='abate_material_escritorio';
     protected $guarded=[];
 
 }
