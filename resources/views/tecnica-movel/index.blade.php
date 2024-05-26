@@ -5,18 +5,10 @@
 
 @section('content')
 
-<form action="{{url('user/pesquisar')}}" >
-    @csrf
-    <div class="input-group rounded">
-        <input type="search" name="nome"  class="form-control rounded" placeholder="descrição" aria-label="Search" aria-describedby="search-addon" />
-        <button type="button" class="btn btn-primary">
-            <i class="fas fa-search"></i>
-          </button>
-    </div>
-</form>
+
 <div class="card">
    
-    <h3 class="card-header">Ocorrencias</h3>
+    <h3 class="card-header">Ocorrencias técnicas de material electrónico</h3>
     @if (@isset($sms))
 
     <div class="alert alert-success" role="alert">
@@ -28,7 +20,7 @@
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="card">
                     <div class="table-responsive">
-                        <table id="example" class="table table-striped table-bordered second" style="width:100%">
+                        <table id="datatable" class="table table-striped table-bordered second" style="width:100%">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -51,7 +43,7 @@
                                     <td>{{$o->data_ocorrencia}}</td>
                                     <td class="d-flex justify-content-center">
 
-                                        <a href="{{url("$o->material_id")}}" class="btn btn-sm active">Sobre</a>
+                                        <a href="{{url("material-electronico/informacao/$o->material_id")}}" target="_blank" class="btn btn-sm active">Sobre</a>
                                      
                                         
                                         @switch($o->estado)
@@ -89,7 +81,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Registar Ocorrencia</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Concluir assitencia técnica</h5>
                 <a href="#" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </a>
@@ -131,6 +123,11 @@
         // alert(id);
          $('#ocorrencia_id').val(id);
     }
+
+    $(document).ready(function(){
+         //codigo para inicializar a data table
+         var table=$('#datatable').DataTable(); 
+    });
 
     $(document).ready(function(){
     btn_registar=document.getElementById("btn-registar");

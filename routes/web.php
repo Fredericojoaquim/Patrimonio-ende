@@ -291,6 +291,7 @@ Route::get('tecnica/veiculo/diagnosticar/{id}', [OcorrenciaVeiculo::class,'diagn
 Route::get('tecnica/veiculo/resolver/{id}', [OcorrenciaVeiculo::class,'resolver']);
 Route::put('tecnica/veiculo/concluir', [OcorrenciaVeiculo::class,'concluir']);
 Route::get('tecnica/veiculo/informacao/{id}', [OcorrenciaVeiculo::class,'informacao']);
+Route::get('tecnica/veiculo/sobre/{id}', [VeiculoController::class,'comprovativo']);
 //});
 
 
@@ -301,6 +302,7 @@ Route::get('tecnica/movel/diagnosticar/{id}', [OcorrenciaEletronico::class,'diag
 Route::get('tecnica/movel/resolver/{id}', [OcorrenciaEletronico::class,'resolver']);
 Route::put('tecnica/movel/concluir', [OcorrenciaEletronico::class,'concluir']);
 Route::get('tecnica/movel/informacao/{id}', [OcorrenciaEletronico::class,'informacao']);
+Route::get('material-electronico/informacao/{id}', [MaterialElectronicoController::class,'comprovativo']);
 });
 
 

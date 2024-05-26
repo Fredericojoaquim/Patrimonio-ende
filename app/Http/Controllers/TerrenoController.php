@@ -222,7 +222,7 @@ class TerrenoController extends Controller
         'dimensao'=>addslashes($request->dimensao),
         'tipo_aquisicao'=>addslashes($request->tipoaquisicao),
         'data_aquisicao'=>addslashes($request->dataaquisicao),
-        'vida_util'=>addslashes($request->vidautil),
+       
     ];
 
     $te= Terreno::findOrFail(addslashes($request->id));

@@ -3,12 +3,7 @@
 
 
 @section('content')
-<div class="input-group rounded">
-    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
-    <button type="button" class="btn btn-primary">
-        <i class="fas fa-search"></i>
-      </button>
-</div>
+
                     <div class="card">
                         <h3 class="card-header">Listar Material Electronico</h3>
                        
@@ -17,7 +12,7 @@
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div class="card">
                                         <div class="table-responsive">
-                                            <table id="example" class="table table-striped table-bordered second" style="width:100%">
+                                            <table id="datatable" class="table table-striped table-bordered second" style="width:100%">
                                                 <thead>
                                                     <tr>
                                                         <th>#</th>
@@ -27,9 +22,8 @@
                                                         <th>Marca</th>
                                                         <th>Data Aquisição</th>
                                                         <th>Cor</th>
-                                                        <th>Departamento</th>
+                                                        <th>Atribuido ao</th>
                                                         <th>Acções</th>
-                                                        
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -43,7 +37,7 @@
                                                         <td>{{$m->tipoaquisicao_desc}}</td>
                                                         <td>{{$m->data_aquisicao}}</td>
                                                         <td>{{$m->cor}}</td>
-                                                        <td>{{$m->departamentos}}</td>
+                                                        <td>{{$m->pessoal}}</td>
                                                        
                                                         <td class="d-flex justify-content-center">
                                                              <a href="{{url("material-electronico/editar/$m->id")}}" class="btn btn-sm active"><i class="fas fa-edit"></i></a>
@@ -135,13 +129,20 @@
  <script src="{{asset('assets/vendor/jquery/jquery-3.3.1.min.js')}}"></script>
                     <script>
                          $(document).ready(function(){
+                            var table=$('#datatable').DataTable(); 
                         //codigo para inicializar a data table
                         $('#ModalMensagem').modal('show');
                         });
                         function retornaid(id){
                     // alert(id);
                     $('#material_id').val(id);
+
+                    //codigo para inicializar a data table
+                   
                  }
+
+               
+            
 
 
          $(document).ready(function(){

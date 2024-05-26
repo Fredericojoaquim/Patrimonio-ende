@@ -118,6 +118,8 @@
                                                        <option value="Selecione">Selecione</option>
                                                        <option value="Computador">Computador</option>
                                                        <option value="Telemóvel">Telemóvel</option>
+                                                       <option value="Telemóvel">Impressora</option>
+                                                       <option value="Telemóvel">Outro</option>
                                                    </select>
                                                </div>
 
@@ -159,7 +161,7 @@
 
                                                 <div class="form-group col-lg-6">
                                                     <label for="vresidual"  class="col-form-label">Valor residual</label>
-                                                    <input id="vresidual" name="vresidual"  type="text" class="form-control" >
+                                                    <input id="vresidual" name="vresidual" onkeyup="changeValue(this)"  type="text" class="form-control" >
                                                 </div>
 
                                                 <div class="form-group col-lg-6 margin-input">

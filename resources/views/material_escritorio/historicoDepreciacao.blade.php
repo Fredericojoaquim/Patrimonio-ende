@@ -70,7 +70,13 @@
 
                                     <div class="card">
 
-                                        <p class="ml-2 mt-2">Vida util restante: <strong>{{$vidautilRestante}} Anos (s)</strong></p>
+                                        <p class="ml-2 mt-2">Vida util restante: @if($vidautilRestante<0)
+                                            <strong>0 Anos (s)</strong></p>
+                                            @else
+                                            <strong>{{$vidautilRestante}} Anos (s)</strong>
+                                        </p>
+                                            
+                                        @endif 
                                         <p class="ml-2">Valor Contábil:  <strong>{{number_format($dado['valor_contabil'], 2, ',', '.')}}</strong></p>
                                         <p class="ml-2"> Depreciação Acumulada: <strong>{{number_format($dado['depreciacao_acumulada'], 2, ',', '.')}}</strong></p>
 

@@ -74,16 +74,16 @@
 
                                                 <div class="form-group col-lg-6">
                                                         <label for="valor" class="col-form-label">Custo de aquisição (kz)</label>
-                                                        <input id="valor" name="valor" type="" class="form-control">
+                                                        <input id="valor" name="valor" onkeyup="changeValue(this)" type="" class="form-control">
                                                 </div>
                                                 <div class="form-group col-lg-6 margin-input">
                                                     <label for="inputText11">Custo aquisição (USD)</label>
-                                                    <input id="Custo_aquisição_usd" type="text" name="Custo_aquisição_usd" placeholder="" class="form-control">
+                                                    <input id="Custo_aquisição_usd" onkeyup="changeValue(this)" type="text" name="Custo_aquisição_usd" placeholder="" class="form-control">
                                                  </div>
 
                                                 <div class="form-group col-lg-6">
                                                     <label for="inputText12" class="col-form-label">Custo aquisição (euro)</label>
-                                                    <input id="Custo_aquisição_euro" type="text" name="Custo_aquisição_euro"   class="form-control" placeholder="">
+                                                    <input id="Custo_aquisição_euro" onkeyup="changeValue(this)" type="text" name="Custo_aquisição_euro"   class="form-control" placeholder="">
                                                 </div>
 
                                                 <div class="form-group col-lg-6 margin-input">
@@ -143,7 +143,7 @@
 
                                                 <div class="form-group col-lg-6">
                                                     <label for="vresidual"  class="col-form-label">Valor residual</label>
-                                                    <input id="vresidual" name="vresidual"  type="text" class="form-control" >
+                                                    <input id="vresidual" onkeyup="changeValue(this)" name="vresidual"  type="text" class="form-control" >
                                                 </div>
 
                                                 <div class="form-group col-lg-6 margin-input">

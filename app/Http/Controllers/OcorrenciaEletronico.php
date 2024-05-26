@@ -154,7 +154,7 @@ class OcorrenciaEletronico extends Controller
         $o=OcorrenciaModel::findOrFail(addslashes($request->ocorrencia_id));
         $o->update($s);
         $ocorrencias=OcorrenciaModel::all();
-        return view('tecnica-veiculo.index',['ocorrencias'=>$ocorrencias,'sms'=>'Estado alterado com sucesso']);
+        return view('tecnica-movel.index',['ocorrencias'=>$ocorrencias,'sms'=>'Estado alterado com sucesso']);
 
     }
 

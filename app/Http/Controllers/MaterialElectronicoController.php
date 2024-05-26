@@ -140,7 +140,7 @@ class MaterialElectronicoController extends Controller
         $m->custo_aquisicao_euro=$Custo_aquisição_euro;
        
         $m->vida_util=addslashes($request->vidautil);
-        $m->valor_residual=addslashes($request->vresidual);
+        $m->valor_residual=$h->moeda(addslashes($request->vresidual));
         $m->data_utilizacao=addslashes($request->datautilizacao);
        
         $m->save();

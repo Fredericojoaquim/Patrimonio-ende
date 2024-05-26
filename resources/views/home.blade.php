@@ -368,7 +368,7 @@ var myCh = new Chart(chartMatEletronico, {
         plugins: {
             title: {
                 display: true,
-                text: 'Materais Electronico',
+                text: 'Materais Electronicos',
                 font: {
                     size: 14,
                     weight: 'bold'

@@ -6,12 +6,7 @@
 
 <form action="{{url('imoveis/terreno/pesquisar')}}" >
     @csrf
-    <div class="input-group rounded">
-        <input type="search" name="num_mobilizado"  class="form-control rounded" placeholder="Nº imobilizado" aria-label="Search" aria-describedby="search-addon" />
-        <button type="button" class="btn btn-primary">
-            <i class="fas fa-search"></i>
-          </button>
-    </div>
+   
 </form>
 
                     <div class="card">
@@ -61,9 +56,11 @@
                                                                 <tr>
                                                                     <td>{{$r->codigo}}</td>
                                                                     <td>{{$r->num_imobilizado}}</td>
-                                                                    <td>{{number_format($r->valor_aquisicao, 2,",",".")}}</td>
                                                                     <td>{{$r->descricao}}</td>
                                                                     <td>{{$r->dimensao}}</td>
+                                                                    <td>{{number_format($r->valor_aquisicao, 2,",",".")}}</td>
+                                                                    
+                                                                    
                                                                    
                                                                     
                                                                     <td>{{$r->tipo_desc}}</td>

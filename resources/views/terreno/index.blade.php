@@ -56,7 +56,7 @@
                                                 <div class="form-group col-lg-6 col-md-12">
 
                                                     <label for="valoraquisicao" class="col-form-label">custo aquisição (kz)</label>
-                                                    <input id="valoraquisicao" name="valoraquisicao" type="text" class="form-control">
+                                                    <input id="valoraquisicao" name="valoraquisicao" onkeyup="changeValue(this)" type="text" class="form-control">
                                                 </div>
 
                                                 <div class="form-group col-lg-6 margin-input">
