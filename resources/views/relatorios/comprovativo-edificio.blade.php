@@ -17,9 +17,16 @@
 
 <body>
 
+    @php
+        $path = public_path('img/logo.png');
+        $type = pathinfo($path, PATHINFO_EXTENSION);
+        $data = file_get_contents($path);
+        $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+    @endphp
+
     <div style="width: 750px; padding:30px;" >
         <div class="col-12" id="logotipo">
-            <img src="{{ public_path('img/logo.png')}}" alt="" style="width: 250x; height: 130px;  ">          
+            <img src="{{$base64}}" alt="" style="width: 250x; height: 130px;  ">          
             
         </div><br>
         <h3 style="height: 40px; text-align: center">SISTEMA DE GESTÃO DE PATRIMÓNIO ENDE</h3><br><br><br>
